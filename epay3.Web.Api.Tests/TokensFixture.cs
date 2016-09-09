@@ -153,6 +153,25 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
+        public void Should_Get_A_404_For_An_Invalid_Token_Id()
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(Key + ":" + Secret);
+
+            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+
+            try
+            {
+                _tokensApi.TokensGet("INVALID ID");
+
+                Assert.Fail();
+            }
+            catch(ApiException exception)
+            {
+                Assert.AreEqual(404, exception.ErrorCode);
+            }
+        }
+
+        [TestMethod]
         public void Should_Fail_To_Use_An_Invalid_Token_In_Credit_Card_Transaction()
         {
             var postTransactionRequestModel = new PostTransactionRequestModel
@@ -198,6 +217,8 @@ namespace epay3.Web.Api.Tests
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+
+            Assert.IsNotNull(_tokensApi.TokensGet(tokenId));
 
             // Should return a valid Id.
             Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenId));

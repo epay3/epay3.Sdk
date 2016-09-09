@@ -72,7 +72,11 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenPageSessionRequestModel = new PostTokenPageSessionRequestModel
             {
-
+                AttributeValues = new System.Collections.Generic.Dictionary<string, string>
+                {
+                    { "param1", "parameter value 1" },
+                    { "param2", "parameter value 2" }
+                }
             };
 
             var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, ProcessingAccountId);

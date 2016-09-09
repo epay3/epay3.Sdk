@@ -23,7 +23,18 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="id">The Id of the token to be deleted.</param>
         /// <returns></returns>
         bool TokensDelete (string id);
-  
+
+        /// <summary>
+        /// Retrieves the details of a token.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">The unique identifier of the token.</param>
+        /// <returns>GetTokenResponseModel</returns>
+        GetTokenResponseModel TokensGet(string id);
+
         /// <summary>
         /// Stores a token for either ACH or credit card payments.
         /// </summary>
@@ -134,6 +145,68 @@ namespace epay3.Web.Api.Sdk.Api
             }
             else
                 throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Retrieves the details of a token.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">The unique identifier of the token.</param>
+        /// <returns>GetTokenResponseModel</returns>
+        public GetTokenResponseModel TokensGet(string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling TokensApi->TokensGet");
+
+            var localVarPath = "/api/v1/tokens/{id}";
+
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+            if (id != null) localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode >= 400)
+                throw new ApiException(localVarStatusCode, "Error calling TokensGet: " + localVarResponse.Content, localVarResponse.Content);
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, "Error calling TokensGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+            var response = new ApiResponse<GetTokenResponseModel>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
+                (GetTokenResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetTokenResponseModel)));
+
+            return response.Data;
         }
 
         /// <summary>

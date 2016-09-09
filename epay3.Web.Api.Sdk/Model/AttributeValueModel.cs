@@ -1,7 +1,13 @@
-using Newtonsoft.Json;
 using System;
-using System.Runtime.Serialization;
+using System.Linq;
+using System.IO;
 using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace epay3.Web.Api.Sdk.Model
 {
@@ -9,18 +15,18 @@ namespace epay3.Web.Api.Sdk.Model
     /// Contains information about a single attribute value that is tied to a transaction.
     /// </summary>
     [DataContract]
-    public partial class TransactionAttributeValueModel :  IEquatable<TransactionAttributeValueModel>
+    public partial class AttributeValueModel :  IEquatable<AttributeValueModel>
     { 
     
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionAttributeValueModel" /> class.
-        /// Initializes a new instance of the <see cref="TransactionAttributeValueModel" />class.
+        /// Initializes a new instance of the <see cref="AttributeValueModel" /> class.
+        /// Initializes a new instance of the <see cref="AttributeValueModel" />class.
         /// </summary>
         /// <param name="Name">The user-friendly name of the attribute..</param>
         /// <param name="ParameterName">The parameter name of the attribute..</param>
         /// <param name="Value">The value of the attribute..</param>
 
-        public TransactionAttributeValueModel(string Name = null, string ParameterName = null, string Value = null)
+        public AttributeValueModel(string Name = null, string ParameterName = null, string Value = null)
         {
             this.Name = Name;
             this.ParameterName = ParameterName;
@@ -57,7 +63,7 @@ namespace epay3.Web.Api.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class TransactionAttributeValueModel {\n");
+            sb.Append("class AttributeValueModel {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  ParameterName: ").Append(ParameterName).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
@@ -83,15 +89,15 @@ namespace epay3.Web.Api.Sdk.Model
         public override bool Equals(object obj)
         {
             // credit: http://stackoverflow.com/a/10454552/677735
-            return this.Equals(obj as TransactionAttributeValueModel);
+            return this.Equals(obj as AttributeValueModel);
         }
 
         /// <summary>
-        /// Returns true if TransactionAttributeValueModel instances are equal
+        /// Returns true if AttributeValueModel instances are equal
         /// </summary>
-        /// <param name="other">Instance of TransactionAttributeValueModel to be compared</param>
+        /// <param name="other">Instance of AttributeValueModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(TransactionAttributeValueModel other)
+        public bool Equals(AttributeValueModel other)
         {
             // credit: http://stackoverflow.com/a/10454552/677735
             if (other == null)

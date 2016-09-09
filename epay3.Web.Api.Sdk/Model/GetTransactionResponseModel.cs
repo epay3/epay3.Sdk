@@ -30,7 +30,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="AttributeValues">A collection of key/value pairs for any custom attribute values for this transaction..</param>
         /// <param name="Attachments">A collection of all attachments for this transaction..</param>
 
-        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, string TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string Comments = null, List<TransactionEventModel> Events = null, List<TransactionAttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null)
+        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, string TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null)
         {
             this.Id = Id;
             this.Payer = Payer;
@@ -115,7 +115,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// </summary>
         /// <value>A collection of key/value pairs for any custom attribute values for this transaction.</value>
         [DataMember(Name="attributeValues", EmitDefaultValue=false)]
-        public List<TransactionAttributeValueModel> AttributeValues { get; set; }
+        public List<AttributeValueModel> AttributeValues { get; set; }
     
         /// <summary>
         /// A collection of all attachments for this transaction.
