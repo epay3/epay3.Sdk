@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace epay3.Web.Api.Sdk.Model
 {
@@ -91,6 +93,17 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The masked account number for display to the user.</value>
         [DataMember(Name="maskedAccountNumber", EmitDefaultValue=false)]
         public string MaskedAccountNumber { get; set; }
+
+        public T GetAttributeValue<T>(string parameterName)
+        {
+            var value = AttributeValues.SingleOrDefault(x=>x.ParameterName == parameterName).Value;
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+
+            if (value == null)
+                return default(T);
+
+            return (T)converter.ConvertFromString(null, CultureInfo.InvariantCulture, value);
+        }
     
         /// <summary>
         /// Returns the string presentation of the object
