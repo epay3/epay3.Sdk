@@ -3,6 +3,7 @@ using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
 using epay3.Web.Api.Sdk.Client;
 using System.Net;
+using System.Linq;
 
 namespace epay3.Web.Api.Tests
 {
@@ -209,7 +210,8 @@ namespace epay3.Web.Api.Tests
                     AccountHolder = "John Doe",
                     CardNumber = "4457119922390123",
                     Cvc = "123"
-                }
+                },
+                AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "parameter1", "parameter value 1" }, { "parameter2", "parameter value 2" } }
             };
 
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(Key + ":" + Secret);
@@ -217,8 +219,12 @@ namespace epay3.Web.Api.Tests
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+            var getTokenResponseModel = _tokensApi.TokensGet(tokenId);
 
-            Assert.IsNotNull(_tokensApi.TokensGet(tokenId));
+            Assert.IsNotNull(getTokenResponseModel);
+            Assert.AreEqual(2, getTokenResponseModel.AttributeValues.Count);
+            Assert.AreEqual("parameter value 1", getTokenResponseModel.AttributeValues.Single(x => x.ParameterName == "parameter1").Value);
+            Assert.AreEqual("parameter value 2", getTokenResponseModel.AttributeValues.Single(x => x.ParameterName == "parameter2").Value);
 
             // Should return a valid Id.
             Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenId));

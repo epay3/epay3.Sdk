@@ -54,7 +54,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenPageSessionRequestModel = new PostTokenPageSessionRequestModel
             {
-                AttributeValues = new System.Collections.Generic.Dictionary<string, string> {
+                AttributeValues = new System.Collections.Generic.Dictionary<string, string>
+                {
                     { "parameter 1", "value 1" },
                     { "parameter 2", "value 2" }
                 },
