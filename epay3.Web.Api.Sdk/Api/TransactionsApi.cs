@@ -32,8 +32,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="postTransactionRequestModel">The details of the transaction to be processed.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel);
+        long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey);
 
         /// <summary>
         /// Submits a request to void a transaction.
@@ -153,8 +154,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </summary>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="postTransactionRequestModel">The details of the transaction to be processed.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        public long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel)
+        public long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey)
         {
             // verify the required parameter 'postTransactionRequestModel' is set
             if (postTransactionRequestModel == null)
@@ -185,6 +187,8 @@ namespace epay3.Web.Api.Sdk.Api
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
             if (postTransactionRequestModel.GetType() != typeof(byte[]))
             {

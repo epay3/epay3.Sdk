@@ -166,7 +166,7 @@ namespace epay3.Web.Api.Tests
 
             try
             {
-                _transactionsApi.TransactionsPost(postTransactionRequestModel);
+                _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
                 Assert.Fail();
             }
@@ -217,7 +217,7 @@ namespace epay3.Web.Api.Tests
 
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
-            var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+            var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
             Assert.IsTrue(transactionId > 0);
@@ -284,7 +284,7 @@ namespace epay3.Web.Api.Tests
 
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
-            var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+            var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
             Assert.IsTrue(transactionId > 0);

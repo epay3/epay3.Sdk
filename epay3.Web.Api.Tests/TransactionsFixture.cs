@@ -18,6 +18,10 @@ namespace epay3.Web.Api.Tests
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
             _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
         [TestMethod]
@@ -32,7 +36,9 @@ namespace epay3.Web.Api.Tests
                     Amount = 100
                 };
 
-                _transactionsApi.TransactionsPost(postTransactionRequestModel);
+                _transactionsApi.Configuration.DefaultHeader["Authorization"] = null;
+
+                _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
                 Assert.Fail();
             }
@@ -62,11 +68,7 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
-            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
             Assert.IsTrue(id > 0);
@@ -115,11 +117,7 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
-            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
             Assert.IsTrue(id > 0);
@@ -145,6 +143,32 @@ namespace epay3.Web.Api.Tests
             {
                 Assert.AreEqual(400, exception.ErrorCode);
             }
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Impersonate()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = System.Math.Round(new System.Random().NextDouble() * 100, 2),
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "4242424242424242",
+                    RoutingNumber = "111000025",
+                    AccountType = BankAccountInformationModel.AccountTypeEnum.Personalsavings
+                },
+                Comments = "Sample comments"              
+            };
+
+            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
+
+            // Should return a valid Id.
+            Assert.IsTrue(id > 0);
         }
     }
 }
