@@ -12,36 +12,12 @@ namespace epay3.Web.Api.Tests
     {
         private TransactionsApi _transactionsApi;
 
-        private string Uri
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["ApiUri"];
-            }
-        }
-
-        private string Key
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["ApiKey"];
-            }
-        }
-
-        private string Secret
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["ApiSecret"];
-            }
-        }
-
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _transactionsApi = new TransactionsApi(Uri);
+            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
         }
 
         [TestMethod]
@@ -86,7 +62,7 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(Key + ":" + Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
@@ -139,7 +115,7 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(Key + ":" + Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 

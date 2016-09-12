@@ -19,8 +19,8 @@ namespace epay3.Web.Api.Sdk.Api
         /// Creates a temporary "session" with parameters so that the user can be forwarded to the token page with this context.
         /// </summary>
         /// <param name="postTokenPageSessionRequestModel">Contains the parameters for the "session".</param>
-        /// <param name="processingAccountId">The account Id of the account for which the transaction is being create. Only specify a value if the processing account is different from the account that is submitting this request. (optional)</param>
-        string TokenPageSessionsPost (PostTokenPageSessionRequestModel postTokenPageSessionRequestModel, long? processingAccountId = null);
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        string TokenPageSessionsPost (PostTokenPageSessionRequestModel postTokenPageSessionRequestModel, string impersonationAccountKey);
     }
   
     /// <summary>
@@ -114,12 +114,12 @@ namespace epay3.Web.Api.Sdk.Api
         /// Creates a temporary "session" with parameters so that the user can be forwarded to the token page with this context.
         /// </summary>
         /// <param name="postTokenPageSessionRequestModel">Contains the parameters for the "session".</param>
-        /// <param name="processingAccountId">The account Id of the account for which the transaction is being processed. Only specify a value if the processing account is different from the account that is submitting this request. (optional)</param>
-        public string TokenPageSessionsPost (PostTokenPageSessionRequestModel postTokenPageSessionRequestModel, long? processingAccountId = null)
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        public string TokenPageSessionsPost (PostTokenPageSessionRequestModel postTokenPageSessionRequestModel, string impersonationAccountKey)
         {
             // verify the required parameter 'postTokenPageSessionRequestModel' is set
             if (postTokenPageSessionRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postTokenPageSessionRequestModel' when calling TransactionsApi->TransactionsPost");
+                throw new ApiException(400, "Missing required parameter 'postTokenPageSessionRequestModel' when calling TokenPageSessionsApi->TokenPageSessionsPost");
 
             var localVarPath = "/api/v1/TokenPageSessions";
             var localVarPathParams = new Dictionary<String, String>();
@@ -147,7 +147,7 @@ namespace epay3.Web.Api.Sdk.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
 
-            if (processingAccountId != null) localVarHeaderParams.Add("processingAccountId", Configuration.ApiClient.ParameterToString(processingAccountId)); // header parameter
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
             if (postTokenPageSessionRequestModel.GetType() != typeof(byte[]))
             {

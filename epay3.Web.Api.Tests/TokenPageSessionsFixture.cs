@@ -11,40 +11,15 @@ namespace epay3.Web.Api.Tests
     public class TokenPageSessionsFixture
     {
         private TokenPageSessionsApi _tokenPageSessionsApi;
-        private const long ProcessingAccountId = 3;
-
-        private string Uri
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["ApiUri"];
-            }
-        }
-
-        private string Key
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["ApiKey"];
-            }
-        }
-
-        private string Secret
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["ApiSecret"];
-            }
-        }
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _tokenPageSessionsApi = new TokenPageSessionsApi(Uri);
+            _tokenPageSessionsApi = new TokenPageSessionsApi(TestApiSettings.Uri);
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(Key + ":" + Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
             _tokenPageSessionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
@@ -80,7 +55,7 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, ProcessingAccountId);
+            var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             // Should return a valid Id.
             Assert.IsNotNull(id);
@@ -96,7 +71,7 @@ namespace epay3.Web.Api.Tests
 
             try
             {
-                var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, 9999999);
+                var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, "INVALID KEY");
 
                 Assert.Fail();
             }
