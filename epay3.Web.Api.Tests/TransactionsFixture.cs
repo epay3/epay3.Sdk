@@ -148,11 +148,12 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Successfully_Impersonate()
         {
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                Amount = System.Math.Round(new System.Random().NextDouble() * 100, 2),
+                Amount = amount,
                 BankAccountInformation = new BankAccountInformationModel
                 {
                     AccountHolder = "John Smith",
@@ -162,7 +163,8 @@ namespace epay3.Web.Api.Tests
                     RoutingNumber = "111000025",
                     AccountType = BankAccountInformationModel.AccountTypeEnum.Personalsavings
                 },
-                Comments = "Sample comments"              
+                Comments = "Sample comments",
+                InitiatingPartyFee = amount * .20
             };
 
             var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
