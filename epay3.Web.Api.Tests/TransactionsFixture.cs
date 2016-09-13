@@ -171,6 +171,21 @@ namespace epay3.Web.Api.Tests
 
             // Should return a valid Id.
             Assert.IsTrue(id > 0);
+
+            try
+            {
+                // Should not get the transaction when impersonation is off.
+                Assert.IsNull(_transactionsApi.TransactionsGet(id, null));
+
+                Assert.Fail();
+            }
+            catch (ApiException exception)
+            {
+                Assert.AreEqual(404, exception.ErrorCode);
+            }
+
+            // Should get the transaction when impersonation is on.
+            Assert.IsNotNull(_transactionsApi.TransactionsGet(id, TestApiSettings.ImpersonationAccountKey));
         }
     }
 }

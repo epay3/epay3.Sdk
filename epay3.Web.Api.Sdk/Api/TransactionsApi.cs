@@ -21,8 +21,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The unique identifier of the transaction.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>GetTransactionResponseModel</returns>
-        GetTransactionResponseModel TransactionsGet(long? id);
+        GetTransactionResponseModel TransactionsGet(long? id, string impersonationAccountKey = null);
 
         /// <summary>
         /// Submit a sale transaction for either ACH or credit card.
@@ -34,7 +35,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="postTransactionRequestModel">The details of the transaction to be processed.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey);
+        long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null);
 
         /// <summary>
         /// Submits a request to void a transaction.
@@ -95,8 +96,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </summary>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The unique identifier of the transaction.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>GetTransactionResponseModel</returns>
-        public GetTransactionResponseModel TransactionsGet(long? id)
+        public GetTransactionResponseModel TransactionsGet(long? id, string impersonationAccountKey = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -124,6 +126,8 @@ namespace epay3.Web.Api.Sdk.Api
             String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
@@ -156,7 +160,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="postTransactionRequestModel">The details of the transaction to be processed.</param> 
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        public long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey)
+        public long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null)
         {
             // verify the required parameter 'postTransactionRequestModel' is set
             if (postTransactionRequestModel == null)
