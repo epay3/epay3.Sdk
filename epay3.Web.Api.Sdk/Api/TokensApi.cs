@@ -21,8 +21,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The Id of the token to be deleted.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        bool TokensDelete (string id);
+        bool TokensDelete(string id, string impersonationAccountKey = null);
 
         /// <summary>
         /// Retrieves the details of a token.
@@ -32,8 +33,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The unique identifier of the token.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>GetTokenResponseModel</returns>
-        GetTokenResponseModel TokensGet(string id);
+        GetTokenResponseModel TokensGet(string id, string impersonationAccountKey = null);
 
         /// <summary>
         /// Stores a token for either ACH or credit card payments.
@@ -43,8 +45,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="postTokenRequestModel">The details of the token to be created.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        string TokensPost (PostTokenRequestModel postTokenRequestModel);
+        string TokensPost (PostTokenRequestModel postTokenRequestModel, string impersonationAccountKey = null);
     }
   
     /// <summary>
@@ -92,14 +95,15 @@ namespace epay3.Web.Api.Sdk.Api
         /// </summary>
         /// <value>An instance of the Configuration</value>
         public Configuration Configuration {get; set;}
-        
+
         /// <summary>
         /// Removes a stored token. 
         /// </summary>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The Id of the token to be deleted.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        public bool TokensDelete (string id)
+        public bool TokensDelete (string id, string impersonationAccountKey = null)
         {
             var localVarPath = string.Format("/api/v1/Tokens/{0}", id);
             var localVarPathParams = new Dictionary<String, String>();
@@ -128,6 +132,8 @@ namespace epay3.Web.Api.Sdk.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
 
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
                 Method.DELETE, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
@@ -155,8 +161,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The unique identifier of the token.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>GetTokenResponseModel</returns>
-        public GetTokenResponseModel TokensGet(string id)
+        public GetTokenResponseModel TokensGet(string id, string impersonationAccountKey = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -190,6 +197,8 @@ namespace epay3.Web.Api.Sdk.Api
             localVarPathParams.Add("format", "json");
             if (id != null) localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
 
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
@@ -214,8 +223,9 @@ namespace epay3.Web.Api.Sdk.Api
         /// </summary>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="postTokenRequestModel">The details of the token to be created.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the token is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns></returns>
-        public string TokensPost (PostTokenRequestModel postTokenRequestModel)
+        public string TokensPost (PostTokenRequestModel postTokenRequestModel, string impersonationAccountKey = null)
         {
             // verify the required parameter 'postTransactionRequestModel' is set
             if (postTokenRequestModel == null)
@@ -246,6 +256,8 @@ namespace epay3.Web.Api.Sdk.Api
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
             if (postTokenRequestModel.GetType() != typeof(byte[]))
             {

@@ -20,6 +20,11 @@ namespace epay3.Web.Api.Tests
 
             _tokensApi = new TokensApi(TestApiSettings.Uri);
             _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+
+            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
         [TestMethod]
@@ -35,6 +40,8 @@ namespace epay3.Web.Api.Tests
                         AccountNumber = "1234567890"
                     }
                 };
+
+                _tokensApi.Configuration.DefaultHeader["Authorization"] = null;
 
                 _tokensApi.TokensPost(postTokenRequestModel);
 
@@ -58,10 +65,6 @@ namespace epay3.Web.Api.Tests
                     Cvc = "123"
                 }
             };
-
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
             try
             {
@@ -88,10 +91,6 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             var id = _tokensApi.TokensPost(postTokenRequestModel);
 
             // Should return a valid Id.
@@ -116,10 +115,6 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             var id = _tokensApi.TokensPost(postTokenRequestModel);
 
             // Should return a valid Id.
@@ -132,10 +127,6 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Get_A_404_For_An_Invalid_Token_Id()
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             try
             {
                 _tokensApi.TokensGet("INVALID ID");
@@ -159,10 +150,6 @@ namespace epay3.Web.Api.Tests
                 TokenId = "INVALID_TOKEN",
                 Comments = "Sample comments"
             };
-
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
             try
             {
@@ -190,10 +177,6 @@ namespace epay3.Web.Api.Tests
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "parameter1", "parameter value 1" }, { "parameter2", "parameter value 2" } }
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
             var getTokenResponseModel = _tokensApi.TokensGet(tokenId);
 
@@ -215,8 +198,6 @@ namespace epay3.Web.Api.Tests
                 SendReceipt = false
             };
 
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
@@ -235,10 +216,6 @@ namespace epay3.Web.Api.Tests
                     Cvc = "123"
                 }
             };
-
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
 
             var firstTokenId = _tokensApi.TokensPost(postTokenRequestModel);
             var secondTokenId = _tokensApi.TokensPost(postTokenRequestModel);
@@ -263,10 +240,6 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
 
             // Should return a valid Id.
@@ -282,12 +255,47 @@ namespace epay3.Web.Api.Tests
                 SendReceipt = false
             };
 
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-
             var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
             Assert.IsTrue(transactionId > 0);
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Create_Token_With_Impersonation()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    RoutingNumber = "111000025",
+                    AccountNumber = "1234567890",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountHolder = "ACME Corp",
+                    AccountType = BankAccountInformationModel.AccountTypeEnum.Corporatechecking
+                }
+            };
+
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, TestApiSettings.ImpersonationAccountKey);
+
+            // Should return a valid Id.
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenId));
+
+            try
+            {
+                // Should not get the token when impersonation is off.
+                Assert.IsNull(_tokensApi.TokensGet(tokenId, null));
+
+                Assert.Fail();
+            }
+            catch (ApiException exception)
+            {
+                Assert.AreEqual(404, exception.ErrorCode);
+            }
+
+            // Should get the token when impersonation is on.
+            Assert.IsNotNull(_tokensApi.TokensGet(tokenId, TestApiSettings.ImpersonationAccountKey));
         }
     }
 }

@@ -146,7 +146,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Successfully_Impersonate()
+        public void Should_Honor_Impersonation_For_Tokens_And_Transactions()
         {
             var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
@@ -186,6 +186,22 @@ namespace epay3.Web.Api.Tests
 
             // Should get the transaction when impersonation is on.
             Assert.IsNotNull(_transactionsApi.TransactionsGet(id, TestApiSettings.ImpersonationAccountKey));
+
+            try
+            {
+                // Should not be able to void with the impersonation key.
+                Assert.IsTrue(_transactionsApi.TransactionsVoid(id, false, null));
+
+                Assert.Fail();
+            }
+            catch (ApiException exception)
+            {
+                // 404 because without the permissions, this transaction isn't found.
+                Assert.AreEqual(404, exception.ErrorCode);
+            }
+
+            // Should be able to void with the impersonation key.
+            Assert.IsTrue(_transactionsApi.TransactionsVoid(id, false, TestApiSettings.ImpersonationAccountKey));
         }
     }
 }
