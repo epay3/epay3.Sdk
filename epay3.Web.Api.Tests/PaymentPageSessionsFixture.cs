@@ -49,7 +49,8 @@ namespace epay3.Web.Api.Tests
             var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
             {
                 Amount = 100,
-                InitiatingPartyFee = 20
+                InitiatingPartyCreditCardFee = 20,
+                InitiatingPartyAchFee = 2
             };
 
             var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
@@ -64,7 +65,8 @@ namespace epay3.Web.Api.Tests
             var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
             {
                 Amount = 100,
-                InitiatingPartyFee = 20
+                InitiatingPartyCreditCardFee = 20,
+                InitiatingPartyAchFee = 2
             };
 
             try
@@ -80,12 +82,35 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Validate_Against_A_High_Initiator_Fee()
+        public void Should_Validate_Against_A_High_Initiator_Credit_Card_Fee()
         {
             var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
             {
                 Amount = 100,
-                InitiatingPartyFee = 80
+                InitiatingPartyCreditCardFee = 80,
+                InitiatingPartyAchFee = 2
+            };
+
+            try
+            {
+                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+
+                Assert.Fail();
+            }
+            catch (ApiException exception)
+            {
+                Assert.AreEqual(400, exception.ErrorCode);
+            }
+        }
+
+        [TestMethod]
+        public void Should_Validate_Against_A_High_Initiator_Ach_Fee()
+        {
+            var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
+            {
+                Amount = 100,
+                InitiatingPartyCreditCardFee = null,
+                InitiatingPartyAchFee = 80
             };
 
             try
@@ -106,7 +131,8 @@ namespace epay3.Web.Api.Tests
             var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
             {
                 Amount = 100,
-                InitiatingPartyFee = 80
+                InitiatingPartyCreditCardFee = 20,
+                InitiatingPartyAchFee = 2
             };
 
             try
