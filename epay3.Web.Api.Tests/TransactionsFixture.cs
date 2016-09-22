@@ -175,7 +175,7 @@ namespace epay3.Web.Api.Tests
             try
             {
                 // Should not get the transaction when impersonation is off.
-                Assert.IsNull(_transactionsApi.TransactionsGet(id, null));
+                _transactionsApi.TransactionsGet(id, null);
 
                 Assert.Fail();
             }
@@ -190,7 +190,7 @@ namespace epay3.Web.Api.Tests
             try
             {
                 // Should not be able to void with the impersonation key.
-                Assert.IsTrue(_transactionsApi.TransactionsVoid(id, false, null));
+                _transactionsApi.TransactionsVoid(id, false, null);
 
                 Assert.Fail();
             }
