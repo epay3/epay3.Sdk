@@ -34,6 +34,8 @@ namespace epay3.Web.Api.Tests
             {
                 var postTokenRequestModel = new PostTokenRequestModel
                 {
+                    Payer = "John Doe",
+                    EmailAddress = "jdoe@example.com",
                     BankAccountInformation = new BankAccountInformationModel
                     {
                         RoutingNumber = "111000025",
@@ -58,6 +60,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
@@ -83,6 +87,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
@@ -105,6 +111,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 BankAccountInformation = new BankAccountInformationModel
                 {
                     FirstName = "John",
@@ -168,6 +176,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
@@ -209,6 +219,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
@@ -229,6 +241,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 BankAccountInformation = new BankAccountInformationModel
                 {
                     RoutingNumber = "111000025",
@@ -266,6 +280,8 @@ namespace epay3.Web.Api.Tests
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
                 BankAccountInformation = new BankAccountInformationModel
                 {
                     RoutingNumber = "111000025",

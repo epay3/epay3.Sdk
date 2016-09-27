@@ -8,8 +8,6 @@ using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.ComponentModel;
-using System.Globalization;
 
 namespace epay3.Web.Api.Sdk.Model
 {
@@ -59,13 +57,17 @@ namespace epay3.Web.Api.Sdk.Model
         /// Initializes a new instance of the <see cref="GetTokenResponseModel" />class.
         /// </summary>
         /// <param name="Id">The unique identifier of the token..</param>
+        /// <param name="Payer">The name of the payer..</param>
+        /// <param name="EmailAddress">The email address of the payer..</param>
         /// <param name="AttributeValues">A collection of key/value pairs for any custom attribute values for this token..</param>
         /// <param name="TransactionType">The type of transaction..</param>
         /// <param name="MaskedAccountNumber">The masked account number for display to the user..</param>
 
-        public GetTokenResponseModel(string Id = null, List<AttributeValueModel> AttributeValues = null, TransactionTypeEnum? TransactionType = null, string MaskedAccountNumber = null)
+        public GetTokenResponseModel(string Id = null, string Payer = null, string EmailAddress = null, List<AttributeValueModel> AttributeValues = null, TransactionTypeEnum? TransactionType = null, string MaskedAccountNumber = null)
         {
             this.Id = Id;
+            this.Payer = Payer;
+            this.EmailAddress = EmailAddress;
             this.AttributeValues = AttributeValues;
             this.TransactionType = TransactionType;
             this.MaskedAccountNumber = MaskedAccountNumber;
@@ -81,6 +83,20 @@ namespace epay3.Web.Api.Sdk.Model
         public string Id { get; set; }
     
         /// <summary>
+        /// The name of the payer.
+        /// </summary>
+        /// <value>The name of the payer.</value>
+        [DataMember(Name="payer", EmitDefaultValue=false)]
+        public string Payer { get; set; }
+    
+        /// <summary>
+        /// The email address of the payer.
+        /// </summary>
+        /// <value>The email address of the payer.</value>
+        [DataMember(Name="emailAddress", EmitDefaultValue=false)]
+        public string EmailAddress { get; set; }
+    
+        /// <summary>
         /// A collection of key/value pairs for any custom attribute values for this token.
         /// </summary>
         /// <value>A collection of key/value pairs for any custom attribute values for this token.</value>
@@ -93,17 +109,6 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The masked account number for display to the user.</value>
         [DataMember(Name="maskedAccountNumber", EmitDefaultValue=false)]
         public string MaskedAccountNumber { get; set; }
-
-        public T GetAttributeValue<T>(string parameterName)
-        {
-            var value = AttributeValues.SingleOrDefault(x=>x.ParameterName == parameterName).Value;
-            var converter = TypeDescriptor.GetConverter(typeof(T));
-
-            if (value == null)
-                return default(T);
-
-            return (T)converter.ConvertFromString(null, CultureInfo.InvariantCulture, value);
-        }
     
         /// <summary>
         /// Returns the string presentation of the object
@@ -114,6 +119,8 @@ namespace epay3.Web.Api.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class GetTokenResponseModel {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Payer: ").Append(Payer).Append("\n");
+            sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
             sb.Append("  TransactionType: ").Append(TransactionType).Append("\n");
             sb.Append("  MaskedAccountNumber: ").Append(MaskedAccountNumber).Append("\n");
@@ -160,6 +167,16 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Id.Equals(other.Id)
                 ) && 
                 (
+                    this.Payer == other.Payer ||
+                    this.Payer != null &&
+                    this.Payer.Equals(other.Payer)
+                ) && 
+                (
+                    this.EmailAddress == other.EmailAddress ||
+                    this.EmailAddress != null &&
+                    this.EmailAddress.Equals(other.EmailAddress)
+                ) && 
+                (
                     this.AttributeValues == other.AttributeValues ||
                     this.AttributeValues != null &&
                     this.AttributeValues.SequenceEqual(other.AttributeValues)
@@ -190,6 +207,12 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.Id != null)
                     hash = hash * 59 + this.Id.GetHashCode();
+                
+                if (this.Payer != null)
+                    hash = hash * 59 + this.Payer.GetHashCode();
+                
+                if (this.EmailAddress != null)
+                    hash = hash * 59 + this.EmailAddress.GetHashCode();
                 
                 if (this.AttributeValues != null)
                     hash = hash * 59 + this.AttributeValues.GetHashCode();
