@@ -17,6 +17,16 @@ namespace epay3.Web.Api.Sdk.Model
     [DataContract]
     public partial class PostTokenPageSessionRequestModel :  IEquatable<PostTokenPageSessionRequestModel>
     { 
+        public enum AcceptedPaymentMethod
+        {
+            
+            [EnumMember(Value = "CreditCard")]
+            CreditCard = 1,
+            
+            [EnumMember(Value = "Ach")]
+            Ach = 2
+        }
+
     
         /// <summary>
         /// Initializes a new instance of the <see cref="PostTokenPageSessionRequestModel" /> class.
@@ -24,11 +34,13 @@ namespace epay3.Web.Api.Sdk.Model
         /// </summary>
         /// <param name="AttributeValues">Key/value collection of all custom attributes that will eventually be stored with the token..</param>
         /// <param name="SuccessUrl">The Url to which the user will be redirected upon a token being successfully created..</param>
+        /// <param name="AcceptedPaymentMethods">A white-list of accepted payment methods that should be shown on the token page..</param>
 
-        public PostTokenPageSessionRequestModel(Dictionary<string, string> AttributeValues = null, string SuccessUrl = null)
+        public PostTokenPageSessionRequestModel(Dictionary<string, string> AttributeValues = null, string SuccessUrl = null, List<AcceptedPaymentMethod> AcceptedPaymentMethods = null)
         {
             this.AttributeValues = AttributeValues;
             this.SuccessUrl = SuccessUrl;
+            this.AcceptedPaymentMethods = AcceptedPaymentMethods;
             
         }
         
@@ -48,6 +60,13 @@ namespace epay3.Web.Api.Sdk.Model
         public string SuccessUrl { get; set; }
     
         /// <summary>
+        /// A white-list of accepted payment methods that should be shown on the token page.
+        /// </summary>
+        /// <value>A white-list of accepted payment methods that should be shown on the token page.</value>
+        [DataMember(Name="acceptedPaymentMethods", EmitDefaultValue=false)]
+        public List<AcceptedPaymentMethod> AcceptedPaymentMethods { get; set; }
+    
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -57,6 +76,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("class PostTokenPageSessionRequestModel {\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
             sb.Append("  SuccessUrl: ").Append(SuccessUrl).Append("\n");
+            sb.Append("  AcceptedPaymentMethods: ").Append(AcceptedPaymentMethods).Append("\n");
             
             sb.Append("}\n");
             return sb.ToString();
@@ -103,6 +123,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.SuccessUrl == other.SuccessUrl ||
                     this.SuccessUrl != null &&
                     this.SuccessUrl.Equals(other.SuccessUrl)
+                ) && 
+                (
+                    this.AcceptedPaymentMethods == other.AcceptedPaymentMethods ||
+                    this.AcceptedPaymentMethods != null &&
+                    this.AcceptedPaymentMethods.SequenceEqual(other.AcceptedPaymentMethods)
                 );
         }
 
@@ -123,6 +148,9 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.SuccessUrl != null)
                     hash = hash * 59 + this.SuccessUrl.GetHashCode();
+                
+                if (this.AcceptedPaymentMethods != null)
+                    hash = hash * 59 + this.AcceptedPaymentMethods.GetHashCode();
                 
                 return hash;
             }

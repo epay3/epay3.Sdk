@@ -15,9 +15,18 @@ namespace epay3.Web.Api.Sdk.Model
     /// Represents the information needed to customize a single transaction via the payment page.
     /// </summary>
     [DataContract]
-    public partial class PostPaymentPageSessionRequestModel : IEquatable<PostPaymentPageSessionRequestModel>
-    {
+    public partial class PostPaymentPageSessionRequestModel :  IEquatable<PostPaymentPageSessionRequestModel>
+    { 
+        public enum AcceptedPaymentMethod {
+            
+            [EnumMember(Value = "CreditCard")]
+            CreditCard = 1,
+            
+            [EnumMember(Value = "Ach")]
+            Ach = 2
+        }
 
+    
         /// <summary>
         /// Initializes a new instance of the <see cref="PostPaymentPageSessionRequestModel" /> class.
         /// Initializes a new instance of the <see cref="PostPaymentPageSessionRequestModel" />class.
@@ -25,55 +34,64 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="AttributeValues">Key/value collection of all custom attributes that will eventually be stored with the transaction..</param>
         /// <param name="Amount">The total amount of the transaction inclusive of all fees..</param>
         /// <param name="InitiatingPartyCreditCardFee">The fee to keep for the initiating party of this transaction in the event of a credit card transaction. This does not include transaction fees..</param>
-        /// <param name="InitiatingPartyAchFee">The fee to keep for the initiating party of this transactionin the event of an ACH transaction. This does not include transaction fees..</param>
+        /// <param name="InitiatingPartyAchFee">The fee to keep for the initiating party of this transaction in the event of an ACH transaction. This does not include transaction fees..</param>
         /// <param name="SuccessUrl">The Url to which the user will be redirected upon a successful payment..</param>
+        /// <param name="AcceptedPaymentMethods">A white-list of accepted payment methods that should be shown on the payment page..</param>
 
-        public PostPaymentPageSessionRequestModel(Dictionary<string, string> AttributeValues = null, double? Amount = null, double? InitiatingPartyCreditCardFee = null, double? InitiatingPartyAchFee = null, string SuccessUrl = null)
+        public PostPaymentPageSessionRequestModel(Dictionary<string, string> AttributeValues = null, double? Amount = null, double? InitiatingPartyCreditCardFee = null, double? InitiatingPartyAchFee = null, string SuccessUrl = null, List<AcceptedPaymentMethod> AcceptedPaymentMethods = null)
         {
             this.AttributeValues = AttributeValues;
             this.Amount = Amount;
             this.InitiatingPartyCreditCardFee = InitiatingPartyCreditCardFee;
             this.InitiatingPartyAchFee = InitiatingPartyAchFee;
             this.SuccessUrl = SuccessUrl;
-
+            this.AcceptedPaymentMethods = AcceptedPaymentMethods;
+            
         }
-
-
+        
+    
         /// <summary>
         /// Key/value collection of all custom attributes that will eventually be stored with the transaction.
         /// </summary>
         /// <value>Key/value collection of all custom attributes that will eventually be stored with the transaction.</value>
-        [DataMember(Name = "attributeValues", EmitDefaultValue = false)]
+        [DataMember(Name="attributeValues", EmitDefaultValue=false)]
         public Dictionary<string, string> AttributeValues { get; set; }
-
+    
         /// <summary>
         /// The total amount of the transaction inclusive of all fees.
         /// </summary>
         /// <value>The total amount of the transaction inclusive of all fees.</value>
-        [DataMember(Name = "amount", EmitDefaultValue = false)]
+        [DataMember(Name="amount", EmitDefaultValue=false)]
         public double? Amount { get; set; }
-
+    
         /// <summary>
         /// The fee to keep for the initiating party of this transaction in the event of a credit card transaction. This does not include transaction fees.
         /// </summary>
         /// <value>The fee to keep for the initiating party of this transaction in the event of a credit card transaction. This does not include transaction fees.</value>
-        [DataMember(Name = "initiatingPartyCreditCardFee", EmitDefaultValue = false)]
+        [DataMember(Name="initiatingPartyCreditCardFee", EmitDefaultValue=false)]
         public double? InitiatingPartyCreditCardFee { get; set; }
-
+    
         /// <summary>
-        /// The fee to keep for the initiating party of this transactionin the event of an ACH transaction. This does not include transaction fees.
+        /// The fee to keep for the initiating party of this transaction in the event of an ACH transaction. This does not include transaction fees.
         /// </summary>
-        /// <value>The fee to keep for the initiating party of this transactionin the event of an ACH transaction. This does not include transaction fees.</value>
-        [DataMember(Name = "initiatingPartyAchFee", EmitDefaultValue = false)]
+        /// <value>The fee to keep for the initiating party of this transaction in the event of an ACH transaction. This does not include transaction fees.</value>
+        [DataMember(Name="initiatingPartyAchFee", EmitDefaultValue=false)]
         public double? InitiatingPartyAchFee { get; set; }
-
+    
         /// <summary>
         /// The Url to which the user will be redirected upon a successful payment.
         /// </summary>
         /// <value>The Url to which the user will be redirected upon a successful payment.</value>
-        [DataMember(Name = "successUrl", EmitDefaultValue = false)]
+        [DataMember(Name="successUrl", EmitDefaultValue=false)]
         public string SuccessUrl { get; set; }
-
+    
+        /// <summary>
+        /// A white-list of accepted payment methods that should be shown on the payment page.
+        /// </summary>
+        /// <value>A white-list of accepted payment methods that should be shown on the payment page.</value>
+        [DataMember(Name="acceptedPaymentMethods", EmitDefaultValue=false)]
+        public List<AcceptedPaymentMethod> AcceptedPaymentMethods { get; set; }
+    
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -87,11 +105,12 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  InitiatingPartyCreditCardFee: ").Append(InitiatingPartyCreditCardFee).Append("\n");
             sb.Append("  InitiatingPartyAchFee: ").Append(InitiatingPartyAchFee).Append("\n");
             sb.Append("  SuccessUrl: ").Append(SuccessUrl).Append("\n");
-
+            sb.Append("  AcceptedPaymentMethods: ").Append(AcceptedPaymentMethods).Append("\n");
+            
             sb.Append("}\n");
             return sb.ToString();
         }
-
+  
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -123,31 +142,36 @@ namespace epay3.Web.Api.Sdk.Model
             if (other == null)
                 return false;
 
-            return
+            return 
                 (
                     this.AttributeValues == other.AttributeValues ||
                     this.AttributeValues != null &&
                     this.AttributeValues.SequenceEqual(other.AttributeValues)
-                ) &&
+                ) && 
                 (
                     this.Amount == other.Amount ||
                     this.Amount != null &&
                     this.Amount.Equals(other.Amount)
-                ) &&
+                ) && 
                 (
                     this.InitiatingPartyCreditCardFee == other.InitiatingPartyCreditCardFee ||
                     this.InitiatingPartyCreditCardFee != null &&
                     this.InitiatingPartyCreditCardFee.Equals(other.InitiatingPartyCreditCardFee)
-                ) &&
+                ) && 
                 (
                     this.InitiatingPartyAchFee == other.InitiatingPartyAchFee ||
                     this.InitiatingPartyAchFee != null &&
                     this.InitiatingPartyAchFee.Equals(other.InitiatingPartyAchFee)
-                ) &&
+                ) && 
                 (
                     this.SuccessUrl == other.SuccessUrl ||
                     this.SuccessUrl != null &&
                     this.SuccessUrl.Equals(other.SuccessUrl)
+                ) && 
+                (
+                    this.AcceptedPaymentMethods == other.AcceptedPaymentMethods ||
+                    this.AcceptedPaymentMethods != null &&
+                    this.AcceptedPaymentMethods.SequenceEqual(other.AcceptedPaymentMethods)
                 );
         }
 
@@ -162,22 +186,25 @@ namespace epay3.Web.Api.Sdk.Model
             {
                 int hash = 41;
                 // Suitable nullity checks etc, of course :)
-
+                
                 if (this.AttributeValues != null)
                     hash = hash * 59 + this.AttributeValues.GetHashCode();
-
+                
                 if (this.Amount != null)
                     hash = hash * 59 + this.Amount.GetHashCode();
-
+                
                 if (this.InitiatingPartyCreditCardFee != null)
                     hash = hash * 59 + this.InitiatingPartyCreditCardFee.GetHashCode();
-
+                
                 if (this.InitiatingPartyAchFee != null)
                     hash = hash * 59 + this.InitiatingPartyAchFee.GetHashCode();
-
+                
                 if (this.SuccessUrl != null)
                     hash = hash * 59 + this.SuccessUrl.GetHashCode();
-
+                
+                if (this.AcceptedPaymentMethods != null)
+                    hash = hash * 59 + this.AcceptedPaymentMethods.GetHashCode();
+                
                 return hash;
             }
         }
