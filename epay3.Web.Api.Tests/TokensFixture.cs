@@ -159,16 +159,10 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            try
-            {
-                _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-                Assert.Fail();
-            }
-            catch(ApiException)
-            {
-
-            }
+            Assert.AreNotEqual(PostTransactionResponseModel.PaymentResponseCodeEnum.Success, response.PaymentResponseCode);
+            Assert.IsNotNull(response.Message);
         }
 
         [TestMethod]
@@ -208,10 +202,10 @@ namespace epay3.Web.Api.Tests
                 SendReceipt = false
             };
 
-            var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
-            Assert.IsTrue(transactionId > 0);
+            Assert.IsTrue(response.Id > 0);
         }
 
         [TestMethod]
@@ -269,10 +263,10 @@ namespace epay3.Web.Api.Tests
                 SendReceipt = false
             };
 
-            var transactionId = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
-            Assert.IsTrue(transactionId > 0);
+            Assert.IsTrue(response.Id > 0);
         }
 
         [TestMethod]

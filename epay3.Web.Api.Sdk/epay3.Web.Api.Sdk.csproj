@@ -69,6 +69,7 @@
     <Compile Include="Model\PostTokenPageSessionRequestModel.cs" />
     <Compile Include="Model\PostTokenRequestModel.cs" />
     <Compile Include="Model\PostTransactionRequestModel.cs" />
+    <Compile Include="Model\PostTransactionResponseModel.cs" />
     <Compile Include="Model\TransactionEventModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -68,15 +68,15 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
-            Assert.IsTrue(id > 0);
+            Assert.IsTrue(response.Id > 0);
 
             // Should successfully void a transaction.
-            Assert.IsTrue(_transactionsApi.TransactionsVoid(id, false));
+            Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false));
 
-            var getTransactionResponseModel = _transactionsApi.TransactionsGet(id);
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id);
 
             Assert.IsNotNull(getTransactionResponseModel);
             Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x=>x.ParameterName=="phoneNumber").Value);
@@ -86,7 +86,7 @@ namespace epay3.Web.Api.Tests
             try
             {
                 // Should not be able to void the transaction more than once.
-                Assert.IsTrue(!_transactionsApi.TransactionsVoid(id, false));
+                Assert.IsTrue(!_transactionsApi.TransactionsVoid(response.Id.Value, false));
 
                 Assert.Fail();
             }
@@ -117,15 +117,15 @@ namespace epay3.Web.Api.Tests
                 Comments = "Sample comments"
             };
 
-            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
             // Should return a valid Id.
-            Assert.IsTrue(id > 0);
+            Assert.IsTrue(response.Id > 0);
 
             // Should successfully void a transaction.
-            Assert.IsTrue(_transactionsApi.TransactionsVoid(id, false));
+            Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false));
 
-            var getTransactionResponseModel = _transactionsApi.TransactionsGet(id);
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
             Assert.IsNotNull(getTransactionResponseModel);
             Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
@@ -135,7 +135,7 @@ namespace epay3.Web.Api.Tests
             try
             {
                 // Should not be able to void the transaction more than once.
-                Assert.IsTrue(!_transactionsApi.TransactionsVoid(id, false));
+                Assert.IsTrue(!_transactionsApi.TransactionsVoid(response.Id.Value, false));
 
                 Assert.Fail();
             }
@@ -167,15 +167,15 @@ namespace epay3.Web.Api.Tests
                 InitiatingPartyFee = amount * .20
             };
 
-            var id = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             // Should return a valid Id.
-            Assert.IsTrue(id > 0);
+            Assert.IsTrue(response.Id > 0);
 
             try
             {
                 // Should not get the transaction when impersonation is off.
-                _transactionsApi.TransactionsGet(id, null);
+                _transactionsApi.TransactionsGet(response.Id, null);
 
                 Assert.Fail();
             }
@@ -185,12 +185,12 @@ namespace epay3.Web.Api.Tests
             }
 
             // Should get the transaction when impersonation is on.
-            Assert.IsNotNull(_transactionsApi.TransactionsGet(id, TestApiSettings.ImpersonationAccountKey));
+            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, TestApiSettings.ImpersonationAccountKey));
 
             try
             {
                 // Should not be able to void with the impersonation key.
-                _transactionsApi.TransactionsVoid(id, false, null);
+                _transactionsApi.TransactionsVoid(response.Id.Value, false, null);
 
                 Assert.Fail();
             }
@@ -201,7 +201,7 @@ namespace epay3.Web.Api.Tests
             }
 
             // Should be able to void with the impersonation key.
-            Assert.IsTrue(_transactionsApi.TransactionsVoid(id, false, TestApiSettings.ImpersonationAccountKey));
+            Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false, TestApiSettings.ImpersonationAccountKey));
         }
     }
 }

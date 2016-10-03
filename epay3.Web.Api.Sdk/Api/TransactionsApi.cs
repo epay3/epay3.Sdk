@@ -34,8 +34,8 @@ namespace epay3.Web.Api.Sdk.Api
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="postTransactionRequestModel">The details of the transaction to be processed.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        /// <returns></returns>
-        long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null);
+        /// <returns>PostTransactionResponseModel</returns>
+        PostTransactionResponseModel TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null);
 
         /// <summary>
         /// Submits a request to void a transaction.
@@ -161,8 +161,8 @@ namespace epay3.Web.Api.Sdk.Api
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="postTransactionRequestModel">The details of the transaction to be processed.</param> 
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        /// <returns></returns>
-        public long TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null)
+        /// <returns>PostTransactionResponseModel</returns>
+        public PostTransactionResponseModel TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null)
         {
             // verify the required parameter 'postTransactionRequestModel' is set
             if (postTransactionRequestModel == null)
@@ -212,7 +212,11 @@ namespace epay3.Web.Api.Sdk.Api
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-            if (localVarStatusCode >= 400)
+            if (localVarStatusCode == 400)
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostTransactionResponseModel>(localVarResponse.Content);                
+            }
+            else if (localVarStatusCode >= 400)
             {
                 var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
 
@@ -223,7 +227,11 @@ namespace epay3.Web.Api.Sdk.Api
 
             var id = localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
 
-            return long.Parse(id);
+            return new PostTransactionResponseModel
+            {
+                Id = long.Parse(id),
+                PaymentResponseCode = PostTransactionResponseModel.PaymentResponseCodeEnum.Success
+            };
         }
 
         /// <summary>
