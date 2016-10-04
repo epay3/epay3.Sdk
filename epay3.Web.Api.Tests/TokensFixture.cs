@@ -161,7 +161,7 @@ namespace epay3.Web.Api.Tests
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-            Assert.AreNotEqual(PostTransactionResponseModel.PaymentResponseCodeEnum.Success, response.PaymentResponseCode);
+            Assert.AreEqual(PostTransactionResponseModel.PaymentResponseCodeEnum.InvalidToken, response.PaymentResponseCode);
             Assert.IsNotNull(response.Message);
         }
 

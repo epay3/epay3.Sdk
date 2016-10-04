@@ -25,40 +25,60 @@ namespace epay3.Web.Api.Sdk.Model
         public enum PaymentResponseCodeEnum {
             
             [EnumMember(Value = "GenericDecline")]
-            Genericdecline,
+            // An error has occurred.
+            GenericDecline,
             
             [EnumMember(Value = "Success")]
+            // The transaction was successful.
             Success,
             
             [EnumMember(Value = "DoNotHonor")]
-            Donothonor,
+            // The issuing bank has put a temporary hold on the card.
+            DoNotHonor,
             
             [EnumMember(Value = "InvalidAccountNumber")]
-            Invalidaccountnumber,
+            // The account number is not valid.
+            InvalidAccountNumber,
             
             [EnumMember(Value = "InsufficientFunds")]
-            Insufficientfunds,
+            // The account does not have enough funds to cover the transaction.
+            InsufficientFunds,
             
             [EnumMember(Value = "DeclineCvvFail")]
-            Declinecvvfail,
+            // The CVV2/CID is invalid.
+            DeclineCvvFail,
             
             [EnumMember(Value = "ExceedsApprovalAmountLimit")]
-            Exceedsapprovalamountlimit,
+            // This transaction exceeds to the daily approval limit for the card.
+            ExceedsApprovalAmountLimit,
             
             [EnumMember(Value = "NoSuchIssuer")]
-            Nosuchissuer,
+            // The card number references an issuer that does not exist. Do not process the transaction.
+            NoSuchIssuer,
             
             [EnumMember(Value = "InvalidPaymentType")]
-            Invalidpaymenttype,
+            // This payment type is not accepted by the issuer.
+            InvalidPaymentType,
             
             [EnumMember(Value = "InvalidExpirationDate")]
-            Invalidexpirationdate,
+            // The expiration date is invalid.
+            InvalidExpirationDate,
             
             [EnumMember(Value = "LostOrStolenCard")]
-            Lostorstolencard,
+            // The card has been designated as lost or stolen; contact the issuing bank.
+            LostOrStolenCard,
             
             [EnumMember(Value = "ExpiredCard")]
-            Expiredcard
+            // The card is expired.
+            ExpiredCard,
+
+            [EnumMember(Value = "DuplicateTransaction")]
+            // A similar transaction was submitted in the past 24 hours. To successfully submit this transaction, try changing the amount or the payer and email address.
+            DuplicateTransaction,
+
+            [EnumMember(Value = "InvalidToken")]
+            // The payment token is invalid.
+            InvalidToken
         }
 
     
