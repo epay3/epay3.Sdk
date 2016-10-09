@@ -26,22 +26,22 @@ namespace epay3.Web.Api.Sdk.Model
         public enum TransactionTypeEnum {
             
             [EnumMember(Value = "Ach")]
-            Ach,
+            Ach = 1,
             
             [EnumMember(Value = "Visa")]
-            Visa,
+            Visa = 2,
             
             [EnumMember(Value = "MasterCard")]
-            Mastercard,
+            Mastercard = 3,
             
             [EnumMember(Value = "Discover")]
-            Discover,
+            Discover = 4,
             
             [EnumMember(Value = "AmericanExpress")]
-            Americanexpress,
+            Americanexpress = 5,
             
             [EnumMember(Value = "Jcb")]
-            Jcb
+            Jcb = 6
         }
 
     
