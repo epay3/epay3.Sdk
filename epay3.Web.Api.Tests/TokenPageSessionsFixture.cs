@@ -53,7 +53,7 @@ namespace epay3.Web.Api.Tests
                     { "param1", "parameter value 1" },
                     { "param2", "parameter value 2" }
                 },
-                AcceptedPaymentMethods = new System.Collections.Generic.List<PostTokenPageSessionRequestModel.AcceptedPaymentMethod> { PostTokenPageSessionRequestModel.AcceptedPaymentMethod.Ach }
+                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.Ach }
             };
 
             var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);

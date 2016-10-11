@@ -62,6 +62,7 @@
     <Compile Include="Model\AttributeValueModel.cs" />
     <Compile Include="Model\BankAccountInformationModel.cs" />
     <Compile Include="Model\CreditCardInformationModel.cs" />
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\ErrorResponseModel.cs" />
     <Compile Include="Model\GetTokenResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />

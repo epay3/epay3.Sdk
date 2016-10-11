@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,74 +11,25 @@ namespace epay3.Web.Api.Sdk.Model
     [DataContract]
     public partial class TransactionEventModel :  IEquatable<TransactionEventModel>
     { 
-    
         /// <summary>
         /// The type of event.
         /// </summary>
         /// <value>The type of event.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum EventTypeIdEnum {
-            
-            [EnumMember(Value = "Sale")]
-            Sale,
-            
-            [EnumMember(Value = "Credit")]
-            Credit,
-            
-            [EnumMember(Value = "Statement")]
-            Statement,
-            
-            [EnumMember(Value = "Reject")]
-            Reject,
-            
-            [EnumMember(Value = "Chargeback")]
-            Chargeback,
-            
-            [EnumMember(Value = "Refund")]
-            Refund,
-            
-            [EnumMember(Value = "Settle")]
-            Settle,
-            
-            [EnumMember(Value = "GeneralError")]
-            Generalerror,
-            
-            [EnumMember(Value = "Alert")]
-            Alert,
-            
-            [EnumMember(Value = "Void")]
-            Void,
-            
-            [EnumMember(Value = "Return")]
-            Return,
-            
-            [EnumMember(Value = "Send")]
-            Send,
-            
-            [EnumMember(Value = "Debit")]
-            Debit
-        }
-
-    
-        /// <summary>
-        /// The type of event.
-        /// </summary>
-        /// <value>The type of event.</value>
-        [DataMember(Name="eventTypeId", EmitDefaultValue=false)]
-        public EventTypeIdEnum? EventTypeId { get; set; }
+        [DataMember(Name="eventType", EmitDefaultValue=false)]
+        public EventType? EventType { get; set; }
     
         /// <summary>
         /// Initializes a new instance of the <see cref="TransactionEventModel" /> class.
         /// Initializes a new instance of the <see cref="TransactionEventModel" />class.
         /// </summary>
         /// <param name="EventDate">The date of the event..</param>
-        /// <param name="EventTypeId">The type of event..</param>
+        /// <param name="EventType">The type of event..</param>
         /// <param name="Comments">Additional context describing the event if applicable..</param>
 
-        public TransactionEventModel(DateTime? EventDate = null, EventTypeIdEnum? EventTypeId = null, string Comments = null)
+        public TransactionEventModel(DateTime? EventDate = null, EventType? EventType = null, string Comments = null)
         {
             this.EventDate = EventDate;
-            this.EventTypeId = EventTypeId;
+            this.EventType = EventType;
             this.Comments = Comments;
             
         }
@@ -108,7 +58,7 @@ namespace epay3.Web.Api.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class TransactionEventModel {\n");
             sb.Append("  EventDate: ").Append(EventDate).Append("\n");
-            sb.Append("  EventTypeId: ").Append(EventTypeId).Append("\n");
+            sb.Append("  EventType: ").Append(EventType).Append("\n");
             sb.Append("  Comments: ").Append(Comments).Append("\n");
             
             sb.Append("}\n");
@@ -153,9 +103,9 @@ namespace epay3.Web.Api.Sdk.Model
                     this.EventDate.Equals(other.EventDate)
                 ) && 
                 (
-                    this.EventTypeId == other.EventTypeId ||
-                    this.EventTypeId != null &&
-                    this.EventTypeId.Equals(other.EventTypeId)
+                    this.EventType == other.EventType ||
+                    this.EventType != null &&
+                    this.EventType.Equals(other.EventType)
                 ) && 
                 (
                     this.Comments == other.Comments ||
@@ -179,8 +129,8 @@ namespace epay3.Web.Api.Sdk.Model
                 if (this.EventDate != null)
                     hash = hash * 59 + this.EventDate.GetHashCode();
                 
-                if (this.EventTypeId != null)
-                    hash = hash * 59 + this.EventTypeId.GetHashCode();
+                if (this.EventType != null)
+                    hash = hash * 59 + this.EventType.GetHashCode();
                 
                 if (this.Comments != null)
                     hash = hash * 59 + this.Comments.GetHashCode();

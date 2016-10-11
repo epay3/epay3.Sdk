@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,14 @@ namespace epay3.Web.Api.Sdk.Model
     /// </summary>
     [DataContract]
     public partial class GetTransactionResponseModel :  IEquatable<GetTransactionResponseModel>
-    { 
-    
+    {
+        /// <summary>
+        /// The type of transaction.
+        /// </summary>
+        /// <value>The type of transaction.</value>
+        [DataMember(Name = "transactionType", EmitDefaultValue = false)]
+        public TransactionType? TransactionType { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GetTransactionResponseModel" /> class.
         /// Initializes a new instance of the <see cref="GetTransactionResponseModel" />class.
@@ -30,7 +37,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="AttributeValues">A collection of key/value pairs for any custom attribute values for this transaction..</param>
         /// <param name="Attachments">A collection of all attachments for this transaction..</param>
 
-        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, string TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null)
+        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null)
         {
             this.Id = Id;
             this.Payer = Payer;
@@ -67,13 +74,6 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The email address of the payer.</value>
         [DataMember(Name="emailAddress", EmitDefaultValue=false)]
         public string EmailAddress { get; set; }
-    
-        /// <summary>
-        /// The type of the transaction.
-        /// </summary>
-        /// <value>The type of the transaction.</value>
-        [DataMember(Name="transactionType", EmitDefaultValue=false)]
-        public string TransactionType { get; set; }
     
         /// <summary>
         /// The total amount of the transaction that was charged to the payer including all fees.

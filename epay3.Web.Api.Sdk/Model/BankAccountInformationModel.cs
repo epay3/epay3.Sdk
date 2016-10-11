@@ -12,34 +12,12 @@ namespace epay3.Web.Api.Sdk.Model
     [DataContract]
     public partial class BankAccountInformationModel :  IEquatable<BankAccountInformationModel>
     { 
-    
-        /// <summary>
-        /// The type of the bank account.
-        /// </summary>
-        /// <value>The type of the bank account.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum AccountTypeEnum {
-            
-            [EnumMember(Value = "PersonalChecking")]
-            Personalchecking,
-            
-            [EnumMember(Value = "PersonalSavings")]
-            Personalsavings,
-            
-            [EnumMember(Value = "CorporateChecking")]
-            Corporatechecking,
-            
-            [EnumMember(Value = "CorporateSavings")]
-            Corporatesavings
-        }
-
-    
         /// <summary>
         /// The type of the bank account.
         /// </summary>
         /// <value>The type of the bank account.</value>
         [DataMember(Name="accountType", EmitDefaultValue=false)]
-        public AccountTypeEnum? AccountType { get; set; }
+        public AccountType? AccountType { get; set; }
     
         /// <summary>
         /// Name that is on the bank account.

@@ -119,7 +119,7 @@ namespace epay3.Web.Api.Tests
                     LastName = "Smith",
                     RoutingNumber = "111000025",
                     AccountNumber = "1234567890",
-                    AccountType = BankAccountInformationModel.AccountTypeEnum.Corporatechecking
+                    AccountType = AccountType.Corporatechecking
                 }
             };
 
@@ -161,7 +161,7 @@ namespace epay3.Web.Api.Tests
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-            Assert.AreEqual(PostTransactionResponseModel.PaymentResponseCodeEnum.InvalidToken, response.PaymentResponseCode);
+            Assert.AreEqual(PaymentResponseCode.InvalidToken, response.PaymentResponseCode);
             Assert.IsNotNull(response.Message);
         }
 
@@ -244,7 +244,7 @@ namespace epay3.Web.Api.Tests
                     FirstName = "John",
                     LastName  = "Smith",
                     AccountHolder = "ACME Corp",
-                    AccountType = BankAccountInformationModel.AccountTypeEnum.Corporatechecking
+                    AccountType = AccountType.Corporatechecking
                 }
             };
 
@@ -283,7 +283,7 @@ namespace epay3.Web.Api.Tests
                     FirstName = "John",
                     LastName = "Smith",
                     AccountHolder = "ACME Corp",
-                    AccountType = BankAccountInformationModel.AccountTypeEnum.Corporatechecking
+                    AccountType = AccountType.Corporatechecking
                 }
             };
 

@@ -17,16 +17,6 @@ namespace epay3.Web.Api.Sdk.Model
     [DataContract]
     public partial class PostPaymentPageSessionRequestModel :  IEquatable<PostPaymentPageSessionRequestModel>
     { 
-        public enum AcceptedPaymentMethod {
-            
-            [EnumMember(Value = "CreditCard")]
-            CreditCard = 1,
-            
-            [EnumMember(Value = "Ach")]
-            Ach = 2
-        }
-
-    
         /// <summary>
         /// Initializes a new instance of the <see cref="PostPaymentPageSessionRequestModel" /> class.
         /// Initializes a new instance of the <see cref="PostPaymentPageSessionRequestModel" />class.

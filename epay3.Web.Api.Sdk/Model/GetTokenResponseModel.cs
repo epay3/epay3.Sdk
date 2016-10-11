@@ -22,35 +22,8 @@ namespace epay3.Web.Api.Sdk.Model
         /// The type of transaction.
         /// </summary>
         /// <value>The type of transaction.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum TransactionTypeEnum {
-            
-            [EnumMember(Value = "Ach")]
-            Ach = 1,
-            
-            [EnumMember(Value = "Visa")]
-            Visa = 2,
-            
-            [EnumMember(Value = "MasterCard")]
-            Mastercard = 3,
-            
-            [EnumMember(Value = "Discover")]
-            Discover = 4,
-            
-            [EnumMember(Value = "AmericanExpress")]
-            Americanexpress = 5,
-            
-            [EnumMember(Value = "Jcb")]
-            Jcb = 6
-        }
-
-    
-        /// <summary>
-        /// The type of transaction.
-        /// </summary>
-        /// <value>The type of transaction.</value>
         [DataMember(Name="transactionType", EmitDefaultValue=false)]
-        public TransactionTypeEnum? TransactionType { get; set; }
+        public TransactionType? TransactionType { get; set; }
     
         /// <summary>
         /// Initializes a new instance of the <see cref="GetTokenResponseModel" /> class.
@@ -63,7 +36,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="TransactionType">The type of transaction..</param>
         /// <param name="MaskedAccountNumber">The masked account number for display to the user..</param>
 
-        public GetTokenResponseModel(string Id = null, string Payer = null, string EmailAddress = null, List<AttributeValueModel> AttributeValues = null, TransactionTypeEnum? TransactionType = null, string MaskedAccountNumber = null)
+        public GetTokenResponseModel(string Id = null, string Payer = null, string EmailAddress = null, List<AttributeValueModel> AttributeValues = null, TransactionType? TransactionType = null, string MaskedAccountNumber = null)
         {
             this.Id = Id;
             this.Payer = Payer;

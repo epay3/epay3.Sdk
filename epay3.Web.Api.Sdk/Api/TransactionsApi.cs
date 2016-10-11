@@ -230,7 +230,7 @@ namespace epay3.Web.Api.Sdk.Api
             return new PostTransactionResponseModel
             {
                 Id = long.Parse(id),
-                PaymentResponseCode = PostTransactionResponseModel.PaymentResponseCodeEnum.Success
+                PaymentResponseCode = PaymentResponseCode.Success
             };
         }
 

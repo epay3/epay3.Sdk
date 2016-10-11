@@ -76,12 +76,12 @@ namespace epay3.Web.Api.Tests
             // Should successfully void a transaction.
             Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false));
 
-            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id);
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
             Assert.IsNotNull(getTransactionResponseModel);
             Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x=>x.ParameterName=="phoneNumber").Value);
-            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventTypeId == TransactionEventModel.EventTypeIdEnum.Sale));
-            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventTypeId == TransactionEventModel.EventTypeIdEnum.Void));
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
             try
             {
@@ -111,7 +111,7 @@ namespace epay3.Web.Api.Tests
                     LastName = "Smith",
                     AccountNumber = "4242424242424242",
                     RoutingNumber = "111000025",
-                    AccountType = BankAccountInformationModel.AccountTypeEnum.Personalsavings
+                    AccountType = AccountType.Personalsavings
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments"
@@ -129,8 +129,8 @@ namespace epay3.Web.Api.Tests
 
             Assert.IsNotNull(getTransactionResponseModel);
             Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
-            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventTypeId == TransactionEventModel.EventTypeIdEnum.Sale));
-            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventTypeId == TransactionEventModel.EventTypeIdEnum.Void));
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
             try
             {
@@ -161,7 +161,7 @@ namespace epay3.Web.Api.Tests
                     LastName = "Smith",
                     AccountNumber = "4242424242424242",
                     RoutingNumber = "111000025",
-                    AccountType = BankAccountInformationModel.AccountTypeEnum.Personalsavings
+                    AccountType = AccountType.Personalsavings
                 },
                 Comments = "Sample comments",
                 InitiatingPartyFee = amount * .20
