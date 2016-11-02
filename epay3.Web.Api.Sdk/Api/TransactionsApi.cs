@@ -43,8 +43,8 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="id">The Id of the transaction.</param>
         /// <param name="sendReceipt">Set to true if a receipt should be sent to all parties upon a successful void.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        /// <returns>True if the transaction was voided.</returns>
-        bool TransactionsVoid(long id, bool sendReceipt, string impersonationAccountKey = null);
+        /// <returns>PostVoidTransactionResponseModel</returns>
+        PostVoidTransactionResponseModel TransactionsVoid(long id, bool sendReceipt, string impersonationAccountKey = null);
     }
   
     /// <summary>
@@ -240,8 +240,8 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="id">The Id of the transaction.</param>
         /// <param name="sendReceipt">Set to true if a receipt should be sent to all parties upon a successful void.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        /// <returns>True if the transaction was voided.</returns>
-        public bool TransactionsVoid(long id, bool sendReceipt, string impersonationAccountKey = null)
+        /// <returns>PostVoidTransactionResponseModel</returns>
+        public PostVoidTransactionResponseModel TransactionsVoid(long id, bool sendReceipt, string impersonationAccountKey = null)
         {
             var localVarPath = string.Format("/api/v1/Transactions/{0}/void", id);
             var localVarPathParams = new Dictionary<String, String>();
@@ -281,16 +281,21 @@ namespace epay3.Web.Api.Sdk.Api
 
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
-            if (localVarStatusCode == 200)
-                return true;
+            if (localVarStatusCode == 400)
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostVoidTransactionResponseModel>(localVarResponse.Content);
+            }
             else if (localVarStatusCode >= 400)
             {
                 var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
 
                 throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
             }
-            else
-                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+            return new PostVoidTransactionResponseModel
+            {
+                ReversalResponseCode = ReversalResponseCode.Success
+            };
         }
     }
 }

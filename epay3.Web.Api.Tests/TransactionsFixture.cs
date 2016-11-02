@@ -74,7 +74,7 @@ namespace epay3.Web.Api.Tests
             Assert.IsTrue(response.Id > 0);
 
             // Should successfully void a transaction.
-            Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false));
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
 
             var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
@@ -83,17 +83,8 @@ namespace epay3.Web.Api.Tests
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
-            try
-            {
-                // Should not be able to void the transaction more than once.
-                Assert.IsTrue(!_transactionsApi.TransactionsVoid(response.Id.Value, false));
-
-                Assert.Fail();
-            }
-            catch (ApiException exception)
-            {
-                Assert.AreEqual(400, exception.ErrorCode);
-            }
+            // Should not be able to void the transaction more than once.
+            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
         }
 
         [TestMethod]
@@ -123,7 +114,7 @@ namespace epay3.Web.Api.Tests
             Assert.IsTrue(response.Id > 0);
 
             // Should successfully void a transaction.
-            Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false));
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
 
             var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
@@ -132,17 +123,8 @@ namespace epay3.Web.Api.Tests
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
-            try
-            {
-                // Should not be able to void the transaction more than once.
-                Assert.IsTrue(!_transactionsApi.TransactionsVoid(response.Id.Value, false));
-
-                Assert.Fail();
-            }
-            catch(ApiException exception)
-            {
-                Assert.AreEqual(400, exception.ErrorCode);
-            }
+            // Should not be able to void the transaction more than once.
+            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
         }
 
         [TestMethod]
@@ -201,7 +183,7 @@ namespace epay3.Web.Api.Tests
             }
 
             // Should be able to void with the impersonation key.
-            Assert.IsTrue(_transactionsApi.TransactionsVoid(response.Id.Value, false, TestApiSettings.ImpersonationAccountKey));
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false, TestApiSettings.ImpersonationAccountKey).ReversalResponseCode);
         }
     }
 }

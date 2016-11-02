@@ -69,7 +69,6 @@ namespace epay3.Web.Api.Sdk.Model
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PaymentResponseCode
     {
-
         [EnumMember(Value = "GenericDecline")]
         // An error has occurred.
         GenericDecline,
@@ -125,6 +124,37 @@ namespace epay3.Web.Api.Sdk.Model
         [EnumMember(Value = "InvalidToken")]
         // The payment token is invalid.
         InvalidToken
+    }
+
+    /// <summary>
+    /// Gets or Sets ReversalResponseCode
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum ReversalResponseCode
+    {
+        [EnumMember(Value = "GenericDecline")]
+        // An error has occurred.
+        GenericDecline,
+
+        [EnumMember(Value = "Success")]
+        // The reversal was successful.
+        Success,
+
+        [EnumMember(Value = "PreviouslyVoided")]
+        // The transaction was previously voided.
+        PreviouslyVoided,
+
+        [EnumMember(Value = "AlreadySettled")]
+        // The transaction has already settled and cannot be voided.
+        AlreadySettled,
+
+        [EnumMember(Value = "PreviouslyRejected")]
+        // The transaction was previously rejected.
+        PreviouslyRejected,
+
+        [EnumMember(Value = "CannotBeVoided")]
+        // This transaction cannot be voided because is in the process of settling. If the transaction is settling, you can issue a refund once that process is completed.
+        CannotBeVoided
     }
 
     /// <summary>
