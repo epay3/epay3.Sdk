@@ -206,6 +206,7 @@ namespace epay3.Web.Api.Tests
 
             // Should return a valid Id.
             Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
         }
 
         [TestMethod]
@@ -267,6 +268,7 @@ namespace epay3.Web.Api.Tests
 
             // Should return a valid Id.
             Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
         }
 
         [TestMethod]
