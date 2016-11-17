@@ -51,7 +51,8 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 InitiatingPartyCreditCardFee = 20,
                 InitiatingPartyAchFee = 2,
-                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.CreditCard }
+                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.CreditCard },
+                SuccessUrl = "https://www.example.com"
             };
 
             var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
