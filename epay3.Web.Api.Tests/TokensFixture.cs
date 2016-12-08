@@ -93,7 +93,9 @@ namespace epay3.Web.Api.Tests
                 {
                     AccountHolder = "John Doe",
                     CardNumber = "4457119922390123",
-                    Cvc = "123"
+                    Cvc = "123",
+                    Month = 12,
+                    Year = 2017
                 }
             };
 
@@ -176,7 +178,9 @@ namespace epay3.Web.Api.Tests
                 {
                     AccountHolder = "John Doe",
                     CardNumber = "4457119922390123",
-                    Cvc = "123"
+                    Cvc = "123",
+                    Month = 12,
+                    Year = 2017
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "parameter1", "parameter value 1" }, { "parameter2", "parameter value 2" } }
             };
