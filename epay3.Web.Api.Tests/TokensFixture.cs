@@ -249,7 +249,7 @@ namespace epay3.Web.Api.Tests
                     FirstName = "John",
                     LastName  = "Smith",
                     AccountHolder = "ACME Corp",
-                    AccountType = AccountType.Corporatechecking
+                    AccountType = AccountType.Corporatesavings
                 }
             };
 
