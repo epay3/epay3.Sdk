@@ -118,7 +118,7 @@ namespace epay3.Web.Api.Sdk.Model
         ExpiredCard,
 
         [EnumMember(Value = "DuplicateTransaction")]
-        // A similar transaction was submitted in the past 24 hours. To successfully submit this transaction, try changing the amount or the payer and email address.
+        // A duplicate transaction was recently submitted. To successfully submit this transaction, please try again after a few minutes.
         DuplicateTransaction,
 
         [EnumMember(Value = "InvalidToken")]
