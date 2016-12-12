@@ -236,7 +236,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Successfully_Use_A_Token_In_An_Ach_Transaction()
+        public void Should_Successfully_Use_A_Token_In_An_Corporate_Savings_Transaction()
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
@@ -247,9 +247,49 @@ namespace epay3.Web.Api.Tests
                     RoutingNumber = "111000025",
                     AccountNumber = "1234567890",
                     FirstName = "John",
-                    LastName  = "Smith",
+                    LastName = "Smith",
                     AccountHolder = "ACME Corp",
                     AccountType = AccountType.Corporatesavings
+                }
+            };
+
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+
+            // Should return a valid Id.
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenId));
+
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2),
+                TokenId = tokenId,
+                Comments = "Sample comments",
+                SendReceipt = false
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Use_A_Token_In_An_Corporate_Checking_Transaction()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    RoutingNumber = "111000025",
+                    AccountNumber = "1234567890",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountHolder = "ACME Corp",
+                    AccountType = AccountType.Corporatechecking
                 }
             };
 

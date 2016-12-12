@@ -154,33 +154,13 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.IsTrue(response.Id > 0);
 
-            try
-            {
-                // Should not get the transaction when impersonation is off.
-                _transactionsApi.TransactionsGet(response.Id, null);
-
-                Assert.Fail();
-            }
-            catch (ApiException exception)
-            {
-                Assert.AreEqual(404, exception.ErrorCode);
-            }
-
+            // Should get the transaction even when impersonation is off.
+            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, null));
             // Should get the transaction when impersonation is on.
             Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, TestApiSettings.ImpersonationAccountKey));
 
-            try
-            {
-                // Should not be able to void with the impersonation key.
-                _transactionsApi.TransactionsVoid(response.Id.Value, false, null);
-
-                Assert.Fail();
-            }
-            catch (ApiException exception)
-            {
-                // 404 because without the permissions, this transaction isn't found.
-                Assert.AreEqual(404, exception.ErrorCode);
-            }
+            // Should not be able to void with the impersonation key.
+            Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false, null));
 
             // Should be able to void with the impersonation key.
             Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false, TestApiSettings.ImpersonationAccountKey).ReversalResponseCode);
