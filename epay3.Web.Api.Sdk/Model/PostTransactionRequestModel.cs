@@ -46,6 +46,13 @@ namespace epay3.Web.Api.Sdk.Model
         public double? Amount { get; set; }
 
         /// <summary>
+        /// The fee the payer is paying. This is not additive to the Amount field.
+        /// </summary>
+        /// <value>The fee the payer is paying. This is not additive to the Amount field.</value>
+        [DataMember(Name = "payerFee", EmitDefaultValue = false)]
+        public double? PayerFee { get; set; }
+
+        /// <summary>
         /// Dictionary of custom attribute values. The key in the dictionary is the identifier of the custom attribute.
         /// </summary>
         /// <value>Dictionary of custom attribute values. The key in the dictionary is the identifier of the custom attribute.</value>
@@ -113,6 +120,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  State: ").Append(State).Append("\n");
             sb.Append("  CustomerId: ").Append(CustomerId).Append("\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
             sb.Append("  Comments: ").Append(Comments).Append("\n");
             sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
@@ -172,6 +180,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.CustomerId == other.CustomerId ||
                     this.CustomerId != null &&
                     this.CustomerId.Equals(other.CustomerId)
+                ) &&
+                (
+                    this.PayerFee == other.PayerFee ||
+                    this.PayerFee != null &&
+                    this.PayerFee.Equals(other.PayerFee)
                 ) &&
                 (
                     this.Amount == other.Amount ||

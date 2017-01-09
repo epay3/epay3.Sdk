@@ -52,7 +52,8 @@ namespace epay3.Web.Api.Tests
                 InitiatingPartyCreditCardFee = 20,
                 InitiatingPartyAchFee = 2,
                 AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.CreditCard },
-                SuccessUrl = "https://www.example.com"
+                SuccessUrl = "https://www.example.com",
+                PayerFee = 5
             };
 
             var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
@@ -89,7 +90,7 @@ namespace epay3.Web.Api.Tests
             var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
             {
                 Amount = 100,
-                InitiatingPartyCreditCardFee = 80,
+                InitiatingPartyCreditCardFee = 101,
                 InitiatingPartyAchFee = 2
             };
 
@@ -112,7 +113,30 @@ namespace epay3.Web.Api.Tests
             {
                 Amount = 100,
                 InitiatingPartyCreditCardFee = null,
-                InitiatingPartyAchFee = 80
+                InitiatingPartyAchFee = 101
+            };
+
+            try
+            {
+                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+
+                Assert.Fail();
+            }
+            catch (ApiException exception)
+            {
+                Assert.AreEqual(400, exception.ErrorCode);
+            }
+        }
+        
+        [TestMethod]
+        public void Should_Validate_Against_A_High_Payer_Fee()
+        {
+            var postPaymentPageSessionRequestModel = new PostPaymentPageSessionRequestModel
+            {
+                Amount = 100,
+                InitiatingPartyCreditCardFee = null,
+                InitiatingPartyAchFee = 2,
+                PayerFee = 101
             };
 
             try

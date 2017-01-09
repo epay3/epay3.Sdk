@@ -18,29 +18,6 @@ namespace epay3.Web.Api.Sdk.Model
     public partial class PostPaymentPageSessionRequestModel :  IEquatable<PostPaymentPageSessionRequestModel>
     { 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PostPaymentPageSessionRequestModel" /> class.
-        /// Initializes a new instance of the <see cref="PostPaymentPageSessionRequestModel" />class.
-        /// </summary>
-        /// <param name="AttributeValues">Key/value collection of all custom attributes that will eventually be stored with the transaction..</param>
-        /// <param name="Amount">The total amount of the transaction inclusive of all fees..</param>
-        /// <param name="InitiatingPartyCreditCardFee">The fee to keep for the initiating party of this transaction in the event of a credit card transaction. This does not include transaction fees..</param>
-        /// <param name="InitiatingPartyAchFee">The fee to keep for the initiating party of this transaction in the event of an ACH transaction. This does not include transaction fees..</param>
-        /// <param name="SuccessUrl">The Url to which the user will be redirected upon a successful payment..</param>
-        /// <param name="AcceptedPaymentMethods">A white-list of accepted payment methods that should be shown on the payment page..</param>
-
-        public PostPaymentPageSessionRequestModel(Dictionary<string, string> AttributeValues = null, double? Amount = null, double? InitiatingPartyCreditCardFee = null, double? InitiatingPartyAchFee = null, string SuccessUrl = null, List<AcceptedPaymentMethod> AcceptedPaymentMethods = null)
-        {
-            this.AttributeValues = AttributeValues;
-            this.Amount = Amount;
-            this.InitiatingPartyCreditCardFee = InitiatingPartyCreditCardFee;
-            this.InitiatingPartyAchFee = InitiatingPartyAchFee;
-            this.SuccessUrl = SuccessUrl;
-            this.AcceptedPaymentMethods = AcceptedPaymentMethods;
-            
-        }
-        
-    
-        /// <summary>
         /// Key/value collection of all custom attributes that will eventually be stored with the transaction.
         /// </summary>
         /// <value>Key/value collection of all custom attributes that will eventually be stored with the transaction.</value>
@@ -53,7 +30,14 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The total amount of the transaction inclusive of all fees.</value>
         [DataMember(Name="amount", EmitDefaultValue=false)]
         public double? Amount { get; set; }
-    
+
+        /// <summary>
+        /// The fee the payer is paying. This is not additive to the Amount field.
+        /// </summary>
+        /// <value>The fee the payer is paying. This is not additive to the Amount field.</value>
+        [DataMember(Name = "payerFee", EmitDefaultValue = false)]
+        public double? PayerFee { get; set; }
+
         /// <summary>
         /// The fee to keep for the initiating party of this transaction in the event of a credit card transaction. This does not include transaction fees.
         /// </summary>
@@ -92,6 +76,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("class PostPaymentPageSessionRequestModel {\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
             sb.Append("  InitiatingPartyCreditCardFee: ").Append(InitiatingPartyCreditCardFee).Append("\n");
             sb.Append("  InitiatingPartyAchFee: ").Append(InitiatingPartyAchFee).Append("\n");
             sb.Append("  SuccessUrl: ").Append(SuccessUrl).Append("\n");
@@ -137,11 +122,16 @@ namespace epay3.Web.Api.Sdk.Model
                     this.AttributeValues == other.AttributeValues ||
                     this.AttributeValues != null &&
                     this.AttributeValues.SequenceEqual(other.AttributeValues)
-                ) && 
+                ) &&
                 (
                     this.Amount == other.Amount ||
                     this.Amount != null &&
                     this.Amount.Equals(other.Amount)
+                ) &&
+                (
+                    this.PayerFee == other.PayerFee ||
+                    this.PayerFee != null &&
+                    this.PayerFee.Equals(other.PayerFee)
                 ) && 
                 (
                     this.InitiatingPartyCreditCardFee == other.InitiatingPartyCreditCardFee ||
@@ -182,7 +172,10 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.Amount != null)
                     hash = hash * 59 + this.Amount.GetHashCode();
-                
+
+                if (this.PayerFee != null)
+                    hash = hash * 59 + this.PayerFee.GetHashCode();
+
                 if (this.InitiatingPartyCreditCardFee != null)
                     hash = hash * 59 + this.InitiatingPartyCreditCardFee.GetHashCode();
                 
