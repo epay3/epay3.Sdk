@@ -38,7 +38,7 @@ namespace epay3.Web.Api.Sdk.Client
                              string userAgent = "Swagger-Codegen/1.0.0/csharp"
                             )
         {
-//            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 
             setApiClientUsingDefault(apiClient);
 
