@@ -65,6 +65,12 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>A white-list of accepted payment methods that should be shown on the payment page.</value>
         [DataMember(Name="acceptedPaymentMethods", EmitDefaultValue=false)]
         public List<AcceptedPaymentMethod> AcceptedPaymentMethods { get; set; }
+
+        /// <summary>
+        /// Used to pre-populate the comments section of the payment page.
+        /// </summary>
+        /// <value>Comments that are used to pre-populate the comments section of the payment page.</value>
+        public string Comments { get; set; }
     
         /// <summary>
         /// Returns the string presentation of the object
@@ -81,7 +87,8 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  InitiatingPartyAchFee: ").Append(InitiatingPartyAchFee).Append("\n");
             sb.Append("  SuccessUrl: ").Append(SuccessUrl).Append("\n");
             sb.Append("  AcceptedPaymentMethods: ").Append(AcceptedPaymentMethods).Append("\n");
-            
+            sb.Append("  Comments: ").Append(Comments).Append("\n");
+
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -147,11 +154,16 @@ namespace epay3.Web.Api.Sdk.Model
                     this.SuccessUrl == other.SuccessUrl ||
                     this.SuccessUrl != null &&
                     this.SuccessUrl.Equals(other.SuccessUrl)
-                ) && 
+                ) &&
                 (
                     this.AcceptedPaymentMethods == other.AcceptedPaymentMethods ||
                     this.AcceptedPaymentMethods != null &&
                     this.AcceptedPaymentMethods.SequenceEqual(other.AcceptedPaymentMethods)
+                ) &&
+                (
+                    this.Comments == other.Comments ||
+                    this.Comments != null &&
+                    this.Comments.SequenceEqual(other.Comments)
                 );
         }
 
@@ -187,7 +199,10 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.AcceptedPaymentMethods != null)
                     hash = hash * 59 + this.AcceptedPaymentMethods.GetHashCode();
-                
+
+                if (this.Comments != null)
+                    hash = hash * 59 + this.Comments.GetHashCode();
+
                 return hash;
             }
         }
