@@ -59,6 +59,7 @@
     <Compile Include="TokenPageSessionsFixture.cs" />
     <Compile Include="PaymentPageSessionsFixture.cs" />
     <Compile Include="TokensFixture.cs" />
+    <Compile Include="PaymentSchedulesFixture.cs" />
     <Compile Include="TransactionsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

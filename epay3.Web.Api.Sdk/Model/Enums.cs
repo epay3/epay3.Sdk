@@ -64,6 +64,27 @@ namespace epay3.Web.Api.Sdk.Model
     }
 
     /// <summary>
+    /// The interval by which the payments should be run.
+    /// </summary>
+    /// <value>The interval by which the payments should be run.</value>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum IntervalType
+    {
+
+        [EnumMember(Value = "Day")]
+        Day,
+
+        [EnumMember(Value = "Week")]
+        Week,
+
+        [EnumMember(Value = "Month")]
+        Month,
+
+        [EnumMember(Value = "Year")]
+        Year
+    }
+
+    /// <summary>
     /// Gets or Sets PaymentResponseCode
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]

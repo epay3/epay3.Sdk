@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\PaymentSchedulesApi.cs" />
     <Compile Include="Api\TokenPageSessionsApi.cs" />
     <Compile Include="Api\PaymentPageSessionsApi.cs" />
     <Compile Include="Api\TokensApi.cs" />
@@ -64,9 +65,11 @@
     <Compile Include="Model\CreditCardInformationModel.cs" />
     <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\ErrorResponseModel.cs" />
+    <Compile Include="Model\GetPaymentScheduleResponseModel.cs" />
     <Compile Include="Model\GetTokenResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />
+    <Compile Include="Model\PostPaymentScheduleRequestModel.cs" />
     <Compile Include="Model\PostTokenPageSessionRequestModel.cs" />
     <Compile Include="Model\PostTokenRequestModel.cs" />
     <Compile Include="Model\PostTransactionRequestModel.cs" />
