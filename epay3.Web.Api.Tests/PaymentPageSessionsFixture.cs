@@ -51,7 +51,7 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 InitiatingPartyCreditCardFee = 20,
                 InitiatingPartyAchFee = 2,
-                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.CreditCard },
+                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.Ach },
                 SuccessUrl = "https://www.example.com",
                 PayerFee = 5
             };

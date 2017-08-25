@@ -120,7 +120,7 @@ namespace epay3.Web.Api.Tests
             try
             {
                 // Should not be able to get this payment schedule without the impersonation key.
-                Assert.IsNull(_paymentSchedulesApi.PaymentSchedulesGet(paymentScheduleId, null));
+                _paymentSchedulesApi.PaymentSchedulesGet(paymentScheduleId, null);
 
                 Assert.Fail();
             }
@@ -132,7 +132,7 @@ namespace epay3.Web.Api.Tests
             try
             {
                 // Should not be able to cancel this payment schedule without the impersonation key.
-                Assert.IsNull(_paymentSchedulesApi.PaymentSchedulesCancel(paymentScheduleId, null));
+                _paymentSchedulesApi.PaymentSchedulesCancel(paymentScheduleId, null);
 
                 Assert.Fail();
             }

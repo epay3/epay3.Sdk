@@ -25,7 +25,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Return_An_Id_Upon_Success_With_No_Processing_Id()
+        public void Should_Return_An_Id_Upon_Success_With_No_Impersonation_Key()
         {
             var postTokenPageSessionRequestModel = new PostTokenPageSessionRequestModel
             {
@@ -44,7 +44,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Return_An_Id_Upon_Success_With_A_Processing_Id()
+        public void Should_Return_An_Id_Upon_Success_With_An_Impersonation_Key()
         {
             var postTokenPageSessionRequestModel = new PostTokenPageSessionRequestModel
             {
@@ -53,7 +53,8 @@ namespace epay3.Web.Api.Tests
                     { "param1", "parameter value 1" },
                     { "param2", "parameter value 2" }
                 },
-                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.Ach }
+                AcceptedPaymentMethods = new System.Collections.Generic.List<AcceptedPaymentMethod> { AcceptedPaymentMethod.CreditCard },
+                SuccessUrl = "https://www.example.com"
             };
 
             var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
