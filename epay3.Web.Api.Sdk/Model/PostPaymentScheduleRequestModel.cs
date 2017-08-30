@@ -18,9 +18,8 @@ namespace epay3.Web.Api.Sdk.Model
     public partial class PostPaymentScheduleRequestModel :  IEquatable<PostPaymentScheduleRequestModel>
     { 
         /// <summary>
-        /// The interval by which the payments should be run.
+        /// Gets or Sets Interval
         /// </summary>
-        /// <value>The interval by which the payments should be run.</value>
         [DataMember(Name="interval", EmitDefaultValue=false)]
         public IntervalType? Interval { get; set; }
     
@@ -46,13 +45,6 @@ namespace epay3.Web.Api.Sdk.Model
         public string TokenId { get; set; }
     
         /// <summary>
-        /// The number of payments to process on the schedule.
-        /// </summary>
-        /// <value>The number of payments to process on the schedule.</value>
-        [DataMember(Name="numberOfTotalPayments", EmitDefaultValue=false)]
-        public int? NumberOfTotalPayments { get; set; }
-    
-        /// <summary>
         /// The amount of each recurring payment.
         /// </summary>
         /// <value>The amount of each recurring payment.</value>
@@ -72,6 +64,20 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The date of the initial payment. If no date is set, the first payment will be run immediately.</value>
         [DataMember(Name="startDate", EmitDefaultValue=false)]
         public DateTime? StartDate { get; set; }
+    
+        /// <summary>
+        /// The date of the last payment if the schedule is supposed to have an end date.
+        /// </summary>
+        /// <value>The date of the last payment if the schedule is supposed to have an end date.</value>
+        [DataMember(Name="endDate", EmitDefaultValue=false)]
+        public DateTime? EndDate { get; set; }
+    
+        /// <summary>
+        /// The interval by which the payments should be run.
+        /// </summary>
+        /// <value>The interval by which the payments should be run.</value>
+        [DataMember(Name="numberOfTotalPayments", EmitDefaultValue=false)]
+        public int? NumberOfTotalPayments { get; set; }
     
         /// <summary>
         /// The number of days, weeks, etc to wait between payments.
@@ -112,10 +118,11 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  Payer: ").Append(Payer).Append("\n");
             sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
             sb.Append("  TokenId: ").Append(TokenId).Append("\n");
-            sb.Append("  NumberOfTotalPayments: ").Append(NumberOfTotalPayments).Append("\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
             sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
+            sb.Append("  EndDate: ").Append(EndDate).Append("\n");
+            sb.Append("  NumberOfTotalPayments: ").Append(NumberOfTotalPayments).Append("\n");
             sb.Append("  Interval: ").Append(Interval).Append("\n");
             sb.Append("  IntervalCount: ").Append(IntervalCount).Append("\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
@@ -174,11 +181,6 @@ namespace epay3.Web.Api.Sdk.Model
                     this.TokenId.Equals(other.TokenId)
                 ) && 
                 (
-                    this.NumberOfTotalPayments == other.NumberOfTotalPayments ||
-                    this.NumberOfTotalPayments != null &&
-                    this.NumberOfTotalPayments.Equals(other.NumberOfTotalPayments)
-                ) && 
-                (
                     this.Amount == other.Amount ||
                     this.Amount != null &&
                     this.Amount.Equals(other.Amount)
@@ -192,6 +194,16 @@ namespace epay3.Web.Api.Sdk.Model
                     this.StartDate == other.StartDate ||
                     this.StartDate != null &&
                     this.StartDate.Equals(other.StartDate)
+                ) && 
+                (
+                    this.EndDate == other.EndDate ||
+                    this.EndDate != null &&
+                    this.EndDate.Equals(other.EndDate)
+                ) && 
+                (
+                    this.NumberOfTotalPayments == other.NumberOfTotalPayments ||
+                    this.NumberOfTotalPayments != null &&
+                    this.NumberOfTotalPayments.Equals(other.NumberOfTotalPayments)
                 ) && 
                 (
                     this.Interval == other.Interval ||
@@ -241,9 +253,6 @@ namespace epay3.Web.Api.Sdk.Model
                 if (this.TokenId != null)
                     hash = hash * 59 + this.TokenId.GetHashCode();
                 
-                if (this.NumberOfTotalPayments != null)
-                    hash = hash * 59 + this.NumberOfTotalPayments.GetHashCode();
-                
                 if (this.Amount != null)
                     hash = hash * 59 + this.Amount.GetHashCode();
                 
@@ -252,6 +261,12 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.StartDate != null)
                     hash = hash * 59 + this.StartDate.GetHashCode();
+                
+                if (this.EndDate != null)
+                    hash = hash * 59 + this.EndDate.GetHashCode();
+                
+                if (this.NumberOfTotalPayments != null)
+                    hash = hash * 59 + this.NumberOfTotalPayments.GetHashCode();
                 
                 if (this.Interval != null)
                     hash = hash * 59 + this.Interval.GetHashCode();
