@@ -41,12 +41,12 @@ namespace epay3.Web.Api.Sdk.Api
         /// Submits a request to void a transaction.
         /// </summary>
         /// <param name="id">The Id of the transaction.</param>
-        /// <param name="sendReceipt">Set to true if a receipt should be sent to all parties upon a successful void.</param>
+        /// <param name="postVoidTransactionRequestModel">The details of how to process the void.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>PostVoidTransactionResponseModel</returns>
-        PostVoidTransactionResponseModel TransactionsVoid(long id, bool sendReceipt, string impersonationAccountKey = null);
+        PostVoidTransactionResponseModel TransactionsVoid(long id, PostVoidTransactionRequestModel postVoidTransactionRequestModel, string impersonationAccountKey = null);
     }
-  
+
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
@@ -238,11 +238,19 @@ namespace epay3.Web.Api.Sdk.Api
         /// Submits a request to void a transaction.
         /// </summary>
         /// <param name="id">The Id of the transaction.</param>
-        /// <param name="sendReceipt">Set to true if a receipt should be sent to all parties upon a successful void.</param>
+        /// <param name="postVoidTransactionRequestModel">The details of how to process the void.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>PostVoidTransactionResponseModel</returns>
-        public PostVoidTransactionResponseModel TransactionsVoid(long id, bool sendReceipt, string impersonationAccountKey = null)
+        public PostVoidTransactionResponseModel TransactionsVoid(long id, PostVoidTransactionRequestModel postVoidTransactionRequestModel, string impersonationAccountKey = null)
         {
+            // verify the required parameter 'id' is set
+            if (id <= 0)
+                throw new ApiException(400, "Missing required parameter 'id' when calling TransactionsApi->TransactionsVoid");
+
+            // verify the required parameter 'postVoidTransactionRequestModel' is set
+            if (postVoidTransactionRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postVoidTransactionRequestModel' when calling TransactionsApi->TransactionsVoid");
+
             var localVarPath = string.Format("/api/v1/Transactions/{0}/void", id);
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -262,8 +270,6 @@ namespace epay3.Web.Api.Sdk.Api
                 "application/json", "text/json", "application/xml", "text/xml"
             };
 
-            localVarQueryParams.Add("sendReceipt", sendReceipt.ToString());
-
             String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
@@ -274,6 +280,15 @@ namespace epay3.Web.Api.Sdk.Api
 
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
+            if (postVoidTransactionRequestModel.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = Configuration.ApiClient.Serialize(postVoidTransactionRequestModel); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = postVoidTransactionRequestModel; // byte array
+            }
+            
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
@@ -294,6 +309,86 @@ namespace epay3.Web.Api.Sdk.Api
 
             return new PostVoidTransactionResponseModel
             {
+                ReversalResponseCode = ReversalResponseCode.Success
+            };
+        }
+
+        /// <summary>
+        /// Submits a request to refund a transaction.
+        /// </summary>
+        /// <param name="id">The Id of the transaction.</param>
+        /// <param name="postRefundTransactionRequestModel">The details of how to process the refund.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns>PostRefundTransactionResponseModel</returns>
+        public PostRefundTransactionResponseModel TransactionsRefund(long id, PostRefundTransactionRequestModel postRefundTransactionRequestModel, string impersonationAccountKey = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id <= 0)
+                throw new ApiException(400, "Missing required parameter 'id' when calling TransactionsApi->TransactionsRefund");
+
+            // verify the required parameter 'postRefundTransactionRequestModel' is set
+            if (postRefundTransactionRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postRefundTransactionRequestModel' when calling TransactionsApi->TransactionsRefund");
+
+            var localVarPath = string.Format("/api/v1/Transactions/{0}/refund", id);
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded"
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
+            if (postRefundTransactionRequestModel.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = Configuration.ApiClient.Serialize(postRefundTransactionRequestModel); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = postRefundTransactionRequestModel; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode == 400)
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostRefundTransactionResponseModel>(localVarResponse.Content);
+            }
+            else if (localVarStatusCode >= 400)
+            {
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
+            }
+
+            return new PostRefundTransactionResponseModel
+            {
+                Id = long.Parse(localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last()),
                 ReversalResponseCode = ReversalResponseCode.Success
             };
         }

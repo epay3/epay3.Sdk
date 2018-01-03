@@ -76,7 +76,7 @@ namespace epay3.Web.Api.Tests
             Assert.IsTrue(response.Id > 0);
 
             // Should successfully void a transaction.
-            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
 
             var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
@@ -86,7 +86,7 @@ namespace epay3.Web.Api.Tests
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
             // Should not be able to void the transaction more than once.
-            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
+            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
         }
 
         [TestMethod]
@@ -116,7 +116,7 @@ namespace epay3.Web.Api.Tests
             Assert.IsTrue(response.Id > 0);
 
             // Should successfully void a transaction.
-            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
 
             var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
@@ -126,7 +126,7 @@ namespace epay3.Web.Api.Tests
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
             // Should not be able to void the transaction more than once.
-            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, false).ReversalResponseCode);
+            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
         }
 
         [TestMethod]
@@ -162,10 +162,97 @@ namespace epay3.Web.Api.Tests
             Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, TestApiSettings.ImpersonationAccountKey));
 
             // Should not be able to void with the impersonation key.
-            Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false, null));
+            Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, null));
 
             // Should be able to void with the impersonation key.
-            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, false, TestApiSettings.ImpersonationAccountKey).ReversalResponseCode);
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, TestApiSettings.ImpersonationAccountKey).ReversalResponseCode);
+        }
+
+        /// <summary>
+        /// This is just an example showing how to refund a transaction. Refunds are not allowed until
+        /// the transaction is settled and batched.
+        /// </summary>
+        [TestMethod]
+        [Ignore]
+        public void Should_Successfully_Issue_Full_Refund()
+        {
+            var amount = new System.Random().Next(10, 1000);
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount,
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "4242424242424242",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
+                Comments = "Sample comments"
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+
+            var refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false });
+            var refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+
+            Assert.IsNotNull(refundTransaction);
+            Assert.AreEqual(refundTransaction.Amount * -1, postTransactionRequestModel.Amount + 3);
+        }
+
+        /// <summary>
+        /// This is just an example showing how to refund a transaction. Refunds are not allowed until
+        /// the transaction is settled and batched.
+        /// </summary>
+        [TestMethod]
+        [Ignore]
+        public void Should_Successfully_Issue_Partial_Refunds()
+        {
+            var amount = new System.Random().Next(100, 1000);
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount,
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "4242424242424242",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
+                Comments = "Sample comments"
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+
+            var refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = 5 });
+            var refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+
+            Assert.IsNotNull(refundTransaction);
+            Assert.AreEqual(refundTransaction.Amount * -1, 5);
+
+            refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = 6 });
+            refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+
+            Assert.IsNotNull(refundTransaction);
+            Assert.AreEqual(refundTransaction.Amount * -1, 6);
+
+            refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = postTransactionRequestModel.Amount });
+
+            Assert.AreEqual(ReversalResponseCode.GenericDecline, refundResponse.ReversalResponseCode);
+            Assert.IsNull(refundResponse.Id);
         }
     }
 }

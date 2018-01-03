@@ -70,9 +70,12 @@
     <Compile Include="Model\GetTransactionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />
     <Compile Include="Model\PostPaymentScheduleRequestModel.cs" />
+    <Compile Include="Model\PostRefundTransactionRequestModel.cs" />
+    <Compile Include="Model\PostRefundTransactionResponseModel.cs" />
     <Compile Include="Model\PostTokenPageSessionRequestModel.cs" />
     <Compile Include="Model\PostTokenRequestModel.cs" />
     <Compile Include="Model\PostTransactionRequestModel.cs" />
+    <Compile Include="Model\PostVoidTransactionRequestModel.cs" />
     <Compile Include="Model\PostVoidTransactionResponseModel.cs" />
     <Compile Include="Model\PostTransactionResponseModel.cs" />
     <Compile Include="Model\TransactionEventModel.cs" />
