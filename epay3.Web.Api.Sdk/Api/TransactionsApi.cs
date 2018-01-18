@@ -45,6 +45,23 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         /// <returns>PostVoidTransactionResponseModel</returns>
         PostVoidTransactionResponseModel TransactionsVoid(long id, PostVoidTransactionRequestModel postVoidTransactionRequestModel, string impersonationAccountKey = null);
+
+        /// <summary>
+        /// Submits a request to refund a transaction.
+        /// </summary>
+        /// <param name="id">The Id of the transaction.</param>
+        /// <param name="postRefundTransactionRequestModel">The details of how to process the refund.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns>PostRefundTransactionResponseModel</returns>
+        PostRefundTransactionResponseModel TransactionsRefund(long id, PostRefundTransactionRequestModel postRefundTransactionRequestModel, string impersonationAccountKey = null);
+
+        /// <summary>
+        /// Creates an authorization on a credit card.
+        /// </summary>
+        /// <param name="postAuthorizeTransactionRequestModel">The details of the transaction to be authorized.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns></returns>
+        string TransactionsAuthorize(PostAuthorizeTransactionRequestModel postAuthorizeTransactionRequestModel, string impersonationAccountKey = null);
     }
 
     /// <summary>
@@ -391,6 +408,74 @@ namespace epay3.Web.Api.Sdk.Api
                 Id = long.Parse(localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last()),
                 ReversalResponseCode = ReversalResponseCode.Success
             };
+        }
+
+        /// <summary>
+        /// Creates an authorization on a credit card.
+        /// </summary>
+        /// <param name="postAuthorizeTransactionRequestModel">The details of the transaction to be authorized.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns>PostAuthorizeTransactionResponseModel</returns>
+        public string TransactionsAuthorize(PostAuthorizeTransactionRequestModel postAuthorizeTransactionRequestModel, string impersonationAccountKey = null)
+        {
+            // verify the required parameter 'postTransactionRequestModel' is set
+            if (postAuthorizeTransactionRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postAuthorizeTransactionRequestModel' when calling TransactionsApi->TransactionsAuthorize");
+
+            var localVarPath = "/api/v1/Transactions/Authorize";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded"
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
+            if (postAuthorizeTransactionRequestModel.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = Configuration.ApiClient.Serialize(postAuthorizeTransactionRequestModel); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = postAuthorizeTransactionRequestModel; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode >= 400)
+            {
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
+            }
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+            return localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
         }
     }
 }

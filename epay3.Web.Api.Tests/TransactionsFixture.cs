@@ -10,6 +10,7 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class When_Posting_A_Transaction
     {
+        private TokensApi _tokensApi;
         private TransactionsApi _transactionsApi;
 
         [TestInitialize]
@@ -18,9 +19,11 @@ namespace epay3.Web.Api.Tests
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
             _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+            _tokensApi = new TokensApi(TestApiSettings.Uri);
 
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
+            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
@@ -130,7 +133,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Honor_Impersonation_For_Tokens_And_Transactions()
+        public void Should_Honor_Impersonation_For_Transactions()
         {
             var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
@@ -253,6 +256,118 @@ namespace epay3.Web.Api.Tests
 
             Assert.AreEqual(ReversalResponseCode.GenericDecline, refundResponse.ReversalResponseCode);
             Assert.IsNull(refundResponse.Id);
+        }
+
+        [TestMethod]
+        public void Should_Fail_With_Invalid_Authorization_Id()
+        {
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount,
+                AuthorizationId = "INVALID_ID"
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+
+            Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, response.PaymentResponseCode);
+        }
+
+        //[TestMethod]
+        //public void Should_Fail_With_Inaccessible_Authorization_Id()
+        //{
+        //
+        //
+        //}
+
+        [TestMethod]
+        public void Should_Successfully_Use_Authorization_Id()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "4242424242424242",
+                    Cvc = "123",
+                    Month = 12,
+                    Year = 2020
+                }
+            };
+
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+
+            var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
+            {
+                Amount = amount,
+                TokenId = tokenId
+            });
+
+            Assert.IsNotNull(authorizationId);
+
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount,
+                AuthorizationId = authorizationId
+            };
+
+            var transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+
+            Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Use_Authorization_Id_With_Impersonation()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "4242424242424242",
+                    Cvc = "123",
+                    Month = 12,
+                    Year = 2020
+                }
+            };
+
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, TestApiSettings.ImpersonationAccountKey);
+
+            var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
+            {
+                Amount = amount,
+                TokenId = tokenId
+            }, TestApiSettings.ImpersonationAccountKey);
+
+            Assert.IsNotNull(authorizationId, TestApiSettings.ImpersonationAccountKey);
+
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount,
+                AuthorizationId = authorizationId
+            };
+
+            // This attempt should fail without the same impersonation key.
+            var transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+
+            Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, transactionResponse.PaymentResponseCode);
+
+            // This attempt should succeed with the the correct impersonation key.
+            transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
+
+            Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
         }
     }
 }

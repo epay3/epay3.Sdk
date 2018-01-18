@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
 
 namespace epay3.Web.Api.Sdk.Model
 {
@@ -25,16 +21,9 @@ namespace epay3.Web.Api.Sdk.Model
         public string Payer { get; set; }
 
         /// <summary>
-        /// Full name of the state in which the transaction is taking place. This impacts the payer fee calculation.
+        /// [Deprecated. Please use the AttributeValues instead.] Unique identifier for the customer.
         /// </summary>
-        /// <value>Full name of the state in which the transaction is taking place. This impacts the payer fee calculation.</value>
-        [DataMember(Name = "state", EmitDefaultValue = false)]
-        public string State { get; set; }
-
-        /// <summary>
-        /// Unique identifier for the customer.
-        /// </summary>
-        /// <value>Unique identifier for the customer.</value>
+        /// <value>[Deprecated. Please use the AttributeValues instead.] Unique identifier for the customer.</value>
         [DataMember(Name = "customerId", EmitDefaultValue = false)]
         public string CustomerId { get; set; }
 
@@ -46,9 +35,9 @@ namespace epay3.Web.Api.Sdk.Model
         public double? Amount { get; set; }
 
         /// <summary>
-        /// The fee the payer is paying. This is not additive to the Amount field.
+        /// Used if the calling application has pre-calculated a payer fee. In that case, the fee will not be re-calculated. This amount, if set, will not be added to the amount field prior to processing.
         /// </summary>
-        /// <value>The fee the payer is paying. This is not additive to the Amount field.</value>
+        /// <value>Used if the calling application has pre-calculated a payer fee. In that case, the fee will not be re-calculated. This amount, if set, will not be added to the amount field prior to processing.</value>
         [DataMember(Name = "payerFee", EmitDefaultValue = false)]
         public double? PayerFee { get; set; }
 
@@ -95,6 +84,20 @@ namespace epay3.Web.Api.Sdk.Model
         public BankAccountInformationModel BankAccountInformation { get; set; }
 
         /// <summary>
+        /// This is used in the event of an offline pre-authorization.
+        /// </summary>
+        /// <value>This is used in the event of an offline pre-authorization.</value>
+        [DataMember(Name = "preAuthorization", EmitDefaultValue = false)]
+        public PreAuthorizationModel PreAuthorization { get; set; }
+
+        /// <summary>
+        /// Used when executing a capture on authorizations that were obtained via this service.
+        /// </summary>
+        /// <value>Used when executing a capture on authorizations that were obtained via this service.</value>
+        [DataMember(Name = "authorizationId", EmitDefaultValue = false)]
+        public string AuthorizationId { get; set; }
+
+        /// <summary>
         /// Set to true if the payer and account holder(s) should receive an e-receipt.
         /// </summary>
         /// <value>Set to true if the payer and account holder(s) should receive an e-receipt.</value>
@@ -117,7 +120,6 @@ namespace epay3.Web.Api.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class PostTransactionRequestModel {\n");
             sb.Append("  Payer: ").Append(Payer).Append("\n");
-            sb.Append("  State: ").Append(State).Append("\n");
             sb.Append("  CustomerId: ").Append(CustomerId).Append("\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
             sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
@@ -127,6 +129,8 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  TokenId: ").Append(TokenId).Append("\n");
             sb.Append("  CreditCardInformation: ").Append(CreditCardInformation).Append("\n");
             sb.Append("  BankAccountInformation: ").Append(BankAccountInformation).Append("\n");
+            sb.Append("  PreAuthorization: ").Append(PreAuthorization).Append("\n");
+            sb.Append("  AuthorizationId: ").Append(AuthorizationId).Append("\n");
             sb.Append("  SendReceipt: ").Append(SendReceipt).Append("\n");
             sb.Append("  InitiatingPartyFee: ").Append(InitiatingPartyFee).Append("\n");
 
@@ -172,24 +176,19 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Payer.Equals(other.Payer)
                 ) &&
                 (
-                    this.State == other.State ||
-                    this.State != null &&
-                    this.State.Equals(other.State)
-                ) &&
-                (
                     this.CustomerId == other.CustomerId ||
                     this.CustomerId != null &&
                     this.CustomerId.Equals(other.CustomerId)
                 ) &&
                 (
-                    this.PayerFee == other.PayerFee ||
-                    this.PayerFee != null &&
-                    this.PayerFee.Equals(other.PayerFee)
-                ) &&
-                (
                     this.Amount == other.Amount ||
                     this.Amount != null &&
                     this.Amount.Equals(other.Amount)
+                ) &&
+                (
+                    this.PayerFee == other.PayerFee ||
+                    this.PayerFee != null &&
+                    this.PayerFee.Equals(other.PayerFee)
                 ) &&
                 (
                     this.AttributeValues == other.AttributeValues ||
@@ -222,6 +221,16 @@ namespace epay3.Web.Api.Sdk.Model
                     this.BankAccountInformation.Equals(other.BankAccountInformation)
                 ) &&
                 (
+                    this.PreAuthorization == other.PreAuthorization ||
+                    this.PreAuthorization != null &&
+                    this.PreAuthorization.Equals(other.PreAuthorization)
+                ) &&
+                (
+                    this.AuthorizationId == other.AuthorizationId ||
+                    this.AuthorizationId != null &&
+                    this.AuthorizationId.Equals(other.AuthorizationId)
+                ) &&
+                (
                     this.SendReceipt == other.SendReceipt ||
                     this.SendReceipt != null &&
                     this.SendReceipt.Equals(other.SendReceipt)
@@ -248,14 +257,14 @@ namespace epay3.Web.Api.Sdk.Model
                 if (this.Payer != null)
                     hash = hash * 59 + this.Payer.GetHashCode();
 
-                if (this.State != null)
-                    hash = hash * 59 + this.State.GetHashCode();
-
                 if (this.CustomerId != null)
                     hash = hash * 59 + this.CustomerId.GetHashCode();
 
                 if (this.Amount != null)
                     hash = hash * 59 + this.Amount.GetHashCode();
+
+                if (this.PayerFee != null)
+                    hash = hash * 59 + this.PayerFee.GetHashCode();
 
                 if (this.AttributeValues != null)
                     hash = hash * 59 + this.AttributeValues.GetHashCode();
@@ -274,6 +283,12 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.BankAccountInformation != null)
                     hash = hash * 59 + this.BankAccountInformation.GetHashCode();
+
+                if (this.PreAuthorization != null)
+                    hash = hash * 59 + this.PreAuthorization.GetHashCode();
+
+                if (this.AuthorizationId != null)
+                    hash = hash * 59 + this.AuthorizationId.GetHashCode();
 
                 if (this.SendReceipt != null)
                     hash = hash * 59 + this.SendReceipt.GetHashCode();

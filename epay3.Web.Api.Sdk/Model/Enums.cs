@@ -144,7 +144,11 @@ namespace epay3.Web.Api.Sdk.Model
 
         [EnumMember(Value = "InvalidToken")]
         // The payment token is invalid.
-        InvalidToken
+        InvalidToken,
+
+        [EnumMember(Value = "InvalidAuthorization")]
+        // The authorization is invalid.
+        InvalidAuthorization
     }
 
     /// <summary>

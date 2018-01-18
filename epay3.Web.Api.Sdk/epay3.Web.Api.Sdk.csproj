@@ -68,6 +68,8 @@
     <Compile Include="Model\GetPaymentScheduleResponseModel.cs" />
     <Compile Include="Model\GetTokenResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />
+    <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
+    <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />
     <Compile Include="Model\PostPaymentScheduleRequestModel.cs" />
     <Compile Include="Model\PostRefundTransactionRequestModel.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="Model\PostVoidTransactionRequestModel.cs" />
     <Compile Include="Model\PostVoidTransactionResponseModel.cs" />
     <Compile Include="Model\PostTransactionResponseModel.cs" />
+    <Compile Include="Model\PreAuthorizationModel.cs" />
     <Compile Include="Model\TransactionEventModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
