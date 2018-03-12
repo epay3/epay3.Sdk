@@ -158,6 +158,7 @@ namespace epay3.Web.Api.Tests
 
             // Should return a valid Id.
             Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
             // Should get the transaction even when impersonation is off.
             Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, null));
