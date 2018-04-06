@@ -55,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PublicKeyFixture.cs" />
     <Compile Include="TestApiSettings.cs" />
     <Compile Include="TokenPageSessionsFixture.cs" />
     <Compile Include="PaymentPageSessionsFixture.cs" />

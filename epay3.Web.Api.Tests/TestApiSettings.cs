@@ -26,6 +26,14 @@
             }
         }
 
+        public static string PublicKey
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["ApiPublicKey"];
+            }
+        }
+
         public static string ImpersonationAccountKey
         {
             get
