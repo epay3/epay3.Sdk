@@ -1,0 +1,123 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>epay3 Sample Application</title>
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <!-- TODO: Replace this with the live JS reference for production -->
+    <script src="https://api-sandbox.epaypolicy.com/scripts/client-side.js"></script>
+    <meta name="viewport" content="width=device-width" />
+
+    <script type="text/javascript">
+        $().ready(function () {
+            $("form").submit(function (e) {
+                e.preventDefault(e);
+
+                var $inputs = $('#createToken :input');
+                var formValues = {};
+
+                $inputs.each(function () {
+                    formValues[this.name] = $(this).val();
+                });
+
+                var postTokenRequestModel = {
+                    payer: formValues['payer'],
+                    emailAddress: formValues['emailAddress'],
+                    creditCardInformation: {
+                        accountHolder: formValues['accountHolder'],
+                        cardNumber: formValues['cardNumber'],
+                        month: formValues['month'],
+                        year: formValues['year'],
+                        cvc: formValues['cvc'],
+                        postalCode: formValues['postalCode']
+                    }
+                };
+
+                postToken(
+                    // TODO: Replace the lines below with production settings
+                    'https://api-sandbox.epaypolicy.com/api/v1/tokens',
+                    '82604ac77dee40b5ae8fceea7ef12d3',
+                    null,
+                    postTokenRequestModel
+                );
+            });
+        });
+
+        function tokenResponseCallback(postTokenResponseModel) {
+            if (postTokenResponseModel.success) {
+                $('#response').text('Token Id: ' + postTokenResponseModel.id);
+            } else {
+                $('#response').text('Error: ' + postTokenResponseModel.errorMessage);
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title"><a href="/">epay3 Sample Application</a></p>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        <section class="content-wrapper main-content clear-fix">
+            <form method="post" id="createToken" name="createToken">
+                <fieldset>
+                    <legend>Password Reset Instructions Form</legend>
+                    <ol>
+                        <li>
+                            <label for="name">Payer</label>
+                            <input type="text" id="payer" name="payer" value="ACME Corp" />
+                        </li>
+                        <li>
+                            <label for="emailAddress">Email address</label>
+                            <input type="text" id="emailAddress" name="emailAddress" value="john@example.com" />
+                        </li>
+                        <li>
+                            <label for="accountHolder">Account Holder</label>
+                            <input type="text" id="accountHolder" name="accountHolder" value="John Smith" />
+                        </li>
+                        <li>
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" name="cardNumber" value="4242424242424242" />
+                        </li>
+                        <li>
+                            <label for="month">Month</label>
+                            <input type="text" id="month" name="month" value="12" />
+                        </li>
+                        <li>
+                            <label for="year">Year</label>
+                            <input type="text" id="year" name="year" value="2022" />
+                        </li>
+                        <li>
+                            <label for="cvc">CVC</label>
+                            <input type="text" id="cvc" name="cvc" value="123" />
+                        </li>
+                        <li>
+                            <label for="postalCode">Postal Code</label>
+                            <input type="text" id="postalCode" name="postalCode" value="78701" />
+                        </li>
+                    </ol>
+                    <p class="form-actions">
+                        <input type="submit" value="Save" name="save" id="save" />
+                    </p>
+                </fieldset>
+            </form>
+            <label id="response"></label>
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; 2018 - epay3, Inc</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,11 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "epay3.Web.Api.Sdk", "epay3.Web.Api.Sdk\epay3.Web.Api.Sdk.csproj", "{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "epay3.Web.Api.Tests", "epay3.Web.Api.Tests\epay3.Web.Api.Tests.csproj", "{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "epay3.Web.Sample", "epay3.Web.Sample\", "{646DC400-9561-4942-AC88-9AF8654FB7E8}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_64603"
+		Debug.AspNetCompiler.PhysicalPath = "epay3.Web.Sample\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64603\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_64603"
+		Release.AspNetCompiler.PhysicalPath = "epay3.Web.Sample\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64603\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "64603"
+		SlnRelativePath = "epay3.Web.Sample\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +43,15 @@ Global
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0490FFD-ECF7-4290-9B96-B59E630DB913}
 	EndGlobalSection
 EndGlobal
