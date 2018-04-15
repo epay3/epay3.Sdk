@@ -224,7 +224,9 @@ namespace epay3.Web.Api.Tests
                 {
                     AccountHolder = "John Doe",
                     CardNumber = "4457119922390123",
-                    Cvc = "123"
+                    Cvc = "123",
+                    Month = 12,
+                    Year = System.DateTime.Now.Year + 1
                 }
             };
 
