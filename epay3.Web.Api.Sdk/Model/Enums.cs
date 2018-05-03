@@ -227,6 +227,12 @@ namespace epay3.Web.Api.Sdk.Model
         Send,
 
         [EnumMember(Value = "Debit")]
-        Debit
+        Debit,
+
+        [EnumMember(Value = "Authorize")]
+        Authorize,
+
+        [EnumMember(Value = "Capture")]
+        Capture
     }
 }
