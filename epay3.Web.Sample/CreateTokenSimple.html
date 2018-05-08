@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Demo Broker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--
+    <script src="//api.epaypolicy.com/scripts/client-side.js"></script>
+    -->
+    <script src="//api-sandbox.epaypolicy.com/scripts/client-side.js"></script>
+
+    <script type="text/javascript">
+        var publicKey = '82604ac77dee40b5ae8fceea7ef12d3';
+        var impersonationAccountKey = null;
+        // Production or Sandbox
+        var mode = 'Sandbox';
+
+        configureTokenForm(publicKey, impersonationAccountKey, 'sandbox.epaypolicy.com', mode);
+
+        function tokenResponseCallback(postTokenResponseModel) {
+            if (postTokenResponseModel.success) {
+                $('#response').text('Token Id: ' + postTokenResponseModel.id);
+            } else {
+                $('#response').text('Error: ' + postTokenResponseModel.errorMessage);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="main-wrapper container">
+        <form method="post" id="createTokenForm" name="createTokenForm">
+        </form>
+    </div>
+</body>
+</html>
