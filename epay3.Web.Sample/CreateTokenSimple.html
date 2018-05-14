@@ -16,7 +16,7 @@
         // Production or Sandbox
         var mode = 'Sandbox';
 
-        configureTokenForm(publicKey, impersonationAccountKey, 'sandbox.epaypolicy.com', mode);
+        configureTokenForm(publicKey, impersonationAccountKey, 'sandbox.epaypolicy.com', mode, tokenResponseCallback);
 
         function tokenResponseCallback(postTokenResponseModel) {
             if (postTokenResponseModel.success) {
