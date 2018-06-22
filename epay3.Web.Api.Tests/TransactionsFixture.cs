@@ -28,30 +28,6 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Fail_To_Authorize_With_Invalid_Credentials()
-        {
-            try
-            {
-                var postTransactionRequestModel = new PostTransactionRequestModel
-                {
-                    Payer = "John Doe",
-                    EmailAddress = "jsmith@example.com",
-                    Amount = 100
-                };
-
-                _transactionsApi.Configuration.DefaultHeader["Authorization"] = null;
-
-                _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
-
-                Assert.Fail();
-            }
-            catch (ApiException apiException)
-            {
-                Assert.AreEqual(401, apiException.ErrorCode);
-            }
-        }
-
-        [TestMethod]
         public void Should_Successfully_Process_And_Void_Credit_Card()
         {
             var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);

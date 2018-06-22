@@ -62,25 +62,5 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.IsNotNull(id);
         }
-
-        [TestMethod]
-        public void Should_Fail_With_An_Invalid_Processing_Account_Id()
-        {
-            var postTokenPageSessionRequestModel = new PostTokenPageSessionRequestModel
-            {
-
-            };
-
-            try
-            {
-                var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, "INVALID KEY");
-
-                Assert.Fail();
-            }
-            catch(ApiException exception)
-            {
-                Assert.AreEqual(401, exception.ErrorCode);
-            }
-        }
     }
 }
