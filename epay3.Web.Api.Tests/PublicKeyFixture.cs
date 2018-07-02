@@ -38,7 +38,8 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4457119922390123",
                     Cvc = "123",
                     Month = 12,
-                    Year = System.DateTime.Now.Year
+                    Year = System.DateTime.Now.Year,
+                    PostalCode = "54321"
                 }
             };
 
@@ -73,7 +74,8 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4457119922390123",
                     Cvc = "123",
                     Month = 12,
-                    Year = System.DateTime.Now.Year
+                    Year = System.DateTime.Now.Year,
+                    PostalCode = "54321"
                 }
             };
 
@@ -110,7 +112,8 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4242424242424242",
                     Cvc = "123",
                     Month = 12,
-                    Year = System.DateTime.Now.Year + 2
+                    Year = System.DateTime.Now.Year + 2,
+                    PostalCode = "54321"
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",

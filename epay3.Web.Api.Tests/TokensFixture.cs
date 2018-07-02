@@ -95,7 +95,8 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4457119922390123",
                     Cvc = "123",
                     Month = 12,
-                    Year = System.DateTime.Now.Year
+                    Year = System.DateTime.Now.Year,
+                    PostalCode = "54321"
                 }
             };
 
@@ -180,7 +181,8 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4457119922390123",
                     Cvc = "123",
                     Month = 12,
-                    Year = System.DateTime.Now.Year
+                    Year = System.DateTime.Now.Year,
+                    PostalCode = "54321"
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "parameter1", "parameter value 1" }, { "parameter2", "parameter value 2" } }
             };
@@ -226,7 +228,8 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4457119922390123",
                     Cvc = "123",
                     Month = 12,
-                    Year = System.DateTime.Now.Year + 1
+                    Year = System.DateTime.Now.Year + 1,
+                    PostalCode = "54321"
                 }
             };
 
