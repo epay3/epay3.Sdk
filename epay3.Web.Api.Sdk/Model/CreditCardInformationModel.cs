@@ -45,6 +45,13 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>Year of card expiration.</value>
         [DataMember(Name="year", EmitDefaultValue=false)]
         public int? Year { get; set; }
+
+        /// <summary>
+        /// Postal Code for the credit card.
+        /// </summary>
+        /// <value>Postal Code for the credit card.</value>
+        [DataMember(Name="postalCode", EmitDefaultValue=false)]
+        public string PostalCode { get; set; }
     
         /// <summary>
         /// Returns the string presentation of the object
@@ -59,7 +66,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  Cvc: ").Append(Cvc).Append("\n");
             sb.Append("  Month: ").Append(Month).Append("\n");
             sb.Append("  Year: ").Append(Year).Append("\n");
-            
+            sb.Append("  PostalCode: ").Append(PostalCode).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -120,6 +127,10 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Year == other.Year ||
                     this.Year != null &&
                     this.Year.Equals(other.Year)
+                ) &&
+                (
+                    this.PostalCode == other.PostalCode ||
+                    this.PostalCode.Equals(other.PostalCode)
                 );
         }
 
@@ -149,6 +160,9 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.Year != null)
                     hash = hash * 59 + this.Year.GetHashCode();
+
+                if (string.IsNullOrWhiteSpace(this.PostalCode))
+                    hash = hash * 59 + this.PostalCode.GetHashCode();
                 
                 return hash;
             }
