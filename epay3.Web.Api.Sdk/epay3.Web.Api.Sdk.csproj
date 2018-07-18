@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\PayerFeeApi.cs" />
     <Compile Include="Api\PaymentSchedulesApi.cs" />
     <Compile Include="Api\TokenPageSessionsApi.cs" />
     <Compile Include="Api\PaymentPageSessionsApi.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="Model\GetPaymentScheduleResponseModel.cs" />
     <Compile Include="Model\GetTokenResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />
+    <Compile Include="Model\PayerFeeRequestModel.cs" />
+    <Compile Include="Model\PayerFeeResponseModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />
