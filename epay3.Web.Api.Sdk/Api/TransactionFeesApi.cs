@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 
 namespace epay3.Web.Api.Sdk.Api
 {
-    public interface IPayerFeeApi
+    public interface ITransactionFeesApi
     {
         /// <summary>
-        /// Creates a temporary "session" with parameters so that the user can be forwarded to the payment page with this context.
+        /// Creates a temporary "session" with parameters so that the transaction fees can be calculated outside the scope of a transaction.
         /// </summary>
-        /// <param name="payerFeeRequestModel">Contains the parameters for payer fee request.</param>
+        /// <param name="postTransactionFeesRequestModel">Contains the parameters for transaction fees request.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        PayerFeeResponseModel PayerFeePost(PayerFeeRequestModel payerFeeRequestModel, string impersonationAccountKey);
+        PostTransactionFeesResponseModel TransactionFeesPost(PostTransactionFeesRequestModel postTransactionFeesRequestModel, string impersonationAccountKey);
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public class PayerFeeApi : IPayerFeeApi
+    public class TransactionFeesApi : ITransactionFeesApi
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PayerFeeApi"/> class.
+        /// Initializes a new instance of the <see cref="TransactionFeesApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public PayerFeeApi(String basePath)
+        public TransactionFeesApi(String basePath)
         {
             this.Configuration = new Configuration(new ApiClient(basePath));
 
@@ -45,7 +45,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public PayerFeeApi(Configuration configuration = null)
+        public TransactionFeesApi(Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
                 this.Configuration = Configuration.Default;
@@ -109,15 +109,15 @@ namespace epay3.Web.Api.Sdk.Api
         /// <summary>
         /// Creates a temporary "session" with parameters so that the user can be forwarded to the payment page with this context.
         /// </summary>
-        /// <param name="payerFeeRequestModel">Contains the details from which to calculate the payer fees.</param>
+        /// <param name="postTransactionFeesRequestModel">Contains the details from which to calculate the payer fees.</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        public PayerFeeResponseModel PayerFeePost(PayerFeeRequestModel payerFeeRequestModel, string impersonationAccountKey)
+        public PostTransactionFeesResponseModel TransactionFeesPost(PostTransactionFeesRequestModel postTransactionFeesRequestModel, string impersonationAccountKey)
         {
             // verify the required parameter 'postPaymentPageSessionRequestModel' is set
-            if (payerFeeRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postPaymentPageSessionRequestModel' when calling PaymentPageSessionsApi->PaymentPageSessionsPost");
+            if (postTransactionFeesRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postTransactionFeesRequestModel' when calling TransactionFeesApi->TransactionFeesPost");
 
-            var localVarPath = "/api/v1/PayerFee";
+            var localVarPath = "/api/v1/TransactionFees";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -145,13 +145,13 @@ namespace epay3.Web.Api.Sdk.Api
 
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
-            if (payerFeeRequestModel.GetType() != typeof(byte[]))
+            if (postTransactionFeesRequestModel.GetType() != typeof(byte[]))
             {
-                localVarPostBody = Configuration.ApiClient.Serialize(payerFeeRequestModel); // http body (model) parameter
+                localVarPostBody = Configuration.ApiClient.Serialize(postTransactionFeesRequestModel); // http body (model) parameter
             }
             else
             {
-                localVarPostBody = payerFeeRequestModel; // byte array
+                localVarPostBody = postTransactionFeesRequestModel; // byte array
             }
 
             // make the HTTP request
@@ -170,7 +170,7 @@ namespace epay3.Web.Api.Sdk.Api
             else if (localVarStatusCode == 0)
                 throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
-            var responseContent = Newtonsoft.Json.JsonConvert.DeserializeObject<PayerFeeResponseModel>(localVarResponse.Content);
+            var responseContent = Newtonsoft.Json.JsonConvert.DeserializeObject<PostTransactionFeesResponseModel>(localVarResponse.Content);
 
             return responseContent;
         }
