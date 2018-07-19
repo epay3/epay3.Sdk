@@ -8,7 +8,7 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class When_Posting_An_Amount_To_Fee
     {
-        private PayerFeeApi _payerFeeApi;
+        private TransactionFeesApi _payerFeeApi;
         private TokensApi _tokensApi;
 
         [TestInitialize]
@@ -16,7 +16,7 @@ namespace epay3.Web.Api.Tests
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _payerFeeApi = new PayerFeeApi(TestApiSettings.Uri);
+            _payerFeeApi = new TransactionFeesApi(TestApiSettings.Uri);
             _tokensApi = new TokensApi(TestApiSettings.Uri);
 
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
@@ -28,16 +28,12 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void ShouldReturnValues()
         {
-            var request = new PayerFeeRequestModel()
-            {
-                Amount = 5.3m
-            };
+            var request = new PostTransactionFeesRequestModel(5.3m);
+            var response = _payerFeeApi.TransactionFeesPost(request, null);
 
-            var response = _payerFeeApi.PayerFeePost(request, null);
-
-            Assert.IsInstanceOfType(response, typeof(PayerFeeResponseModel));
-            Assert.IsNotNull(response.AchFee);
-            Assert.IsNotNull(response.CreditCardFee);
+            Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
+            Assert.IsNotNull(response.AchPayerFee);
+            Assert.IsNotNull(response.CreditCardPayerFee);
         }
     }
 }
