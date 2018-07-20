@@ -55,7 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="PayerFeeFixture.cs" />
+    <Compile Include="TransactionFeesFixture.cs" />
     <Compile Include="PublicKeyFixture.cs" />
     <Compile Include="TestApiSettings.cs" />
     <Compile Include="TokenPageSessionsFixture.cs" />

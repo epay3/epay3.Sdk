@@ -8,7 +8,7 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class When_Posting_An_Amount_To_Fee
     {
-        private TransactionFeesApi _payerFeeApi;
+        private TransactionFeesApi _transactionFeesApi;
         private TokensApi _tokensApi;
 
         [TestInitialize]
@@ -16,12 +16,12 @@ namespace epay3.Web.Api.Tests
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _payerFeeApi = new TransactionFeesApi(TestApiSettings.Uri);
+            _transactionFeesApi = new TransactionFeesApi(TestApiSettings.Uri);
             _tokensApi = new TokensApi(TestApiSettings.Uri);
 
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
-            _payerFeeApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            _transactionFeesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
@@ -29,7 +29,18 @@ namespace epay3.Web.Api.Tests
         public void ShouldReturnValues()
         {
             var request = new PostTransactionFeesRequestModel(5.3m);
-            var response = _payerFeeApi.TransactionFeesPost(request, null);
+            var response = _transactionFeesApi.TransactionFeesPost(request, null);
+
+            Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
+            Assert.IsNotNull(response.AchPayerFee);
+            Assert.IsNotNull(response.CreditCardPayerFee);
+        }
+
+        [TestMethod]
+        public void ShouldReturnValuesWithImpersonationKey()
+        {
+            var request = new PostTransactionFeesRequestModel(5.3m);
+            var response = _transactionFeesApi.TransactionFeesPost(request, TestApiSettings.ImpersonationAccountKey);
 
             Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
             Assert.IsNotNull(response.AchPayerFee);

@@ -113,11 +113,11 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
         public PostTransactionFeesResponseModel TransactionFeesPost(PostTransactionFeesRequestModel postTransactionFeesRequestModel, string impersonationAccountKey)
         {
-            // verify the required parameter 'postPaymentPageSessionRequestModel' is set
+            // verify the required parameter 'postTransactionFeesRequestModel' is set
             if (postTransactionFeesRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postTransactionFeesRequestModel' when calling TransactionFeesApi->TransactionFeesPost");
 
-            var localVarPath = "/api/v1/TransactionFees";
+            var localVarPath = "/api/v1/transactionFees";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
