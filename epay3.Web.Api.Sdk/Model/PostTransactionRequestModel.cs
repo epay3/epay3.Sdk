@@ -112,6 +112,13 @@ namespace epay3.Web.Api.Sdk.Model
         public double? InitiatingPartyFee { get; set; }
 
         /// <summary>
+        /// The IP Address of the payer.
+        /// </summary>
+        /// <value>The IP Address of the payer.</value>
+        [DataMember(Name = "ipAddress", EmitDefaultValue = false)]
+        public string IpAddress { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -133,6 +140,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  AuthorizationId: ").Append(AuthorizationId).Append("\n");
             sb.Append("  SendReceipt: ").Append(SendReceipt).Append("\n");
             sb.Append("  InitiatingPartyFee: ").Append(InitiatingPartyFee).Append("\n");
+            sb.Append("  IpAddress: ").Append(IpAddress).Append("\n");
 
             sb.Append("}\n");
             return sb.ToString();
@@ -239,6 +247,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.InitiatingPartyFee == other.InitiatingPartyFee ||
                     this.InitiatingPartyFee != null &&
                     this.InitiatingPartyFee.Equals(other.InitiatingPartyFee)
+                ) &&
+                (
+                    this.IpAddress == other.IpAddress ||
+                    this.IpAddress != null &&
+                    this.IpAddress.Equals(other.IpAddress)
                 );
         }
 
@@ -295,6 +308,9 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.InitiatingPartyFee != null)
                     hash = hash * 59 + this.InitiatingPartyFee.GetHashCode();
+
+                if (this.IpAddress != null)
+                    hash = hash * 59 + this.IpAddress.GetHashCode();
 
                 return hash;
             }

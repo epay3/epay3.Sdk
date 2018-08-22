@@ -75,7 +75,8 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 TokenId = CreateToken(null),
                 Interval = IntervalType.Day,
-                IntervalCount = 1
+                IntervalCount = 1,
+                IpAddress = "127.0.0.1"
             };
 
             var paymentScheduleId = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, null);
@@ -105,7 +106,8 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 TokenId = tokenIdWithImpersonation,
                 Interval = IntervalType.Day,
-                IntervalCount = 1
+                IntervalCount = 1,
+                IpAddress = "127.0.0.1"
             };
 
             var paymentScheduleId = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, TestApiSettings.ImpersonationAccountKey);
@@ -156,7 +158,8 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 TokenId = tokenIdWithImpersonation,
                 Interval = IntervalType.Day,
-                IntervalCount = 1
+                IntervalCount = 1,
+                IpAddress = "127.0.0.1"
             };
 
             try
@@ -177,7 +180,8 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 TokenId = tokenId,
                 Interval = IntervalType.Day,
-                IntervalCount = 1
+                IntervalCount = 1,
+                IpAddress = "127.0.0.1"
             };
 
             try
