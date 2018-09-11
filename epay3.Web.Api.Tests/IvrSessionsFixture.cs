@@ -28,7 +28,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Return_An_Id_Upon_Success_With_No_Impersonation_Key()
+        public void Should_Return_Successfully_With_No_Impersonation_Key()
         {
             var postTokenPageSessionRequestModel = new PostIvrSessionRequestModel
             {
@@ -48,7 +48,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Return_An_Id_Upon_Success_With_An_Impersonation_Key()
+        public void Should_Return_Successfully_With_An_Impersonation_Key()
         {
             var postTokenPageSessionRequestModel = new PostIvrSessionRequestModel
             {
