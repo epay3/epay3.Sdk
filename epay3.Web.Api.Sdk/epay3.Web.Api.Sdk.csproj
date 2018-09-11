@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\TransactionFeesApi.cs" />
+    <Compile Include="Api\IvrSessionsApi.cs" />
     <Compile Include="Api\PaymentSchedulesApi.cs" />
     <Compile Include="Api\TokenPageSessionsApi.cs" />
     <Compile Include="Api\PaymentPageSessionsApi.cs" />
@@ -71,6 +72,8 @@
     <Compile Include="Model\GetTransactionResponseModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
+    <Compile Include="Model\PostIvrSessionRequestModel.cs" />
+    <Compile Include="Model\PostIvrSessionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />
     <Compile Include="Model\PostPaymentScheduleRequestModel.cs" />
     <Compile Include="Model\PostRefundTransactionRequestModel.cs" />
