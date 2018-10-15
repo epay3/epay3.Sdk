@@ -105,8 +105,16 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.IsTrue(!string.IsNullOrWhiteSpace(id));
 
-            // Should successfully delete a token.
-            Assert.IsTrue(_tokensApi.TokensDelete(id));
+            // Should fail to delete an in-use token.
+            try
+            {
+                _tokensApi.TokensDelete(id);
+            }
+            catch (ApiException e)
+            {
+                if (e.Message != "The token does not exist or is in use by an unprocessed payment.")
+                    Assert.Fail();
+            }
         }
 
         [TestMethod]
@@ -130,9 +138,6 @@ namespace epay3.Web.Api.Tests
 
             // Should return a valid Id.
             Assert.IsTrue(!string.IsNullOrWhiteSpace(id));
-
-            // Should successfully delete a token.
-            Assert.IsTrue(_tokensApi.TokensDelete(id));
         }
 
         [TestMethod]
