@@ -15,36 +15,19 @@ namespace epay3.Web.Api.Sdk.Model
     /// 
     /// </summary>
     [DataContract]
-    public partial class PostTransactionFeesRequestModel :  IEquatable<PostTransactionFeesRequestModel>
+    public partial class GetTransactionFeesResponseModel :  IEquatable<GetTransactionFeesResponseModel>
     { 
+        /// <summary>
+        /// Gets or Sets AchPayerFee
+        /// </summary>
+        [DataMember(Name="achPayerFee", EmitDefaultValue=false)]
+        public decimal AchPayerFee { get; set; }
     
         /// <summary>
-        /// Initializes a new instance of the <see cref="PostTransactionFeesRequestModel" /> class.
-        /// Initializes a new instance of the <see cref="PostTransactionFeesRequestModel" />class.
+        /// Gets or Sets CreditCardPayerFee
         /// </summary>
-        /// <param name="Amount">The amount from which to calculate the payer fee. (required).</param>
-
-        public PostTransactionFeesRequestModel(decimal? Amount = null)
-        {
-            // to ensure "Amount" is required (not null)
-            if (Amount == null)
-            {
-                throw new InvalidDataException("Amount is a required property for PostTransactionFeesRequestModel and cannot be null");
-            }
-            else
-            {
-                this.Amount = Amount.Value;
-            }
-            
-        }
-        
-    
-        /// <summary>
-        /// The amount from which to calculate the payer fee.
-        /// </summary>
-        /// <value>The amount from which to calculate the payer fee.</value>
-        [DataMember(Name="amount", EmitDefaultValue=false)]
-        public decimal Amount { get; set; }
+        [DataMember(Name="creditCardPayerFee", EmitDefaultValue=false)]
+        public decimal CreditCardPayerFee { get; set; }
     
         /// <summary>
         /// Returns the string presentation of the object
@@ -53,8 +36,9 @@ namespace epay3.Web.Api.Sdk.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PostTransactionFeesRequestModel {\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("class GetTransactionFeesResponseModel {\n");
+            sb.Append("  AchPayerFee: ").Append(AchPayerFee).Append("\n");
+            sb.Append("  CreditCardPayerFee: ").Append(CreditCardPayerFee).Append("\n");
             
             sb.Append("}\n");
             return sb.ToString();
@@ -77,15 +61,15 @@ namespace epay3.Web.Api.Sdk.Model
         public override bool Equals(object obj)
         {
             // credit: http://stackoverflow.com/a/10454552/677735
-            return this.Equals(obj as PostTransactionFeesRequestModel);
+            return this.Equals(obj as GetTransactionFeesResponseModel);
         }
 
         /// <summary>
-        /// Returns true if PostTransactionFeesRequestModel instances are equal
+        /// Returns true if GetTransactionFeesResponseModel instances are equal
         /// </summary>
-        /// <param name="other">Instance of PostTransactionFeesRequestModel to be compared</param>
+        /// <param name="other">Instance of GetTransactionFeesResponseModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PostTransactionFeesRequestModel other)
+        public bool Equals(GetTransactionFeesResponseModel other)
         {
             // credit: http://stackoverflow.com/a/10454552/677735
             if (other == null)
@@ -93,9 +77,12 @@ namespace epay3.Web.Api.Sdk.Model
 
             return 
                 (
-                    this.Amount == other.Amount ||
-                    this.Amount != null &&
-                    this.Amount.Equals(other.Amount)
+                    this.AchPayerFee == other.AchPayerFee ||
+                    this.AchPayerFee.Equals(other.AchPayerFee)
+                ) && 
+                (
+                    this.CreditCardPayerFee == other.CreditCardPayerFee ||
+                    this.CreditCardPayerFee.Equals(other.CreditCardPayerFee)
                 );
         }
 
@@ -111,8 +98,9 @@ namespace epay3.Web.Api.Sdk.Model
                 int hash = 41;
                 // Suitable nullity checks etc, of course :)
                 
-                if (this.Amount != null)
-                    hash = hash * 59 + this.Amount.GetHashCode();
+                hash = hash * 59 + this.AchPayerFee.GetHashCode();
+                
+                hash = hash * 59 + this.CreditCardPayerFee.GetHashCode();
                 
                 return hash;
             }

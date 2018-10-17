@@ -28,10 +28,9 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void ShouldReturnValues()
         {
-            var request = new PostTransactionFeesRequestModel(5.3m);
-            var response = _transactionFeesApi.TransactionFeesPost(request, null);
+            var response = _transactionFeesApi.TransactionFeesGet(5.3m, null, null);
 
-            Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
+            Assert.IsInstanceOfType(response, typeof(GetTransactionFeesResponseModel));
             Assert.IsNotNull(response.AchPayerFee);
             Assert.IsNotNull(response.CreditCardPayerFee);
         }
@@ -39,10 +38,9 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void ShouldReturnValuesWithImpersonationKey()
         {
-            var request = new PostTransactionFeesRequestModel(5.3m);
-            var response = _transactionFeesApi.TransactionFeesPost(request, TestApiSettings.ImpersonationAccountKey);
+            var response = _transactionFeesApi.TransactionFeesGet(5.3m, null, TestApiSettings.ImpersonationAccountKey);
 
-            Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
+            Assert.IsInstanceOfType(response, typeof(GetTransactionFeesResponseModel));
             Assert.IsNotNull(response.AchPayerFee);
             Assert.IsNotNull(response.CreditCardPayerFee);
         }
