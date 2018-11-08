@@ -156,7 +156,14 @@ namespace epay3.Web.Api.Sdk.Api
             localVarPathParams.Add("format", "json");
 
             if (amount != null) localVarQueryParams.Add("amount", Configuration.ApiClient.ParameterToString(amount)); // query parameter
-            if (attributeValues != null) localVarQueryParams.Add("attributeValues", Configuration.ApiClient.ParameterToString(JsonConvert.SerializeObject(attributeValues))); // query parameter
+
+            if (attributeValues != null)
+            {
+                foreach (var attributeValue in attributeValues)
+                {
+                    localVarQueryParams.Add(attributeValue.Key, attributeValue.Value); // query parameter
+                }
+            }
             
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
