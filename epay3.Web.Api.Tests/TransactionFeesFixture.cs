@@ -1,6 +1,7 @@
 ﻿using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Net;
 
 namespace epay3.Web.Api.Tests
@@ -28,10 +29,9 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void ShouldReturnValues()
         {
-            var request = new PostTransactionFeesRequestModel(5.3m);
-            var response = _transactionFeesApi.TransactionFeesPost(request, null);
+            var response = _transactionFeesApi.TransactionFeesGet(5.3m, null, null);
 
-            Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
+            Assert.IsInstanceOfType(response, typeof(GetTransactionFeesResponseModel));
             Assert.IsNotNull(response.AchPayerFee);
             Assert.IsNotNull(response.CreditCardPayerFee);
         }
@@ -39,10 +39,23 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void ShouldReturnValuesWithImpersonationKey()
         {
-            var request = new PostTransactionFeesRequestModel(5.3m);
-            var response = _transactionFeesApi.TransactionFeesPost(request, TestApiSettings.ImpersonationAccountKey);
+            var response = _transactionFeesApi.TransactionFeesGet(5.3m, null, TestApiSettings.ImpersonationAccountKey);
 
-            Assert.IsInstanceOfType(response, typeof(PostTransactionFeesResponseModel));
+            Assert.IsInstanceOfType(response, typeof(GetTransactionFeesResponseModel));
+            Assert.IsNotNull(response.AchPayerFee);
+            Assert.IsNotNull(response.CreditCardPayerFee);
+        }
+
+        [TestMethod]
+        public void ShouldReturnValuesEvenWithAttributeValues()
+        {
+            var attributeValues = new Dictionary<string, string>();
+            attributeValues.Add("accountCode", "123");
+            attributeValues.Add("postalCode", "55555");
+
+            var response = _transactionFeesApi.TransactionFeesGet(5.3m, attributeValues, null);
+
+            Assert.IsInstanceOfType(response, typeof(GetTransactionFeesResponseModel));
             Assert.IsNotNull(response.AchPayerFee);
             Assert.IsNotNull(response.CreditCardPayerFee);
         }

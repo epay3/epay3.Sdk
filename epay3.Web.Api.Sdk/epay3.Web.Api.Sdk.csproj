@@ -50,12 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\TransactionFeesApi.cs" />
     <Compile Include="Api\IvrSessionsApi.cs" />
     <Compile Include="Api\PaymentSchedulesApi.cs" />
     <Compile Include="Api\TokenPageSessionsApi.cs" />
     <Compile Include="Api\PaymentPageSessionsApi.cs" />
     <Compile Include="Api\TokensApi.cs" />
+    <Compile Include="Api\TransactionFeesApi.cs" />
     <Compile Include="Api\TransactionsApi.cs" />
     <Compile Include="Client\ApiClient.cs" />
     <Compile Include="Client\ApiException.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="Model\ErrorResponseModel.cs" />
     <Compile Include="Model\GetPaymentScheduleResponseModel.cs" />
     <Compile Include="Model\GetTokenResponseModel.cs" />
+    <Compile Include="Model\GetTransactionFeesResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
@@ -80,8 +81,6 @@
     <Compile Include="Model\PostRefundTransactionResponseModel.cs" />
     <Compile Include="Model\PostTokenPageSessionRequestModel.cs" />
     <Compile Include="Model\PostTokenRequestModel.cs" />
-    <Compile Include="Model\PostTransactionFeesRequestModel.cs" />
-    <Compile Include="Model\PostTransactionFeesResponseModel.cs" />
     <Compile Include="Model\PostTransactionRequestModel.cs" />
     <Compile Include="Model\PostVoidTransactionRequestModel.cs" />
     <Compile Include="Model\PostVoidTransactionResponseModel.cs" />

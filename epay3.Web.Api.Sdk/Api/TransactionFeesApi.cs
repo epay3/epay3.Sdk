@@ -1,22 +1,33 @@
-﻿using epay3.Web.Api.Sdk.Client;
-using epay3.Web.Api.Sdk.Model;
-using RestSharp;
 using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RestSharp;
+using epay3.Web.Api.Sdk.Client;
+using epay3.Web.Api.Sdk.Model;
+using Newtonsoft.Json;
 
 namespace epay3.Web.Api.Sdk.Api
 {
+    
+    /// <summary>
+    /// Represents a collection of functions to interact with the API endpoints
+    /// </summary>
     public interface ITransactionFeesApi
     {
         /// <summary>
-        /// Creates a temporary "session" with parameters so that the transaction fees can be calculated outside the scope of a transaction.
+        /// Calculates and returns transaction fees for a given subtotal amount based on the account.
         /// </summary>
-        /// <param name="postTransactionFeesRequestModel">Contains the parameters for transaction fees request.</param>
-        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        PostTransactionFeesResponseModel TransactionFeesPost(PostTransactionFeesRequestModel postTransactionFeesRequestModel, string impersonationAccountKey);
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="amount">Subtotal from which to calculate the transaction fees.</param>
+        /// <param name="attributeValues">Attribute Values dictionary, serialized. (optional)</param>
+        /// <param name="impersonationAccountKey"> (optional, default to )</param>
+        /// <returns>GetTransactionFeesResponseModel</returns>
+        GetTransactionFeesResponseModel TransactionFeesGet(decimal amount, Dictionary<string, string> attributeValues = null, string impersonationAccountKey = null);
     }
 
     /// <summary>
@@ -40,7 +51,7 @@ namespace epay3.Web.Api.Sdk.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PaymentPageSessionsApi"/> class
+        /// Initializes a new instance of the <see cref="TransactionFeesApi"/> class
         /// using Configuration object
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
@@ -107,17 +118,18 @@ namespace epay3.Web.Api.Sdk.Api
         }
 
         /// <summary>
-        /// Creates a temporary "session" with parameters so that the user can be forwarded to the payment page with this context.
+        /// Calculates and returns transaction fees for a given subtotal amount based on the account. 
         /// </summary>
-        /// <param name="postTransactionFeesRequestModel">Contains the details from which to calculate the payer fees.</param>
-        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
-        public PostTransactionFeesResponseModel TransactionFeesPost(PostTransactionFeesRequestModel postTransactionFeesRequestModel, string impersonationAccountKey)
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="amount">Subtotal from which to calculate the transaction fees.</param> 
+        /// <param name="attributeValues">Attribute Values dictionary, serialized. (optional)</param> 
+        /// <param name="impersonationAccountKey"> (optional, default to )</param> 
+        /// <returns>ApiResponse of GetTransactionFeesResponseModel</returns>
+        public GetTransactionFeesResponseModel TransactionFeesGet (decimal amount, Dictionary<string, string> attributeValues = null, string impersonationAccountKey = null)
         {
-            // verify the required parameter 'postTransactionFeesRequestModel' is set
-            if (postTransactionFeesRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postTransactionFeesRequestModel' when calling TransactionFeesApi->TransactionFeesPost");
-
+            
             var localVarPath = "/api/v1/transactionFees";
+    
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -127,7 +139,7 @@ namespace epay3.Web.Api.Sdk.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded"
+                
             };
             String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
@@ -143,36 +155,34 @@ namespace epay3.Web.Api.Sdk.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
 
+            if (amount != null) localVarQueryParams.Add("amount", Configuration.ApiClient.ParameterToString(amount)); // query parameter
+
+            if (attributeValues != null)
+            {
+                foreach (var attributeValue in attributeValues)
+                {
+                    localVarQueryParams.Add(attributeValue.Key, attributeValue.Value); // query parameter
+                }
+            }
+            
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
-            if (postTransactionFeesRequestModel.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = Configuration.ApiClient.Serialize(postTransactionFeesRequestModel); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = postTransactionFeesRequestModel; // byte array
-            }
-
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+            IRestResponse localVarResponse = (IRestResponse) Configuration.ApiClient.CallApi(localVarPath, 
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+    
             if (localVarStatusCode >= 400)
-            {
-                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
-
-                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
-            }
+                throw new ApiException (localVarStatusCode, "Error calling TransactionFeesGet: " + localVarResponse.Content, localVarResponse.Content);
             else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
-
-            var responseContent = Newtonsoft.Json.JsonConvert.DeserializeObject<PostTransactionFeesResponseModel>(localVarResponse.Content);
-
-            return responseContent;
+                throw new ApiException (localVarStatusCode, "Error calling TransactionFeesGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+    
+            return new ApiResponse<GetTransactionFeesResponseModel>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
+                (GetTransactionFeesResponseModel) Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetTransactionFeesResponseModel))).Data;
+            
         }
     }
 }
