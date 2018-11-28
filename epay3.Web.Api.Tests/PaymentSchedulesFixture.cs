@@ -149,6 +149,8 @@ namespace epay3.Web.Api.Tests
         {
             var tokenId = CreateToken(null);
             var tokenIdWithImpersonation = CreateToken(TestApiSettings.ImpersonationAccountKey);
+
+            // Software Platform attempting to use client token without impersonation
             var postPaymentScheduleRequestModel = new PostPaymentScheduleRequestModel
             {
                 Payer = "John Smith",
@@ -170,6 +172,7 @@ namespace epay3.Web.Api.Tests
                 Assert.AreEqual(400, exception.ErrorCode);
             }
 
+            // Software platform to use its own token on behalf of a client. Allowed as of 11/28/2018
             postPaymentScheduleRequestModel = new PostPaymentScheduleRequestModel
             {
                 Payer = "John Smith",
@@ -180,16 +183,8 @@ namespace epay3.Web.Api.Tests
                 IntervalCount = 1
             };
 
-            try
-            {
-                _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, TestApiSettings.ImpersonationAccountKey);
-
-                Assert.Fail();
-            }
-            catch (ApiException exception)
-            {
-                Assert.AreEqual(400, exception.ErrorCode);
-            }
+            var result = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, TestApiSettings.ImpersonationAccountKey);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result));
         }
 
         private string CreateToken(string impersonationKey)
