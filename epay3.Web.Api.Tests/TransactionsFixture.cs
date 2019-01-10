@@ -4,6 +4,7 @@ using epay3.Web.Api.Sdk.Model;
 using epay3.Web.Api.Sdk.Client;
 using System.Net;
 using System.Linq;
+using System;
 
 namespace epay3.Web.Api.Tests
 {
@@ -348,6 +349,36 @@ namespace epay3.Web.Api.Tests
             transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
+        }
+    }
+    [TestClass]
+    public class When_Searching_Transactions
+    {
+        private TransactionsApi _transactionsApi;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Find_Transactions()
+        {
+            // Search results can be iterated through, with each returned transaction coming back in the form of a GetTransactionResponseModel. 
+            var searchResults = _transactionsApi.TransactionsSearch(accountId: 3, beginDate: DateTime.Parse("1/1/2017"), endDate: DateTime.UtcNow, transactionSearchTypeId: TransactionSearchType.Processed, minAmount: -200m, maxAmount: 1000m, pageSize: 5, page: 2);
+            Assert.IsNotNull(searchResults);
+
+            // Additionally, every parameter when searching for transactions is optional.
+            var searchAllResults = _transactionsApi.TransactionsSearch();
+            Assert.IsTrue(searchAllResults.TotalRecords > 0);
+            Assert.IsNotNull(searchAllResults);
         }
     }
 }

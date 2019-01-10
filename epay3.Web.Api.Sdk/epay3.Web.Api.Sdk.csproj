@@ -71,6 +71,7 @@
     <Compile Include="Model\GetTokenResponseModel.cs" />
     <Compile Include="Model\GetTransactionFeesResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />
+    <Compile Include="Model\GetTransactionsResponseModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
     <Compile Include="Model\PostIvrSessionRequestModel.cs" />
