@@ -72,7 +72,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="pageSize">The size of each page. Default is 25, Maximum is 50. (optional)</param>
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param>
         /// <returns>GetTransactionsResponseModel</returns>
-        GetTransactionsResponseModel TransactionsSearch(long? accountId = null, DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null);
+        GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null);
 
         /// <summary>
         /// Creates an authorization on a credit card.
@@ -284,7 +284,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="pageSize">The size of each page. Default is 25, Maximum is 50. (optional)</param> 
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
         /// <returns>GetTransactionsResponseModel</returns>
-        public GetTransactionsResponseModel TransactionsSearch(long? accountId = null, DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
+        public GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
         {
             var localVarPath = "/api/v1/transactions/search";
 
@@ -313,7 +313,6 @@ namespace epay3.Web.Api.Sdk.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
 
-            if (accountId != null) localVarQueryParams.Add("accountId", Configuration.ApiClient.ParameterToString(accountId)); // query parameter
             if (beginDate != null) localVarQueryParams.Add("beginDate", Configuration.ApiClient.ParameterToString(beginDate)); // query parameter
             if (endDate != null) localVarQueryParams.Add("endDate", Configuration.ApiClient.ParameterToString(endDate)); // query parameter
             if (transactionSearchTypeId != null) localVarQueryParams.Add("transactionSearchTypeId", Configuration.ApiClient.ParameterToString(transactionSearchTypeId)); // query parameter
