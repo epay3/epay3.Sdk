@@ -62,7 +62,6 @@ namespace epay3.Web.Api.Sdk.Api
         /// 
         /// </remarks>
         /// <exception cref="epay3.Invoices.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="accountId">The accountId on which to search transactions. (optional)</param>
         /// <param name="beginDate">When filtering by date, the earliest permitted date. Default is 30 days ago. (optional)</param>
         /// <param name="endDate">When filtering by date, the latest permitted date. Default is now. (optional)</param>
         /// <param name="transactionSearchTypeId">The type of transaction search to perform. (optional)</param>
@@ -274,7 +273,6 @@ namespace epay3.Web.Api.Sdk.Api
         /// Retrieves a list of Transactions based on search parameters. 
         /// </summary>
         /// <exception cref="epay3.Invoices.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="accountId">The accountId on which to search transactions. (optional)</param> 
         /// <param name="beginDate">When filtering by date, the earliest permitted date. Default is 30 days ago. (optional)</param> 
         /// <param name="endDate">When filtering by date, the latest permitted date. Default is now. (optional)</param> 
         /// <param name="transactionSearchTypeId">The type of transaction search to perform. (optional)</param> 
