@@ -284,7 +284,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <returns>GetTransactionsResponseModel</returns>
         public GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
         {
-            var localVarPath = "/api/v1/transactions/search";
+            var localVarPath = "/api/v1/transactions";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
