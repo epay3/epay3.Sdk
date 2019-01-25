@@ -85,6 +85,23 @@ namespace epay3.Web.Api.Sdk.Model
     }
 
     /// <summary>
+    /// The type of transaction search to perform
+    /// </summary>
+    /// <value>The interval by which the payments should be run.</value>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum TransactionSearchType
+    {
+        [EnumMember(Value = "Processed")]
+        Processed,
+
+        [EnumMember(Value = "Rejected")]
+        Rejected,
+
+        [EnumMember(Value = "Chargeback")]
+        Chargeback,
+    }
+
+    /// <summary>
     /// Gets or Sets PaymentResponseCode
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]

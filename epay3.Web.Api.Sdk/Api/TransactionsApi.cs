@@ -56,6 +56,24 @@ namespace epay3.Web.Api.Sdk.Api
         PostRefundTransactionResponseModel TransactionsRefund(long id, PostRefundTransactionRequestModel postRefundTransactionRequestModel, string impersonationAccountKey = null);
 
         /// <summary>
+        /// Retrieves a list of Transactions based on search parameters.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="epay3.Invoices.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="beginDate">When filtering by date, the earliest permitted date. Default is 30 days ago. (optional)</param>
+        /// <param name="endDate">When filtering by date, the latest permitted date. Default is now. (optional)</param>
+        /// <param name="transactionSearchTypeId">The type of transaction search to perform. (optional)</param>
+        /// <param name="minAmount">When filtering by amount, the minimum permitted amount. (optional)</param>
+        /// <param name="maxAmount">When filtering by amount, the maximum permitted amount. (optional)</param>
+        /// <param name="page">The page of results to return. (optional)</param>
+        /// <param name="pageSize">The size of each page. Default is 25, Maximum is 50. (optional)</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param>
+        /// <returns>GetTransactionsResponseModel</returns>
+        GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null);
+
+        /// <summary>
         /// Creates an authorization on a credit card.
         /// </summary>
         /// <param name="postAuthorizeTransactionRequestModel">The details of the transaction to be authorized.</param>
@@ -249,6 +267,76 @@ namespace epay3.Web.Api.Sdk.Api
                 Id = long.Parse(id),
                 PaymentResponseCode = PaymentResponseCode.Success
             };
+        }
+
+        /// <summary>
+        /// Retrieves a list of Transactions based on search parameters. 
+        /// </summary>
+        /// <exception cref="epay3.Invoices.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="beginDate">When filtering by date, the earliest permitted date. Default is 30 days ago. (optional)</param> 
+        /// <param name="endDate">When filtering by date, the latest permitted date. Default is now. (optional)</param> 
+        /// <param name="transactionSearchTypeId">The type of transaction search to perform. (optional)</param> 
+        /// <param name="minAmount">When filtering by amount, the minimum permitted amount. (optional)</param> 
+        /// <param name="maxAmount">When filtering by amount, the maximum permitted amount. (optional)</param> 
+        /// <param name="page">The page of results to return. (optional)</param> 
+        /// <param name="pageSize">The size of each page. Default is 25, Maximum is 50. (optional)</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
+        /// <returns>GetTransactionsResponseModel</returns>
+        public GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
+        {
+            var localVarPath = "/api/v1/transactions";
+
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+
+            if (beginDate != null) localVarQueryParams.Add("beginDate", Configuration.ApiClient.ParameterToString(beginDate)); // query parameter
+            if (endDate != null) localVarQueryParams.Add("endDate", Configuration.ApiClient.ParameterToString(endDate)); // query parameter
+            if (transactionSearchTypeId != null) localVarQueryParams.Add("transactionSearchTypeId", Configuration.ApiClient.ParameterToString(transactionSearchTypeId)); // query parameter
+            if (minAmount != null) localVarQueryParams.Add("minAmount", Configuration.ApiClient.ParameterToString(minAmount)); // query parameter
+            if (maxAmount != null) localVarQueryParams.Add("maxAmount", Configuration.ApiClient.ParameterToString(maxAmount)); // query parameter
+            if (page != null) localVarQueryParams.Add("page", Configuration.ApiClient.ParameterToString(page)); // query parameter
+            if (pageSize != null) localVarQueryParams.Add("pageSize", Configuration.ApiClient.ParameterToString(pageSize)); // query parameter
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode >= 400)
+                throw new ApiException(localVarStatusCode, "Error calling TransactionsSearch: " + localVarResponse.Content, localVarResponse.Content);
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, "Error calling TransactionsSearch: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+            return new ApiResponse<GetTransactionsResponseModel>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
+                (GetTransactionsResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetTransactionsResponseModel))).Data;
+
         }
 
         /// <summary>
