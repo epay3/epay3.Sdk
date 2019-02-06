@@ -21,13 +21,6 @@ namespace epay3.Web.Api.Sdk.Model
         public string Payer { get; set; }
 
         /// <summary>
-        /// [Deprecated. Please use the AttributeValues instead.] Unique identifier for the customer.
-        /// </summary>
-        /// <value>[Deprecated. Please use the AttributeValues instead.] Unique identifier for the customer.</value>
-        [DataMember(Name = "customerId", EmitDefaultValue = false)]
-        public string CustomerId { get; set; }
-
-        /// <summary>
         /// Total amount to charge not including any payer fees.
         /// </summary>
         /// <value>Total amount to charge not including any payer fees.</value>
@@ -120,7 +113,6 @@ namespace epay3.Web.Api.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class PostTransactionRequestModel {\n");
             sb.Append("  Payer: ").Append(Payer).Append("\n");
-            sb.Append("  CustomerId: ").Append(CustomerId).Append("\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
             sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
@@ -174,11 +166,6 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Payer == other.Payer ||
                     this.Payer != null &&
                     this.Payer.Equals(other.Payer)
-                ) &&
-                (
-                    this.CustomerId == other.CustomerId ||
-                    this.CustomerId != null &&
-                    this.CustomerId.Equals(other.CustomerId)
                 ) &&
                 (
                     this.Amount == other.Amount ||
@@ -256,9 +243,6 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.Payer != null)
                     hash = hash * 59 + this.Payer.GetHashCode();
-
-                if (this.CustomerId != null)
-                    hash = hash * 59 + this.CustomerId.GetHashCode();
 
                 if (this.Amount != null)
                     hash = hash * 59 + this.Amount.GetHashCode();
