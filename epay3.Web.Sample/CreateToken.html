@@ -15,6 +15,26 @@
 
     <script type="text/javascript">
         $().ready(function () {
+
+            var creditCardPayment = true;
+            var bankAccountType = "PersonalChecking";
+
+            $(".paymentType").change(function () {
+                creditCardPayment = $(this).val() == "creditCard";
+                if (creditCardPayment) {
+                    $('.achPaymentInfo').hide()
+                    $('.creditCardPaymentInfo').show()
+                }
+                else {
+                    $('.achPaymentInfo').show()
+                    $('.creditCardPaymentInfo').hide()
+                }
+            });
+
+            $(".accountType").change(function () {
+                bankAccountType = $(this).val();
+            });
+
             $("form").submit(function (e) {
                 e.preventDefault(e);
 
@@ -25,18 +45,33 @@
                     formValues[this.name] = $(this).val();
                 });
 
-                var postTokenRequestModel = {
-                    payer: formValues['payer'],
-                    emailAddress: formValues['emailAddress'],
-                    creditCardInformation: {
-                        accountHolder: formValues['accountHolder'],
-                        cardNumber: formValues['cardNumber'],
-                        month: formValues['month'],
-                        year: formValues['year'],
-                        cvc: formValues['cvc'],
-                        postalCode: formValues['postalCode']
-                    }
-                };
+                var postTokenRequestModel = null;
+                if (creditCardPayment) {
+                    postTokenRequestModel = {
+                        payer: formValues['payer'],
+                        emailAddress: formValues['emailAddress'],
+                        creditCardInformation: {
+                            accountHolder: formValues['accountHolder'],
+                            cardNumber: formValues['cardNumber'],
+                            month: formValues['month'],
+                            year: formValues['year'],
+                            cvc: formValues['cvc'],
+                            postalCode: formValues['postalCode']
+                        }
+                    };
+                }
+                else {
+                    postTokenRequestModel = {
+                        payer: formValues['payer'],
+                        emailAddress: formValues['emailAddress'],
+                        bankAccountInformation: {
+                            accountHolder: formValues['accountHolder'],
+                            accountType: bankAccountType,
+                            routingNumber: formValues['routingNumber'],
+                            accountNumber: formValues['accountNumber']
+                        },
+                    };
+                }
 
                 postToken(
                     // TODO: Replace the lines below with production settings
@@ -75,32 +110,54 @@
                             <input type="text" id="payer" name="payer" value="ACME Corp" />
                         </li>
                         <li>
-                            <label for="emailAddress">Email address</label>
+                            <label for="emailAddress">Email address</label> 
                             <input type="text" id="emailAddress" name="emailAddress" value="john@example.com" />
+                        </li>
+                        <li>
+                            <label for="paymentType">Payment Type</label>
+                            <input class="paymentType" type="radio" name="paymentType" value="creditCard" checked/><label class="radio" for="creditcardRadio">Credit Card</label>  
+                            <input class="paymentType" type="radio" name="paymentType" value="ACH" /> <label class="radio" for="achRadio">ACH</label>
                         </li>
                         <li>
                             <label for="accountHolder">Account Holder</label>
                             <input type="text" id="accountHolder" name="accountHolder" value="John Smith" />
                         </li>
-                        <li>
+                        <!--Credit Card Payment Information-->
+                        <li class="creditCardPaymentInfo">
                             <label for="cardNumber">Card Number</label>
                             <input type="text" id="cardNumber" name="cardNumber" value="4242424242424242" />
                         </li>
-                        <li>
+                        <li class="creditCardPaymentInfo">
                             <label for="month">Month</label>
                             <input type="text" id="month" name="month" value="12" />
                         </li>
-                        <li>
+                        <li class="creditCardPaymentInfo">
                             <label for="year">Year</label>
                             <input type="text" id="year" name="year" value="2022" />
                         </li>
-                        <li>
+                        <li class="creditCardPaymentInfo">
                             <label for="cvc">CVC</label>
                             <input type="text" id="cvc" name="cvc" value="123" />
                         </li>
-                        <li>
+                        <li class="creditCardPaymentInfo">
                             <label for="postalCode">Postal Code</label>
                             <input type="text" id="postalCode" name="postalCode" value="54321" />
+                        </li>
+                        <!--ACH Payment Information-->
+                        <li style="display:none" class="achPaymentInfo">
+                            <label for="routingNumber">Routing Number</label>
+                            <input type="text" id="routingNumber" name="routingNumber" value="091000019" />
+                        </li>
+                        <li style="display:none" class="achPaymentInfo">
+                            <label for="accountNumber">Account Number</label>
+                            <input type="text" id="accountNumber" name="accountNumber" value="123456789" />
+                        </li>
+                        <li style="display:none;" class="achPaymentInfo">
+                            <label for="accountType">Account Type</label>
+                            <input class="accountType" type="radio" name="accountType" value="PersonalChecking" checked/><label class="radio" for="achRadio">Personal Checking</label>
+                            <br /><input class="accountType" type="radio" name="accountType" value="PersonalSavings" /><label class="radio" for="achRadio">Personal Savings</label>
+                            <br /><input class="accountType" type="radio" name="accountType" value="CorporateChecking" /><label class="radio" for="achRadio">Corporate Checking</label>
+                            <br /><input class="accountType" type="radio" name="accountType" value="CorporateSavings" /><label class="radio" for="achRadio">Corporate Savings</label>
                         </li>
                     </ol>
                     <p class="form-actions">
@@ -114,7 +171,7 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
-                <p>&copy; 2018 - epay3, Inc</p>
+                <p>&copy; 2019 - epay3, Inc</p>
             </div>
         </div>
     </footer>

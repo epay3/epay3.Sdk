@@ -365,8 +365,17 @@ label {
     font-weight: 600;
 }
 
-label.checkbox {
+label.checkbox, label.radio {
     display: inline;
+}
+
+label.radio {
+    padding-right: 25px;
+}
+
+input[type="radio"] {
+    width: unset;
+    margin-top: 10px;
 }
 
 input, textarea {
