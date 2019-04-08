@@ -304,6 +304,45 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
+        public void Should_Not_Successfully_Authorization_With_Ach_Token()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    AccountNumber = "1234567890",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Corporatesavings
+                }
+            };
+
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+
+            try
+            {
+                var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
+                {
+                    Amount = amount,
+                    TokenId = tokenId
+                });
+
+                Assert.Fail();
+            }
+            catch(ApiException)
+            {
+
+            }
+            catch
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
         public void Should_Successfully_Use_Authorization_Id_With_Impersonation()
         {
             var postTokenRequestModel = new PostTokenRequestModel
@@ -351,6 +390,7 @@ namespace epay3.Web.Api.Tests
             Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
         }
     }
+
     [TestClass]
     public class When_Searching_Transactions
     {
