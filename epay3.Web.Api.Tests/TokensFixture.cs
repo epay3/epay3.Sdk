@@ -241,6 +241,50 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ApiException))]
+        public void Should_Not_Successfully_Store_An_Invalid_Bank_Account_Token()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "4457119922F90123",
+                    Cvc = "123",
+                    Month = 12,
+                    Year = System.DateTime.Now.Year,
+                    PostalCode = "54321"
+                }
+            };
+
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApiException))]
+        public void Should_Not_Successfully_Store_An_Invalid_Credit_Card_Token()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    RoutingNumber = "111000025",
+                    AccountNumber = "12345XX67890",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountHolder = "ACME Corp",
+                    AccountType = AccountType.Corporatesavings
+                }
+            };
+
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+        }
+
+        [TestMethod]
         public void Should_Successfully_Use_A_Token_In_An_Corporate_Savings_Transaction()
         {
             var postTokenRequestModel = new PostTokenRequestModel
