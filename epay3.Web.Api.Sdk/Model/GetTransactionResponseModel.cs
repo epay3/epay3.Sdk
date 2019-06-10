@@ -41,7 +41,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="Attachments">A collection of all attachments for this transaction..</param>
         /// <param name="PaidInvoices">A collection of all paid invoices for this transaction..</param>
 
-        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null, List<PaidInvoiceModel> PaidInvoices = null)
+        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string MaskedAccountNumber = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null, List<PaidInvoiceModel> PaidInvoices = null)
         {
             this.Id = Id;
             this.Payer = Payer;
@@ -50,6 +50,7 @@ namespace epay3.Web.Api.Sdk.Model
             this.Amount = Amount;
             this.Fee = Fee;
             this.PayerFee = PayerFee;
+            this.MaskedAccountNumber = MaskedAccountNumber;
             this.Comments = Comments;
             this.Events = Events;
             this.AttributeValues = AttributeValues;
@@ -102,6 +103,13 @@ namespace epay3.Web.Api.Sdk.Model
         public double? PayerFee { get; set; }
 
         /// <summary>
+        /// The masked credit card number or account number used by the payer.
+        /// </summary>
+        /// <value>The masked credit card number or account number used by the payer.</value>
+        [DataMember(Name = "maskedAccountNumber", EmitDefaultValue = false)]
+        public string MaskedAccountNumber { get; set; }
+
+        /// <summary>
         /// Comments left by the payer at the initial creation of the transaction.
         /// </summary>
         /// <value>Comments left by the payer at the initial creation of the transaction.</value>
@@ -151,6 +159,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  Amount: ").Append(Amount).Append("\n");
             sb.Append("  Fee: ").Append(Fee).Append("\n");
             sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
+            sb.Append("  MaskedAccountNumber: ").Append(MaskedAccountNumber).Append("\n");
             sb.Append("  Comments: ").Append(Comments).Append("\n");
             sb.Append("  Events: ").Append(Events).Append("\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
@@ -229,6 +238,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.PayerFee.Equals(other.PayerFee)
                 ) &&
                 (
+                    this.MaskedAccountNumber == other.MaskedAccountNumber ||
+                    this.MaskedAccountNumber != null &&
+                    this.MaskedAccountNumber.Equals(other.MaskedAccountNumber)
+                ) &&
+                (
                     this.Comments == other.Comments ||
                     this.Comments != null &&
                     this.Comments.Equals(other.Comments)
@@ -287,6 +301,9 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.PayerFee != null)
                     hash = hash * 59 + this.PayerFee.GetHashCode();
+
+                if (this.MaskedAccountNumber != null)
+                    hash = hash * 59 + this.MaskedAccountNumber.GetHashCode();
 
                 if (this.Comments != null)
                     hash = hash * 59 + this.Comments.GetHashCode();
