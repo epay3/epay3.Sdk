@@ -41,33 +41,6 @@ namespace epay3.Web.Api.Sdk.Model
         /// </summary>
         public List<InvoiceItemModel> InvoiceItems { get; set; }
 
-        public string AmountString
-        {
-            get
-            {
-                if (Amount == null)
-                    return string.Empty;
-
-                return Amount.Value.ToString("C");
-            }
-        }
-
-        public string DueDateString
-        {
-            get
-            {
-                return DueDate != null ? DueDate.Value.ToString("M/d/yyyy") : null;
-            }
-        }
-
-        public string FieldId
-        {
-            get
-            {
-                return "InvoiceId:" + Id;
-            }
-        }
-
         public InvoiceModel()
         {
             AttributeValues = new List<AttributeValueModel>();
