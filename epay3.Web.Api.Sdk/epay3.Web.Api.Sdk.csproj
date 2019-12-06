@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\InvoicesApi.cs" />
     <Compile Include="Api\IvrSessionsApi.cs" />
     <Compile Include="Api\PaymentSchedulesApi.cs" />
     <Compile Include="Api\TokenPageSessionsApi.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Client\ApiResponse.cs" />
     <Compile Include="Client\Configuration.cs" />
     <Compile Include="Model\AttachmentModel.cs" />
+    <Compile Include="Model\AttributeMetadataModel.cs" />
     <Compile Include="Model\AttributeValueModel.cs" />
     <Compile Include="Model\BankAccountInformationModel.cs" />
     <Compile Include="Model\CreditCardInformationModel.cs" />
@@ -72,6 +74,9 @@
     <Compile Include="Model\GetTransactionFeesResponseModel.cs" />
     <Compile Include="Model\GetTransactionResponseModel.cs" />
     <Compile Include="Model\GetTransactionsResponseModel.cs" />
+    <Compile Include="Model\InvoiceItemModel.cs" />
+    <Compile Include="Model\InvoiceModel.cs" />
+    <Compile Include="Model\InvoicesResponseModel.cs" />
     <Compile Include="Model\PaidInvoiceModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
@@ -89,6 +94,7 @@
     <Compile Include="Model\PostTransactionResponseModel.cs" />
     <Compile Include="Model\PreAuthorizationModel.cs" />
     <Compile Include="Model\TransactionEventModel.cs" />
+    <Compile Include="Model\UpdateInvoicesRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
