@@ -178,7 +178,12 @@ namespace epay3.Web.Api.Sdk.Api
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (localVarStatusCode >= 400)
-                throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
+            {
+                if (localVarStatusCode == 401)
+                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.StatusDescription);
+                else
+                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
+            }
             else if (localVarStatusCode == 0)
                 throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
@@ -254,7 +259,12 @@ namespace epay3.Web.Api.Sdk.Api
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (localVarStatusCode >= 400)
-                throw new ApiException(localVarStatusCode, "Error calling InvoicesUpdate: " + localVarResponse.Content, localVarResponse.Content);
+            {
+                if (localVarStatusCode == 401)
+                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.StatusDescription);
+                else
+                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
+            }
             else if (localVarStatusCode == 0)
                 throw new ApiException(localVarStatusCode, "Error calling InvoicesUpdate: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
