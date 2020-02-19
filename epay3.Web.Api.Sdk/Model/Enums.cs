@@ -206,7 +206,6 @@ namespace epay3.Web.Api.Sdk.Model
     [JsonConverter(typeof(StringEnumConverter))]
     public enum EventType
     {
-
         [EnumMember(Value = "Sale")]
         Sale,
 
@@ -246,10 +245,19 @@ namespace epay3.Web.Api.Sdk.Model
         [EnumMember(Value = "Debit")]
         Debit,
 
+        [EnumMember(Value = "ChargebackReported")]
+        ChargebackReported,
+
         [EnumMember(Value = "Authorize")]
         Authorize,
 
         [EnumMember(Value = "Capture")]
-        Capture
+        Capture,
+
+        [EnumMember(Value = "ChargebackReversal")]
+        ChargebackReversal,
+
+        [EnumMember(Value = "ChargebackDisputed")]
+        ChargebackDisputed
     }
 }
