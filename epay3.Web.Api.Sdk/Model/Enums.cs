@@ -206,7 +206,6 @@ namespace epay3.Web.Api.Sdk.Model
     [JsonConverter(typeof(StringEnumConverter))]
     public enum EventType
     {
-
         [EnumMember(Value = "Sale")]
         Sale,
 
