@@ -250,6 +250,15 @@ namespace epay3.Web.Api.Sdk.Model
         Authorize,
 
         [EnumMember(Value = "Capture")]
-        Capture
+        Capture,
+
+        [EnumMember(Value = "Hold")]
+        Hold,
+
+        [EnumMember(Value = "ChargebackReversal")]
+        ChargebackReversal,
+
+        [EnumMember(Value = "ChargebackRepresentmentClosed")]
+        ChargebackRepresentmentClosed
     }
 }
