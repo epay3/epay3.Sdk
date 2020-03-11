@@ -41,7 +41,7 @@ namespace epay3.Web.Api.Tests
                 {
                     AccountHolder = "John Smith",
                     CardNumber = "4242424242424242",
-                    Cvc = "123",
+                    Cvc = "999",
                     Month = 12,
                     Year = System.DateTime.Now.Year + 2,
                     PostalCode = "54321"
@@ -272,7 +272,7 @@ namespace epay3.Web.Api.Tests
                 {
                     AccountHolder = "John Doe",
                     CardNumber = "4242424242424242",
-                    Cvc = "123",
+                    Cvc = "999",
                     Month = 12,
                     Year = 2020,
                     PostalCode = "54321"
@@ -353,7 +353,7 @@ namespace epay3.Web.Api.Tests
                 {
                     AccountHolder = "John Doe",
                     CardNumber = "4242424242424242",
-                    Cvc = "123",
+                    Cvc = "999",
                     Month = 12,
                     Year = 2020,
                     PostalCode = "54321"

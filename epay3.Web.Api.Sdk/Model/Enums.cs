@@ -245,6 +245,9 @@ namespace epay3.Web.Api.Sdk.Model
         [EnumMember(Value = "Debit")]
         Debit,
 
+        [EnumMember(Value = "ChargebackReported")]
+        ChargebackReported,
+
         [EnumMember(Value = "Authorize")]
         Authorize,
 
@@ -258,6 +261,9 @@ namespace epay3.Web.Api.Sdk.Model
         ChargebackReversal,
 
         [EnumMember(Value = "ChargebackRepresentmentClosed")]
-        ChargebackRepresentmentClosed
+        ChargebackRepresentmentClosed,
+
+        [EnumMember(Value = "ChargebackDisputed")]
+        ChargebackDisputed
     }
 }

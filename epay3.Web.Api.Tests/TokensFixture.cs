@@ -178,8 +178,8 @@ namespace epay3.Web.Api.Tests
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
-                    CardNumber = "4457119922390123",
-                    Cvc = "123",
+                    CardNumber = "4242424242424242",
+                    Cvc = "999",
                     Month = 12,
                     Year = System.DateTime.Now.Year,
                     PostalCode = "54321"
