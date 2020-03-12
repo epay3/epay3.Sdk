@@ -254,8 +254,14 @@ namespace epay3.Web.Api.Sdk.Model
         [EnumMember(Value = "Capture")]
         Capture,
 
+        [EnumMember(Value = "Hold")]
+        Hold,
+
         [EnumMember(Value = "ChargebackReversal")]
         ChargebackReversal,
+
+        [EnumMember(Value = "ChargebackRepresentmentClosed")]
+        ChargebackRepresentmentClosed,
 
         [EnumMember(Value = "ChargebackDisputed")]
         ChargebackDisputed
