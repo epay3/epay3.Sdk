@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\BatchesApi.cs" />
     <Compile Include="Api\InvoicesApi.cs" />
     <Compile Include="Api\IvrSessionsApi.cs" />
     <Compile Include="Api\PaymentSchedulesApi.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="Model\AttributeMetadataModel.cs" />
     <Compile Include="Model\AttributeValueModel.cs" />
     <Compile Include="Model\BankAccountInformationModel.cs" />
+    <Compile Include="Model\GetBatchesResponseModel.cs" />
+    <Compile Include="Model\GetBatchResponseModel.cs" />
     <Compile Include="Model\CreditCardInformationModel.cs" />
     <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\ErrorResponseModel.cs" />

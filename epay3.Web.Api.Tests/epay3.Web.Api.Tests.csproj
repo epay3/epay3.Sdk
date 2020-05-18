@@ -55,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BatchesFixture.cs" />
     <Compile Include="InvoicesFixture.cs" />
     <Compile Include="IvrSessionsFixture.cs" />
     <Compile Include="TransactionFeesFixture.cs" />
