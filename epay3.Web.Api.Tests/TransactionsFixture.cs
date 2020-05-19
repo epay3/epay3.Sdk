@@ -395,6 +395,7 @@ namespace epay3.Web.Api.Tests
     public class When_Searching_Transactions
     {
         private TransactionsApi _transactionsApi;
+        private BatchesApi _batchesApi;
 
         [TestInitialize]
         public void Initialize()
@@ -419,6 +420,24 @@ namespace epay3.Web.Api.Tests
             var searchAllResults = _transactionsApi.TransactionsSearch();
             Assert.IsTrue(searchAllResults.TotalRecords > 0);
             Assert.IsNotNull(searchAllResults);
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Finds_Transactions_For_Batch()
+        {
+            _batchesApi = new BatchesApi(TestApiSettings.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+
+            _batchesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+
+            var batchSearchResults = _batchesApi.BatchesGet(1);
+
+            Assert.IsTrue(batchSearchResults.Batches.Any());
+
+            var transactionSearchResults = _transactionsApi.TransactionsSearch(DateTime.MinValue, null, null, null, null, batchSearchResults.Batches.First().Id, null, null, null);
+
+            Assert.IsTrue(transactionSearchResults.Transactions.Any());
         }
     }
 }
