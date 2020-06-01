@@ -30,7 +30,7 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Get_Successfully_With_Impersonation_Key()
         {
-            var result = _invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" }, TestApiSettings.InvoicesImpersonationAccountKey);
+            var result = _invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" }, TestApiSettings.ImpersonationAccountKey);
 
             // Should post successfully.
             Assert.IsTrue(result.Status == InvoiceStatus.Success);
@@ -56,7 +56,7 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            bool success = _invoicesApi.InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
+            bool success = _invoicesApi.InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             // Should post successfully.
             Assert.IsTrue(success);

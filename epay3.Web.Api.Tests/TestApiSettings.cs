@@ -41,13 +41,5 @@
                 return System.Configuration.ConfigurationManager.AppSettings["ImpersonationAccountKey"];
             }
         }
-
-        public static string InvoicesImpersonationAccountKey
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["InvoicesImpersonationAccountKey"];
-            }
-        }
     }
 }
