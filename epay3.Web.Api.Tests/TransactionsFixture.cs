@@ -254,13 +254,6 @@ namespace epay3.Web.Api.Tests
             Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, response.PaymentResponseCode);
         }
 
-        //[TestMethod]
-        //public void Should_Fail_With_Inaccessible_Authorization_Id()
-        //{
-        //
-        //
-        //}
-
         [TestMethod]
         public void Should_Successfully_Use_Authorization_Id()
         {
