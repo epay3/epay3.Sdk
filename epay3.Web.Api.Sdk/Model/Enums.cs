@@ -264,6 +264,15 @@ namespace epay3.Web.Api.Sdk.Model
         ChargebackRepresentmentClosed,
 
         [EnumMember(Value = "ChargebackDisputed")]
-        ChargebackDisputed
+        ChargebackDisputed,
+
+        [EnumMember(Value = "ChargebackDeclinedToDispute")]
+        ChargebackDeclinedToDispute,
+
+        [EnumMember(Value = "ChargebackDisputeFailed")]
+        ChargebackDisputeFailed,
+
+        [EnumMember(Value = "ClientNotificationSent")]
+        ClientNotificationSent
     }
 }
