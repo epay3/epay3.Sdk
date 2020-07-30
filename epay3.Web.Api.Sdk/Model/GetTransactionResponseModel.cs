@@ -41,9 +41,10 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="Attachments">A collection of all attachments for this transaction..</param>
         /// <param name="PaidInvoices">A collection of all paid invoices for this transaction..</param>
 
-        public GetTransactionResponseModel(long? Id = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string MaskedAccountNumber = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null, List<PaidInvoiceModel> PaidInvoices = null)
+        public GetTransactionResponseModel(long? Id = null, string PublicId = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string MaskedAccountNumber = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null, List<PaidInvoiceModel> PaidInvoices = null)
         {
             this.Id = Id;
+            this.PublicId = PublicId;
             this.Payer = Payer;
             this.EmailAddress = EmailAddress;
             this.TransactionType = TransactionType;
@@ -66,6 +67,13 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The unique identifier of the transaction.</value>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public long? Id { get; set; }
+
+        /// <summary>
+        /// The PublicId of the transaction.
+        /// </summary>
+        /// <value>The unique identifier of the transaction.</value>
+        [DataMember(Name = "publicId", EmitDefaultValue = false)]
+        public string PublicId { get; set; }
 
         /// <summary>
         /// The name of the payer.
@@ -153,6 +161,7 @@ namespace epay3.Web.Api.Sdk.Model
             var sb = new StringBuilder();
             sb.Append("class GetTransactionResponseModel {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  PublicId: ").Append(PublicId).Append("\n");
             sb.Append("  Payer: ").Append(Payer).Append("\n");
             sb.Append("  EmailAddress: ").Append(EmailAddress).Append("\n");
             sb.Append("  TransactionType: ").Append(TransactionType).Append("\n");
@@ -206,6 +215,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Id == other.Id ||
                     this.Id != null &&
                     this.Id.Equals(other.Id)
+                ) &&
+                (
+                    this.PublicId == other.PublicId ||
+                    this.PublicId != null &&
+                    this.PublicId.Equals(other.PublicId)
                 ) &&
                 (
                     this.Payer == other.Payer ||
@@ -283,6 +297,9 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.Id != null)
                     hash = hash * 59 + this.Id.GetHashCode();
+
+                if (this.PublicId != null)
+                    hash = hash * 59 + this.PublicId.GetHashCode();
 
                 if (this.Payer != null)
                     hash = hash * 59 + this.Payer.GetHashCode();
