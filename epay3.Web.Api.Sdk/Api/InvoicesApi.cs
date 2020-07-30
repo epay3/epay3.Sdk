@@ -211,7 +211,7 @@ namespace epay3.Web.Api.Sdk.Api
                 throw new ApiException(400, "Missing required parameter 'updateInvoicesRequestModel' when calling InvoicesApi->InvoicesUpdate");
 
 
-            var localVarPath = "/api/v1/Invoices";
+            var localVarPath = "/api/v1/Invoices/Payments";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
