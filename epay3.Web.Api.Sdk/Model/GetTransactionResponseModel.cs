@@ -41,7 +41,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// <param name="Attachments">A collection of all attachments for this transaction..</param>
         /// <param name="PaidInvoices">A collection of all paid invoices for this transaction..</param>
 
-        public GetTransactionResponseModel(long? Id = null, string PublicId = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string MaskedAccountNumber = null, string Comments = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null, List<PaidInvoiceModel> PaidInvoices = null)
+        public GetTransactionResponseModel(long? Id = null, string PublicId = null, string Payer = null, string EmailAddress = null, TransactionType? TransactionType = null, double? Amount = null, double? Fee = null, double? PayerFee = null, string MaskedAccountNumber = null, string Comments = null, long? OriginalTransactionId = null, List<TransactionEventModel> Events = null, List<AttributeValueModel> AttributeValues = null, List<AttachmentModel> Attachments = null, List<PaidInvoiceModel> PaidInvoices = null)
         {
             this.Id = Id;
             this.PublicId = PublicId;
@@ -53,6 +53,7 @@ namespace epay3.Web.Api.Sdk.Model
             this.PayerFee = PayerFee;
             this.MaskedAccountNumber = MaskedAccountNumber;
             this.Comments = Comments;
+            this.OriginalTransactionId = OriginalTransactionId;
             this.Events = Events;
             this.AttributeValues = AttributeValues;
             this.Attachments = Attachments;
@@ -125,6 +126,13 @@ namespace epay3.Web.Api.Sdk.Model
         public string Comments { get; set; }
 
         /// <summary>
+        /// The ID of the original transaction. Only present on returns, refunds and similarly derivative transactions.
+        /// </summary>
+        /// <value>The ID of the original transaction. Only present on returns, refunds and similarly derivative transactions.</value>
+        [DataMember(Name = "originalTransactionId", EmitDefaultValue = false)]
+        public long? OriginalTransactionId { get; set; }
+
+        /// <summary>
         /// A collection of all events that have occured.
         /// </summary>
         /// <value>A collection of all events that have occured.</value>
@@ -170,6 +178,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  PayerFee: ").Append(PayerFee).Append("\n");
             sb.Append("  MaskedAccountNumber: ").Append(MaskedAccountNumber).Append("\n");
             sb.Append("  Comments: ").Append(Comments).Append("\n");
+            sb.Append("  OriginalTransactionId: ").Append(OriginalTransactionId).Append("\n");
             sb.Append("  Events: ").Append(Events).Append("\n");
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
             sb.Append("  Attachments: ").Append(Attachments).Append("\n");
@@ -262,6 +271,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Comments.Equals(other.Comments)
                 ) &&
                 (
+                    this.OriginalTransactionId == other.OriginalTransactionId ||
+                    this.OriginalTransactionId != null &&
+                    this.OriginalTransactionId.Equals(other.OriginalTransactionId)
+                ) &&
+                (
                     this.Events == other.Events ||
                     this.Events != null &&
                     this.Events.SequenceEqual(other.Events)
@@ -324,6 +338,9 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.Comments != null)
                     hash = hash * 59 + this.Comments.GetHashCode();
+
+                if (this.OriginalTransactionId != null)
+                    hash = hash * 59 + this.OriginalTransactionId.GetHashCode();
 
                 if (this.Events != null)
                     hash = hash * 59 + this.Events.GetHashCode();
