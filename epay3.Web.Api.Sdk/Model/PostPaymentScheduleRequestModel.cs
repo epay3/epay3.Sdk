@@ -106,7 +106,14 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>The fee being charged by the initiating party of this transaction. This does not include the standard transaction fees.</value>
         [DataMember(Name="initiatingPartyFee", EmitDefaultValue=false)]
         public double? InitiatingPartyFee { get; set; }
-    
+
+        /// <summary>
+        /// The IP Address of the payer.
+        /// </summary>
+        /// <value>The IP Address of the payer.</value>
+        [DataMember(Name = "ipAddress", EmitDefaultValue = false)]
+        public string IpAddress { get; set; }
+
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -128,7 +135,8 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  AttributeValues: ").Append(AttributeValues).Append("\n");
             sb.Append("  Comments: ").Append(Comments).Append("\n");
             sb.Append("  InitiatingPartyFee: ").Append(InitiatingPartyFee).Append("\n");
-            
+            sb.Append("  IpAddress: ").Append(IpAddress).Append("\n");
+
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -229,6 +237,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.InitiatingPartyFee == other.InitiatingPartyFee ||
                     this.InitiatingPartyFee != null &&
                     this.InitiatingPartyFee.Equals(other.InitiatingPartyFee)
+                ) &&
+                (
+                    this.IpAddress == other.IpAddress ||
+                    this.IpAddress != null &&
+                    this.IpAddress.Equals(other.IpAddress)
                 );
         }
 
@@ -282,7 +295,10 @@ namespace epay3.Web.Api.Sdk.Model
                 
                 if (this.InitiatingPartyFee != null)
                     hash = hash * 59 + this.InitiatingPartyFee.GetHashCode();
-                
+
+                if (this.IpAddress != null)
+                    hash = hash * 59 + this.IpAddress.GetHashCode();
+
                 return hash;
             }
         }

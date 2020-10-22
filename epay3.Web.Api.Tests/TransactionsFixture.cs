@@ -48,7 +48,8 @@ namespace epay3.Web.Api.Tests
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = amount * .10
+                PayerFee = amount * .10,
+                IpAddress = "127.0.0.1"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -88,7 +89,8 @@ namespace epay3.Web.Api.Tests
                     AccountType = AccountType.Personalsavings
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
-                Comments = "Sample comments"
+                Comments = "Sample comments",
+                IpAddress = "127.0.0.1"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -129,7 +131,8 @@ namespace epay3.Web.Api.Tests
                     AccountType = AccountType.Personalsavings
                 },
                 Comments = "Sample comments",
-                InitiatingPartyFee = amount * .20
+                InitiatingPartyFee = amount * .20,
+                IpAddress = "127.0.0.1"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
@@ -173,7 +176,8 @@ namespace epay3.Web.Api.Tests
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
-                Comments = "Sample comments"
+                Comments = "Sample comments",
+                IpAddress = "127.0.0.1"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
@@ -211,7 +215,8 @@ namespace epay3.Web.Api.Tests
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
-                Comments = "Sample comments"
+                Comments = "Sample comments",
+                IpAddress = "127.0.0.1"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
@@ -246,7 +251,8 @@ namespace epay3.Web.Api.Tests
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
-                AuthorizationId = "INVALID_ID"
+                AuthorizationId = "INVALID_ID",
+                IpAddress = "127.0.0.1"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -369,7 +375,8 @@ namespace epay3.Web.Api.Tests
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
-                AuthorizationId = authorizationId
+                AuthorizationId = authorizationId,
+                IpAddress = "127.0.0.1"
             };
 
             // This attempt should fail without the same impersonation key.
