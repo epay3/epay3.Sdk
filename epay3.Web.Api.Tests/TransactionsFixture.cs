@@ -129,7 +129,7 @@ namespace epay3.Web.Api.Tests
                     AccountType = AccountType.Personalsavings
                 },
                 Comments = "Sample comments",
-                InitiatingPartyFee = amount * .20
+                InitiatingPartyFee = Math.Round(amount * .20, 2)
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
