@@ -70,6 +70,7 @@ namespace epay3.Web.Api.Sdk.Model
         /// Used to pre-populate the comments section of the payment page.
         /// </summary>
         /// <value>Comments that are used to pre-populate the comments section of the payment page.</value>
+        [DataMember(Name="comments", EmitDefaultValue=false)]
         public string Comments { get; set; }
     
         /// <summary>
