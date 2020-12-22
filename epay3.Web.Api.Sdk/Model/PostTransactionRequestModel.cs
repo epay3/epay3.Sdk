@@ -105,6 +105,12 @@ namespace epay3.Web.Api.Sdk.Model
         public double? InitiatingPartyFee { get; set; }
 
         /// <summary>
+        /// The currency of the transaction
+        /// </summary>
+        [DataMember(Name = "currency", EmitDefaultValue = false)]
+        public Currency Currency { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -125,6 +131,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  AuthorizationId: ").Append(AuthorizationId).Append("\n");
             sb.Append("  SendReceipt: ").Append(SendReceipt).Append("\n");
             sb.Append("  InitiatingPartyFee: ").Append(InitiatingPartyFee).Append("\n");
+            sb.Append("  Currency: ").Append(Currency).Append("\n");
 
             sb.Append("}\n");
             return sb.ToString();
@@ -226,6 +233,10 @@ namespace epay3.Web.Api.Sdk.Model
                     this.InitiatingPartyFee == other.InitiatingPartyFee ||
                     this.InitiatingPartyFee != null &&
                     this.InitiatingPartyFee.Equals(other.InitiatingPartyFee)
+                ) &&
+                (
+                    this.Currency == other.Currency ||
+                    this.Currency.Equals(other.Currency)
                 );
         }
 
@@ -279,6 +290,8 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.InitiatingPartyFee != null)
                     hash = hash * 59 + this.InitiatingPartyFee.GetHashCode();
+
+                hash = hash * 59 + this.Currency.GetHashCode();
 
                 return hash;
             }

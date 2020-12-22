@@ -72,7 +72,13 @@ namespace epay3.Web.Api.Sdk.Model
         /// <value>Comments that are used to pre-populate the comments section of the payment page.</value>
         [DataMember(Name="comments", EmitDefaultValue=false)]
         public string Comments { get; set; }
-    
+
+        /// <summary>
+        /// The currency of the payment page session
+        /// </summary>
+        [DataMember(Name = "currency", EmitDefaultValue = false)]
+        public Currency Currency { get; set; }
+
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -89,6 +95,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  SuccessUrl: ").Append(SuccessUrl).Append("\n");
             sb.Append("  AcceptedPaymentMethods: ").Append(AcceptedPaymentMethods).Append("\n");
             sb.Append("  Comments: ").Append(Comments).Append("\n");
+            sb.Append("  Currency: ").Append(Currency).Append("\n");
 
             sb.Append("}\n");
             return sb.ToString();
@@ -165,6 +172,10 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Comments == other.Comments ||
                     this.Comments != null &&
                     this.Comments.SequenceEqual(other.Comments)
+                ) &&
+                (
+                    this.Currency == other.Currency ||
+                    this.Currency.Equals(other.Currency)
                 );
         }
 
@@ -203,6 +214,8 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.Comments != null)
                     hash = hash * 59 + this.Comments.GetHashCode();
+
+                hash = hash * 59 + this.Currency.GetHashCode();
 
                 return hash;
             }
