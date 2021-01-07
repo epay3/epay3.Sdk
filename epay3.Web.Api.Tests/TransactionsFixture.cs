@@ -267,7 +267,7 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4242424242424242",
                     Cvc = "999",
                     Month = 12,
-                    Year = 2020,
+                    Year = DateTime.Now.Year + 1,
                     PostalCode = "54321"
                 }
             };
@@ -348,7 +348,7 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4242424242424242",
                     Cvc = "999",
                     Month = 12,
-                    Year = 2020,
+                    Year = DateTime.Now.Year + 1,
                     PostalCode = "54321"
                 }
             };
