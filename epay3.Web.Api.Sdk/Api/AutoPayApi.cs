@@ -26,7 +26,7 @@ namespace epay3.Web.Api.Sdk.Api
         GetAutoPayResponseModel AutoPayGet(string id);
 
     }
-    class AutoPayApi : IAutoPayApi
+    public class AutoPayApi : IAutoPayApi
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoPayApi"/> class.
