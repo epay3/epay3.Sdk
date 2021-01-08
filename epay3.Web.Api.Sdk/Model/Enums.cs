@@ -275,4 +275,17 @@ namespace epay3.Web.Api.Sdk.Model
         [EnumMember(Value = "ClientNotificationSent")]
         ClientNotificationSent
     }
+
+    /// <summary>
+    /// The Currency
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum Currency
+    {
+        [EnumMember(Value = "USD")]
+        USD = 1,
+
+        [EnumMember(Value = "CAD")]
+        CAD = 2
+    }
 }

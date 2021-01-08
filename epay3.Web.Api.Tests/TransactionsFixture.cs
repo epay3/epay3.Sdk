@@ -254,13 +254,6 @@ namespace epay3.Web.Api.Tests
             Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, response.PaymentResponseCode);
         }
 
-        //[TestMethod]
-        //public void Should_Fail_With_Inaccessible_Authorization_Id()
-        //{
-        //
-        //
-        //}
-
         [TestMethod]
         public void Should_Successfully_Use_Authorization_Id()
         {
@@ -274,7 +267,7 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4242424242424242",
                     Cvc = "999",
                     Month = 12,
-                    Year = 2020,
+                    Year = DateTime.Now.Year + 1,
                     PostalCode = "54321"
                 }
             };
@@ -355,7 +348,7 @@ namespace epay3.Web.Api.Tests
                     CardNumber = "4242424242424242",
                     Cvc = "999",
                     Month = 12,
-                    Year = 2020,
+                    Year = DateTime.Now.Year + 1,
                     PostalCode = "54321"
                 }
             };

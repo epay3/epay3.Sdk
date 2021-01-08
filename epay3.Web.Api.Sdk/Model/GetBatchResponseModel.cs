@@ -14,6 +14,6 @@ namespace epay3.Web.Api.Sdk.Model
         public decimal TotalOfCredits { get; set; }
         public int NumberOfDebits { get; set; }
         public decimal TotalOfDebits { get; set; }
-        public byte Currency { get; set; }
+        public Currency Currency { get; set; }
     }
 }
