@@ -85,6 +85,7 @@
     <Compile Include="Model\PaidInvoiceModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
+    <Compile Include="Model\PostAutoPayRequestModel.cs" />
     <Compile Include="Model\PostIvrSessionRequestModel.cs" />
     <Compile Include="Model\PostIvrSessionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />

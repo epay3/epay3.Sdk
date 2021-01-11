@@ -8,7 +8,7 @@ using epay3.Web.Api.Sdk.Client;
 namespace epay3.Web.Api.Tests
 {
     [TestClass]
-    public class When_posting_A_AutoPay
+    public class When_posting_An_AutoPay
     {
         private AutoPayApi _autoPayApi;
 
