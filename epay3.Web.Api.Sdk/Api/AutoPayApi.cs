@@ -100,7 +100,7 @@ namespace epay3.Web.Api.Sdk.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling AutoPayApi->AutoPayGet");
 
-            var localVarPath = "/api/v1/AutoPay/{id}";
+            var localVarPath = "/api/v1/autoPay/{id}";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -159,7 +159,7 @@ namespace epay3.Web.Api.Sdk.Api
             if (postAutoPayRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postAutoPayRequestModel' when calling AutoPay Api->AutoPayPost");
 
-            var localVarPath = "/api/v1/AutoPay";
+            var localVarPath = "/api/v1/autoPay";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);

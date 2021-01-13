@@ -67,7 +67,7 @@
     <Compile Include="PaymentSchedulesFixture.cs" />
     <Compile Include="TransactionsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="When_posting_A_AutoPay.cs" />
+    <Compile Include="AutoPayFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\epay3.Web.Api.Sdk\epay3.Web.Api.Sdk.csproj">
