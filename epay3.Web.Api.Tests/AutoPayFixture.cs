@@ -14,12 +14,14 @@ namespace epay3.Web.Api.Tests
     {
         private AutoPayApi _autoPayApi;
         private string _tokenId;
+        private List<string> _createdAutoPayIds;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
+            _createdAutoPayIds = new List<string>();
             _autoPayApi = new AutoPayApi(TestApiSettings.Uri);
             var tokensApi = new TokensApi(TestApiSettings.Uri);
 
@@ -60,10 +62,41 @@ namespace epay3.Web.Api.Tests
                 MaxAmount = 1000
             };
             var createdId = _autoPayApi.AutoPayPost(autopayRequestModel);
+            _createdAutoPayIds.Add(createdId);
             var gotten = _autoPayApi.AutoPayGet(createdId);
 
             Assert.IsNotNull(gotten);
             Assert.AreEqual(_tokenId, gotten.TokenId);
+        }
+
+        [TestMethod]
+        public void Should_Create_And_Delete()
+        {
+            var autopayRequestModel = new PostAutoPayRequestModel
+            {
+                Email = "test@test.com",
+                AttributeValues = new Dictionary<string, string>()
+                {
+                    ["accountCode"] = "123",
+                    ["postalCode"] = "78702"
+                },
+                PublicTokenId = _tokenId,
+                MaxAmount = 1000
+            };
+            var createdId = _autoPayApi.AutoPayPost(autopayRequestModel);
+
+            var result = _autoPayApi.AutoPayCancel(createdId);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestCleanup]
+        public void Cleanup() 
+        {
+            foreach(var id in _createdAutoPayIds)
+            {
+                _autoPayApi.AutoPayCancel(id, TestApiSettings.ImpersonationAccountKey);
+            }
         }
     }
 }
