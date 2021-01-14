@@ -48,7 +48,6 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Create_And_Get()
         {
-
             var autopayRequestModel = new PostAutoPayRequestModel
             {
                 Email = "test@test.com",
@@ -60,10 +59,11 @@ namespace epay3.Web.Api.Tests
                 PublicTokenId = _tokenId,
                 MaxAmount = 1000
             };
-            _autoPayApi.AutoPayPost(autopayRequestModel);
-            var autoPay = _autoPayApi.AutoPayGet("1");
+            var createdId = _autoPayApi.AutoPayPost(autopayRequestModel);
+            var gotten = _autoPayApi.AutoPayGet(createdId);
 
-            Assert.IsNotNull(autoPay);
+            Assert.IsNotNull(gotten);
+            Assert.AreEqual(_tokenId, gotten.TokenId);
         }
     }
 }
