@@ -34,17 +34,18 @@ namespace epay3.Web.Api.Tests
             // Should get successfully.
             Assert.IsTrue(result.Batches.Count > 0);
             Assert.IsTrue(result.TotalRecords > 0);
-            Assert.IsTrue(result.Batches.Any(x => x.Id == 199)); 
+            Assert.IsTrue(result.Batches.All(x => x.Id != TestApiSettings.ImpersonationOnlyBatchId));
         }
 
         [TestMethod]
         public void Should_Get_Successfully_With_Impersonation_Key()
         {
-            var result = _batchesApi.BatchesGet(null, TestApiSettings.InvoicesImpersonationAccountKey);
+            var result = _batchesApi.BatchesGet(null, TestApiSettings.ImpersonationAccountKey);
 
             // Should get successfully.
             Assert.IsTrue(result.Batches.Count > 0);
             Assert.IsTrue(result.TotalRecords > 0);
+            Assert.IsTrue(result.Batches.Any(x => x.Id == TestApiSettings.ImpersonationOnlyBatchId));
         }
     }
 }

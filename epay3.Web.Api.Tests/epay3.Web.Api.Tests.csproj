@@ -37,6 +37,15 @@
   <PropertyGroup>
     <ProjectConfigFileName>App.config</ProjectConfigFileName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\QA\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -79,10 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="App.QA.config" >
-     <DependentUpon>App.config</DependentUpon>
-   </None>
-    <None Include="App.Debug.config" >
+    <None Include="App.QA.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
     <None Include="packages.config" />
