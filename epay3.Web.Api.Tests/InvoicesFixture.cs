@@ -14,6 +14,7 @@ namespace epay3.Web.Api.Tests
     public class InvoicesFixture
     {
         private InvoicesApi _invoicesApi;
+        private TransactionsApi _transactionsApi;
 
         [TestInitialize]
         public void Initialize()
@@ -21,10 +22,12 @@ namespace epay3.Web.Api.Tests
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
             _invoicesApi = new InvoicesApi(TestApiSettings.Uri);
+            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
 
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
             _invoicesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
         [TestMethod]
@@ -52,6 +55,61 @@ namespace epay3.Web.Api.Tests
                     {
                         Id = "112120",
                         PaidAmount = 4874.91d
+                    }
+                }
+            };
+
+            bool success = _invoicesApi.InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
+
+            // Should post successfully.
+            Assert.IsTrue(success);
+        }
+
+        [TestMethod]
+        public void Should_Create_Transaction_Then_Update_Existing_Transaction_Successfully_With_Impersonation_Key()
+        {
+            var amount = new System.Random().Next(10, 1000);
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount,
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "4242424242424242",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
+                Comments = "Sample comments"
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+
+            var updateInvoicesRequestModel = new UpdateInvoicesRequestModel()
+            {
+                Id = response.Id.Value,
+                AttributeValues = new Dictionary<string, string>()
+                {
+                    ["accountCode"] = "123",
+                    ["postalCode"] = "78701"
+                },
+                PaidInvoices = new List<PaidInvoiceModel>()
+                {
+                    new PaidInvoiceModel()
+                    {
+                        Id = "112121",
+                        PaidAmount = postTransactionRequestModel.Amount.Value / 2
+                    },
+                    new PaidInvoiceModel()
+                    {
+                        Id = "112122",
+                        PaidAmount = postTransactionRequestModel.Amount - (postTransactionRequestModel.Amount.Value / 2)
                     }
                 }
             };
