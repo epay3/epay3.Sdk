@@ -19,7 +19,7 @@ namespace epay3.Web.Api.Tests
 
             _autoPayApi = new AutoPayApi(TestApiSettings.Uri);
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.AutoPayKey + ":" + TestApiSettings.AutoPaySecret);
 
             _autoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
@@ -28,7 +28,7 @@ namespace epay3.Web.Api.Tests
         {
             //Todo add create method
 
-            var autoPay = _autoPayApi.AutoPayGet(1);
+            var autoPay = _autoPayApi.AutoPayGet(10);
 
             Assert.IsNotNull(autoPay);
         }

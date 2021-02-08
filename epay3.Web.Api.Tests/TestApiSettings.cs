@@ -26,6 +26,22 @@
             }
         }
 
+        public static string AutoPayKey
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["AutoPayApiKey"];
+            }
+        }
+
+        public static string AutoPaySecret
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["AutoPayApiSecret"];
+            }
+        }
+
         public static string PublicKey
         {
             get
@@ -49,5 +65,6 @@
                 return System.Configuration.ConfigurationManager.AppSettings["InvoicesImpersonationAccountKey"];
             }
         }
+
     }
 }
