@@ -65,6 +65,5 @@
                 return System.Configuration.ConfigurationManager.AppSettings["InvoicesImpersonationAccountKey"];
             }
         }
-
     }
 }
