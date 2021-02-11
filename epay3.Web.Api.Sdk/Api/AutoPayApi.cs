@@ -154,7 +154,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="postAutoPayRequestModel">Contains the parameters for the auto pay.</param> 
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
         /// <returns></returns>
-        public string AutoPayPost(PostAutoPayRequestModel postAutoPayRequestModel, string impersonationAccountKey = null)
+        public long? AutoPayPost(PostAutoPayRequestModel postAutoPayRequestModel, string impersonationAccountKey = null)
         {
             if (postAutoPayRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postAutoPayRequestModel' when calling AutoPay Api->AutoPayPost");
@@ -218,7 +218,10 @@ namespace epay3.Web.Api.Sdk.Api
             else if (localVarStatusCode == 0)
                 throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
-            return localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
+            var id = localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
+
+            return long.Parse(id);
+                
         }
     }
 }

@@ -59,7 +59,7 @@ namespace epay3.Web.Api.Tests
                 MaxAmount = 1000
             };
             var createdId = _autoPayApi.AutoPayPost(autopayRequestModel);
-            var gotten = _autoPayApi.AutoPayGet(createdId);
+            var gotten = _autoPayApi.AutoPayGet(createdId.Value);
 
             Assert.IsNotNull(gotten);
             Assert.AreEqual(_tokenId, gotten.TokenId);
