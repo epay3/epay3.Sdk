@@ -5,7 +5,6 @@ using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
 using epay3.Web.Api.Sdk.Client;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace epay3.Web.Api.Tests
 {

@@ -15,15 +15,15 @@ namespace epay3.Web.Api.Sdk.Api
     public interface IAutoPayApi
     {
         /// <summary>
-        /// Retrieves the details of an auto Pay.
+        /// Retrieves the details of an AutoPay.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">The unique identifier of the auto pay.</param>
+        /// <param name="id">The unique identifier of the AutoPay.</param>
         /// <returns>GetAutoPayResponseModel</returns>
-        GetAutoPayResponseModel AutoPayGet(string id);
+        GetAutoPayResponseModel AutoPayGet(long id);
 
     }
     public class AutoPayApi : IAutoPayApi
@@ -94,7 +94,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">The unique identifier of the auto pay.</param> 
         /// <returns>GetAutoPayResponseModel</returns>
-        public GetAutoPayResponseModel AutoPayGet(string id)
+        public GetAutoPayResponseModel AutoPayGet(long id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -126,7 +126,7 @@ namespace epay3.Web.Api.Sdk.Api
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
-            if (id != null) localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
+            localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
