@@ -31,8 +31,8 @@ namespace epay3.Web.Api.Sdk.Model
         /// The associated email of each recurring payment.
         /// </summary>
         /// <value>The associated email of each recurring payment.</value>
-        [DataMember(Name = "email", EmitDefaultValue = false)]
-        public string Email { get; set; }
+        [DataMember(Name = "emailAddress", EmitDefaultValue = false)]
+        public string EmailAddress { get; set; }
 
         /// <summary>
         /// The max amount of each recurring payment.

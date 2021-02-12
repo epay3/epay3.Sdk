@@ -31,8 +31,8 @@ namespace epay3.Web.Api.Sdk.Model
         /// The Email address associated with the AutoPay.
         /// </summary>
         /// <value>The Email address associated with the AutoPay.</value>
-        [DataMember(Name = "email", EmitDefaultValue = false)]
-        public string Email { get; set; }
+        [DataMember(Name = "emailAddress", EmitDefaultValue = false)]
+        public string EmailAddress { get; set; }
 
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace epay3.Web.Api.Sdk.Model
                     this.Attributes.Equals(other.Attributes)
                 ) &&
                 (
-                    this.Email == other.Email ||
-                    this.Email != null &&
-                    this.Email.Equals(other.Email)
+                    this.EmailAddress == other.EmailAddress ||
+                    this.EmailAddress != null &&
+                    this.EmailAddress.Equals(other.EmailAddress)
                 );
         }
 
@@ -98,8 +98,8 @@ namespace epay3.Web.Api.Sdk.Model
                 if (this.Attributes != null)
                     hash = hash * 59 + this.Attributes.GetHashCode();
 
-                if (this.Email != null)
-                    hash = hash * 59 + this.Email.GetHashCode();
+                if (this.EmailAddress != null)
+                    hash = hash * 59 + this.EmailAddress.GetHashCode();
 
                 return hash;
             }

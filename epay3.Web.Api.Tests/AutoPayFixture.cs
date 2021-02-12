@@ -49,7 +49,7 @@ namespace epay3.Web.Api.Tests
         {
             var autopayRequestModel = new PostAutoPayRequestModel
             {
-                Email = "test@test.com",
+                EmailAddress = "test@test.com",
                 AttributeValues = new Dictionary<string, string>()
                 {
                     ["accountCode"] = "123",
