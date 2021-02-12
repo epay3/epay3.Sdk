@@ -32,19 +32,26 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		QA|Any CPU = QA|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}.QA|Any CPU.Build.0 = QA|Any CPU
 		{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.QA|Any CPU.ActiveCfg = QA|Any CPU
+		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.QA|Any CPU.Build.0 = QA|Any CPU
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2774F10F-6674-42BB-B2D6-AA1FB481CCE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646DC400-9561-4942-AC88-9AF8654FB7E8}.QA|Any CPU.ActiveCfg = Debug|Any CPU
+		{646DC400-9561-4942-AC88-9AF8654FB7E8}.QA|Any CPU.Build.0 = Debug|Any CPU
 		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{646DC400-9561-4942-AC88-9AF8654FB7E8}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
