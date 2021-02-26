@@ -65,5 +65,7 @@
                 return System.Configuration.ConfigurationManager.AppSettings["InvoicesImpersonationAccountKey"];
             }
         }
+
+        public static long ImpersonationOnlyBatchId => long.Parse(System.Configuration.ConfigurationManager.AppSettings["ImpersonationOnlyBatchId"]);
     }
 }
