@@ -26,19 +26,19 @@
             }
         }
 
-        public static string AutoPayKey
+        public static string InvoiceKey
         {
             get
             {
-                return System.Configuration.ConfigurationManager.AppSettings["AutoPayApiKey"];
+                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiKey"];
             }
         }
 
-        public static string AutoPaySecret
+        public static string InvoiceSecret
         {
             get
             {
-                return System.Configuration.ConfigurationManager.AppSettings["AutoPayApiSecret"];
+                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiSecret"];
             }
         }
 
