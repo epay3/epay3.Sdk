@@ -11,17 +11,14 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class When_posting_An_AutoPay
     {
-        private AutoPayApi _autoPayApi;
-        private string _tokenId;
-        private List<string> _createdAutoPayIds;
+        private List<long> _createdAutoPayIds;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _createdAutoPayIds = new List<string>();
-            _autoPayApi = new AutoPayApi(TestApiSettings.Uri);
+            _createdAutoPayIds = new List<long>();
         }
 
         [TestMethod]
@@ -115,7 +112,7 @@ namespace epay3.Web.Api.Tests
 
             // Create and get autopay
             var createdId = autoPayApi.AutoPayPost(autopayRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
-            _createdAutoPayIds.Add(createdId);
+            _createdAutoPayIds.Add(createdId.Value);
             var gotten = autoPayApi.AutoPayGet(createdId.Value, TestApiSettings.InvoicesImpersonationAccountKey);
 
             Assert.IsNotNull(gotten);
@@ -125,20 +122,44 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Create_And_Delete()
         {
+            // Setup
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.InvoiceKey + ":" + TestApiSettings.InvoiceSecret);
+            var autoPayApi = new AutoPayApi(TestApiSettings.Uri);
+            var tokensApi = new TokensApi(TestApiSettings.Uri);
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "4457119922390123",
+                    Cvc = "123",
+                    Month = 12,
+                    Year = DateTime.Now.Year + 1,
+                    PostalCode = "54321"
+                }
+            };
+
+            autoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+
+            // Create Token
+            var tokenId = tokensApi.TokensPost(postTokenRequestModel);
+
             var autopayRequestModel = new PostAutoPayRequestModel
             {
-                Email = "test@test.com",
+                EmailAddress = "test@test.com",
                 AttributeValues = new Dictionary<string, string>()
                 {
                     ["accountCode"] = "123",
                     ["postalCode"] = "78702"
                 },
-                PublicTokenId = _tokenId,
-                MaxAmount = 1000
+                PublicTokenId = tokenId
             };
-            var createdId = _autoPayApi.AutoPayPost(autopayRequestModel);
 
-            var result = _autoPayApi.AutoPayCancel(createdId);
+            var createdId = autoPayApi.AutoPayPost(autopayRequestModel);
+            var result = autoPayApi.AutoPayCancel(createdId.Value);
 
             Assert.IsTrue(result);
         }
@@ -146,9 +167,13 @@ namespace epay3.Web.Api.Tests
         [TestCleanup]
         public void Cleanup() 
         {
-            foreach(var id in _createdAutoPayIds)
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.InvoiceKey + ":" + TestApiSettings.InvoiceSecret);
+            var autoPayApi = new AutoPayApi(TestApiSettings.Uri);
+
+            autoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            foreach (var id in _createdAutoPayIds)
             {
-                _autoPayApi.AutoPayCancel(id, TestApiSettings.ImpersonationAccountKey);
+                autoPayApi.AutoPayCancel(id, TestApiSettings.ImpersonationAccountKey);
             }
         }
     }

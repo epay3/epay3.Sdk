@@ -104,7 +104,7 @@ namespace epay3.Web.Api.Sdk.Api
         /// <param name="id">The public Id of the auto pay.</param> 
         /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
         /// <returns></returns>
-        public bool AutoPayCancel(string id, string impersonationAccountKey = null)
+        public bool AutoPayCancel(long id, string impersonationAccountKey = null)
         {
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling AutoPayApi->AutoPayCancel");
