@@ -26,6 +26,22 @@
             }
         }
 
+        public static string InvoiceKey
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiKey"];
+            }
+        }
+
+        public static string InvoiceSecret
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiSecret"];
+            }
+        }
+
         public static string PublicKey
         {
             get
@@ -49,5 +65,7 @@
                 return System.Configuration.ConfigurationManager.AppSettings["InvoicesImpersonationAccountKey"];
             }
         }
+
+        public static long ImpersonationOnlyBatchId => long.Parse(System.Configuration.ConfigurationManager.AppSettings["ImpersonationOnlyBatchId"]);
     }
 }
