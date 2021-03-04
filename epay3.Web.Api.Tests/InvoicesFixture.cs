@@ -22,13 +22,22 @@ namespace epay3.Web.Api.Tests
 
             _invoicesApi = new InvoicesApi(TestApiSettings.Uri);
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.InvoiceKey + ":" + TestApiSettings.InvoiceSecret);
 
             _invoicesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
         [TestMethod]
         public void Should_Get_Successfully_With_Impersonation_Key()
+        {
+            var result = _invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" }, TestApiSettings.InvoicesImpersonationAccountKey);
+
+            // Should post successfully.
+            Assert.IsTrue(result.Status == InvoiceStatus.Success);
+        }
+
+        [TestMethod]
+        public void Should_Get_Successfully()
         {
             var result = _invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" }, TestApiSettings.InvoicesImpersonationAccountKey);
 
