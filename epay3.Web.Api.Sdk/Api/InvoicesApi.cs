@@ -195,6 +195,69 @@ namespace epay3.Web.Api.Sdk.Api
             return response.Data;
         }
 
+        /// <summary>
+        /// Gets a collection of invoices given lookup attributes. Add these attributes as individual parameters. 
+        /// </summary>
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns></returns>
+        public InvoicesResponseModel InvoicesGet(Dictionary<string, string> attributes)
+        {
+            var localVarPath = "/api/v1/Invoices";
+
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+
+            foreach (var attribute in attributes)
+            {
+                localVarQueryParams.Add(attribute.Key, attribute.Value);
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode >= 400)
+            {
+                if (localVarStatusCode == 401)
+                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.StatusDescription);
+                else
+                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
+            }
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+
+            var response = new ApiResponse<InvoicesResponseModel>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
+                (InvoicesResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(InvoicesResponseModel)));
+
+            return response.Data;
+        }
 
         /// <summary>
         /// Updates a collection of invoices in the management system. 
