@@ -67,7 +67,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Create_And_Get_And_Delete_With_Impersonation()
+        public void Should_Create_Get_And_Delete_With_Impersonation()
         {
             // setup
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
