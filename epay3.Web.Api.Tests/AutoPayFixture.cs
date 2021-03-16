@@ -11,14 +11,11 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class When_posting_An_AutoPay
     {
-        private Dictionary<long, bool> _createdAutoPayIds;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-
-            _createdAutoPayIds = new Dictionary<long, bool>();
         }
 
         [TestMethod]
@@ -70,7 +67,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Create_And_Get_With_Impersonation()
+        public void Should_Create_And_Get_And_Delete_With_Impersonation()
         {
             // setup
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
@@ -112,8 +109,8 @@ namespace epay3.Web.Api.Tests
 
             // Create and get autopay
             var createdId = autoPayApi.AutoPayPost(autopayRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
-            _createdAutoPayIds.Add(createdId.Value, true);
             var gotten = autoPayApi.AutoPayGet(createdId.Value, TestApiSettings.InvoicesImpersonationAccountKey);
+            autoPayApi.AutoPayCancel(createdId.Value, TestApiSettings.InvoicesImpersonationAccountKey);
 
             Assert.IsNotNull(gotten);
             Assert.AreEqual(tokenId, gotten.TokenId);
@@ -162,28 +159,6 @@ namespace epay3.Web.Api.Tests
             var result = autoPayApi.AutoPayCancel(createdId.Value);
 
             Assert.IsTrue(result);
-        }
-
-        [TestCleanup]
-        public void Cleanup() 
-        {
-            var invoicesPlainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.InvoiceKey + ":" + TestApiSettings.InvoiceSecret);
-            var invoicesAccountAutoPayApi = new AutoPayApi(TestApiSettings.Uri);
-            invoicesAccountAutoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(invoicesPlainTextBytes));
-
-            var impersonationPlainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-            var impersonationAccountAutoPayApi = new AutoPayApi(TestApiSettings.Uri);
-            impersonationAccountAutoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(impersonationPlainTextBytes));
-
-            foreach (var id in _createdAutoPayIds)
-            {
-                if (id.Value)
-                {
-                    impersonationAccountAutoPayApi.AutoPayCancel(id.Key, TestApiSettings.InvoicesImpersonationAccountKey);
-                    continue;
-                }
-                invoicesAccountAutoPayApi.AutoPayCancel(id.Key);
-            }
         }
     }
 }
