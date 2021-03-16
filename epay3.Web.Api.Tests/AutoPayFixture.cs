@@ -11,14 +11,11 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class When_posting_An_AutoPay
     {
-        private List<long> _createdAutoPayIds;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-
-            _createdAutoPayIds = new List<long>();
         }
 
         [TestMethod]
@@ -70,7 +67,7 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Create_And_Get_With_Impersonation()
+        public void Should_Create_Get_And_Delete_With_Impersonation()
         {
             // setup
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
@@ -112,8 +109,8 @@ namespace epay3.Web.Api.Tests
 
             // Create and get autopay
             var createdId = autoPayApi.AutoPayPost(autopayRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
-            _createdAutoPayIds.Add(createdId.Value);
             var gotten = autoPayApi.AutoPayGet(createdId.Value, TestApiSettings.InvoicesImpersonationAccountKey);
+            autoPayApi.AutoPayCancel(createdId.Value, TestApiSettings.InvoicesImpersonationAccountKey);
 
             Assert.IsNotNull(gotten);
             Assert.AreEqual(tokenId, gotten.TokenId);
@@ -162,19 +159,6 @@ namespace epay3.Web.Api.Tests
             var result = autoPayApi.AutoPayCancel(createdId.Value);
 
             Assert.IsTrue(result);
-        }
-
-        [TestCleanup]
-        public void Cleanup() 
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.InvoiceKey + ":" + TestApiSettings.InvoiceSecret);
-            var autoPayApi = new AutoPayApi(TestApiSettings.Uri);
-
-            autoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
-            foreach (var id in _createdAutoPayIds)
-            {
-                autoPayApi.AutoPayCancel(id, TestApiSettings.ImpersonationAccountKey);
-            }
         }
     }
 }
