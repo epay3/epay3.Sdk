@@ -1,54 +1,47 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using RestSharp;
-using epay3.Web.Api.Sdk.Client;
+﻿using epay3.Web.Api.Sdk.Client;
 using epay3.Web.Api.Sdk.Model;
+using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace epay3.Web.Api.Sdk.Api
 {
-
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface IInvoicesApi
+    public interface IAutoPayApi
     {
         /// <summary>
-        /// Gets a collection of invoices given lookup attributes. Add these attributes as individual parameters.
+        /// Retrieves the details of an AutoPay.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="impersonationAccountKey"> (optional, default to )</param>
-        /// <returns>The list of gotten invoices.</returns>
-        InvoicesResponseModel InvoicesGet(Dictionary<string, string> attributeValues, string impersonationAccountKey);
+        /// <param name="id">The unique identifier of the AutoPay.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
+        /// <returns>GetAutoPayResponseModel</returns>
+        GetAutoPayResponseModel AutoPayGet(long id, string impersonationAccountKey = null);
 
         /// <summary>
-        /// Updates a collection of invoices in the management system.
+        /// Creates an auto pay specified Invoice. 
         /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="updateInvoicesRequestModel">The paid invoices and lookup attributes.</param>
-        /// <param name="impersonationAccountKey"> (optional, default to )</param>
+        /// <param name="postAutoPayRequestModel">Contains the parameters for the auto pay.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
         /// <returns></returns>
-        bool InvoicesUpdate(UpdateInvoicesRequestModel updateInvoicesRequestModel, string impersonationAccountKey);
+        long? AutoPayPost(PostAutoPayRequestModel postAutoPayRequestModel, string impersonationAccountKey = null);
     }
-
-    /// <summary>
-    /// Represents a collection of functions to interact with the API endpoints
-    /// </summary>
-    public class InvoicesApi : IInvoicesApi
+    public class AutoPayApi : IAutoPayApi
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvoicesApi"/> class.
+        /// Initializes a new instance of the <see cref="AutoPayApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public InvoicesApi(String basePath)
+        public AutoPayApi(String basePath)
         {
             this.Configuration = new Configuration(new ApiClient(basePath));
 
@@ -60,12 +53,12 @@ namespace epay3.Web.Api.Sdk.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvoicesApi"/> class
+        /// Initializes a new instance of the <see cref="AutoPayApi"/> class
         /// using Configuration object
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public InvoicesApi(Configuration configuration = null)
+        public AutoPayApi(Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
                 this.Configuration = Configuration.Default;
@@ -105,177 +98,18 @@ namespace epay3.Web.Api.Sdk.Api
         public Configuration Configuration { get; set; }
 
         /// <summary>
-        /// Gets the default header.
-        /// </summary>
-        /// <returns>Dictionary of HTTP header</returns>
-        [Obsolete("DefaultHeader is deprecated, please use Configuration.DefaultHeader instead.")]
-        public Dictionary<String, String> DefaultHeader()
-        {
-            return this.Configuration.DefaultHeader;
-        }
-
-        /// <summary>
-        /// Add default header.
-        /// </summary>
-        /// <param name="key">Header field name.</param>
-        /// <param name="value">Header field value.</param>
-        /// <returns></returns>
-        [Obsolete("AddDefaultHeader is deprecated, please use Configuration.AddDefaultHeader instead.")]
-        public void AddDefaultHeader(string key, string value)
-        {
-            this.Configuration.AddDefaultHeader(key, value);
-        }
-
-
-        /// <summary>
-        /// Gets a collection of invoices given lookup attributes. Add these attributes as individual parameters. 
+        /// Cancels an active auto pay. 
         /// </summary>
         /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="impersonationAccountKey"> (optional, default to )</param> 
+        /// <param name="id">The public Id of the auto pay.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
         /// <returns></returns>
-        public InvoicesResponseModel InvoicesGet(Dictionary<string,string> attributes, string impersonationAccountKey)
-        { 
-            var localVarPath = "/api/v1/Invoices";
-
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new Dictionary<String, String>();
-            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-
-            };
-            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json", "text/json", "application/xml", "text/xml"
-            };
-            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            // set "format" to json by default
-            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
-            localVarPathParams.Add("format", "json");
-
-
-            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
-
-            foreach (var attribute in attributes)
-            {
-                localVarQueryParams.Add(attribute.Key, attribute.Value);
-            }
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (localVarStatusCode >= 400)
-            {
-                if (localVarStatusCode == 401)
-                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.StatusDescription);
-                else
-                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
-            }
-            else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
-
-
-            var response = new ApiResponse<InvoicesResponseModel>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
-                (InvoicesResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(InvoicesResponseModel)));
-
-            return response.Data;
-        }
-
-        /// <summary>
-        /// Gets a collection of invoices given lookup attributes. Add these attributes as individual parameters. 
-        /// </summary>
-        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns></returns>
-        public InvoicesResponseModel InvoicesGet(Dictionary<string, string> attributes)
+        public bool AutoPayCancel(long id, string impersonationAccountKey = null)
         {
-            var localVarPath = "/api/v1/Invoices";
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutoPayApi->AutoPayCancel");
 
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new Dictionary<String, String>();
-            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-
-            };
-            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json", "text/json", "application/xml", "text/xml"
-            };
-            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            // set "format" to json by default
-            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
-            localVarPathParams.Add("format", "json");
-
-            foreach (var attribute in attributes)
-            {
-                localVarQueryParams.Add(attribute.Key, attribute.Value);
-            }
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (localVarStatusCode >= 400)
-            {
-                if (localVarStatusCode == 401)
-                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.StatusDescription);
-                else
-                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
-            }
-            else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
-
-
-            var response = new ApiResponse<InvoicesResponseModel>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
-                (InvoicesResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(InvoicesResponseModel)));
-
-            return response.Data;
-        }
-
-        /// <summary>
-        /// Updates a collection of invoices in the management system. 
-        /// </summary>
-        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="updateInvoicesRequestModel">The paid invoices and lookup attributes.</param> 
-        /// <param name="impersonationAccountKey"> (optional, default to )</param> 
-        /// <returns></returns>
-        public bool InvoicesUpdate(UpdateInvoicesRequestModel updateInvoicesRequestModel, string impersonationAccountKey)
-        {
-
-            // verify the required parameter 'updateInvoicesRequestModel' is set
-            if (updateInvoicesRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'updateInvoicesRequestModel' when calling InvoicesApi->InvoicesUpdate");
-
-
-            var localVarPath = "/api/v1/Invoices";
-
+            var localVarPath = string.Format("/api/v1/autoPay/{0}/cancel", id);
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -301,17 +135,142 @@ namespace epay3.Web.Api.Sdk.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
 
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode == 400)
+            {
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
+            }
+            else if (localVarStatusCode >= 400)
+            {
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
+            }
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Retrieves the details of a Auto Pay. 
+        /// </summary>
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">The unique identifier of the auto pay.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
+        /// <returns>GetAutoPayResponseModel</returns>
+        public GetAutoPayResponseModel AutoPayGet(long id, string impersonationAccountKey = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutoPayApi->AutoPayGet");
+
+            var localVarPath = "/api/v1/autoPay/{id}";
+
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+            localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
 
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-            if (updateInvoicesRequestModel.GetType() != typeof(byte[]))
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode >= 400)
+                throw new ApiException(localVarStatusCode, "Error calling AutoPayGet: " + localVarResponse.Content, localVarResponse.Content);
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, "Error calling AutoPayGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+            var response = new ApiResponse<GetAutoPayResponseModel>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
+                (GetAutoPayResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetAutoPayResponseModel)));
+
+            return response.Data;
+        }
+
+        /// <summary>
+        /// Creates an auto pay specified Invoice. 
+        /// </summary>
+        /// <exception cref="epay3.Web.Api.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="postAutoPayRequestModel">Contains the parameters for the auto pay.</param> 
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the transaction(s) will be processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )</param> 
+        /// <returns></returns>
+        public long? AutoPayPost(PostAutoPayRequestModel postAutoPayRequestModel, string impersonationAccountKey = null)
+        {
+            if (postAutoPayRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postAutoPayRequestModel' when calling AutoPay Api->AutoPayPost");
+
+            var localVarPath = "/api/v1/autoPay";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded"
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
+            if (postAutoPayRequestModel.GetType() != typeof(byte[]))
             {
-                localVarPostBody = Configuration.ApiClient.Serialize(updateInvoicesRequestModel); // http body (model) parameter
+                localVarPostBody = Configuration.ApiClient.Serialize(postAutoPayRequestModel); // http body (model) parameter
             }
             else
             {
-                localVarPostBody = updateInvoicesRequestModel; // byte array
+                localVarPostBody = postAutoPayRequestModel; // byte array
             }
 
             // make the HTTP request
@@ -321,19 +280,25 @@ namespace epay3.Web.Api.Sdk.Api
 
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
-            if (localVarStatusCode >= 400)
+            if (localVarStatusCode == 400)
             {
-                if (localVarStatusCode == 401)
-                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.StatusDescription);
-                else
-                    throw new ApiException(localVarStatusCode, "Error calling InvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
+            }
+            else if (localVarStatusCode >= 400)
+            {
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
             }
             else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, "Error calling InvoicesUpdate: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
+            var id = localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
 
-            return localVarStatusCode == 200;
+            return long.Parse(id);
+                
         }
     }
-
 }

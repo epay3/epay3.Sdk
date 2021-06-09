@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\QA\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -50,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\AutoPayApi.cs" />
     <Compile Include="Api\BatchesApi.cs" />
     <Compile Include="Api\InvoicesApi.cs" />
     <Compile Include="Api\IvrSessionsApi.cs" />
@@ -67,6 +77,7 @@
     <Compile Include="Model\AttributeMetadataModel.cs" />
     <Compile Include="Model\AttributeValueModel.cs" />
     <Compile Include="Model\BankAccountInformationModel.cs" />
+    <Compile Include="Model\GetAutoPayResponseModel.cs" />
     <Compile Include="Model\GetBatchesResponseModel.cs" />
     <Compile Include="Model\GetBatchResponseModel.cs" />
     <Compile Include="Model\CreditCardInformationModel.cs" />
@@ -83,6 +94,7 @@
     <Compile Include="Model\PaidInvoiceModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionRequestModel.cs" />
     <Compile Include="Model\PostAuthorizeTransactionResponseModel.cs" />
+    <Compile Include="Model\PostAutoPayRequestModel.cs" />
     <Compile Include="Model\PostIvrSessionRequestModel.cs" />
     <Compile Include="Model\PostIvrSessionResponseModel.cs" />
     <Compile Include="Model\PostPaymentPageSessionRequestModel.cs" />

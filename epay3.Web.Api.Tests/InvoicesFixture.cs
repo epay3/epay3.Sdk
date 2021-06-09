@@ -13,7 +13,6 @@ namespace epay3.Web.Api.Tests
     [TestClass]
     public class InvoicesFixture
     {
-        private InvoicesApi _invoicesApi;
         private TransactionsApi _transactionsApi;
 
         [TestInitialize]
@@ -21,19 +20,45 @@ namespace epay3.Web.Api.Tests
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _invoicesApi = new InvoicesApi(TestApiSettings.Uri);
             _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
-
-            _invoicesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret); 
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+        }
+
+        private InvoicesApi GetApi(bool useImpersonation)
+        {
+            var invoicesApi = new InvoicesApi(TestApiSettings.Uri);
+            var plainTextBytes = new byte[0];
+            if (useImpersonation)
+            {
+                plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+                invoicesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+                return invoicesApi;
+            }
+
+            plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.InvoiceKey + ":" + TestApiSettings.InvoiceSecret);
+            invoicesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            return invoicesApi;
+            
         }
 
         [TestMethod]
         public void Should_Get_Successfully_With_Impersonation_Key()
         {
-            var result = _invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" }, TestApiSettings.InvoicesImpersonationAccountKey);
+            var invoicesApi = GetApi(true);
+            var result = invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" }, TestApiSettings.InvoicesImpersonationAccountKey);
+
+            // Should post successfully.
+            Assert.IsTrue(result.Status == InvoiceStatus.Success);
+        }
+
+        [TestMethod]
+        public void Should_Get_Successfully()
+        {
+            var invoicesApi = GetApi(false);
+
+            var result = invoicesApi.InvoicesGet(new Dictionary<string, string>() { ["accountCode"] = "123", ["postalCode"] = "78701" });
 
             // Should post successfully.
             Assert.IsTrue(result.Status == InvoiceStatus.Success);
@@ -59,7 +84,8 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            bool success = _invoicesApi.InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
+            var invoicesApi = GetApi(true);
+            bool success = invoicesApi.InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
 
             // Should post successfully.
             Assert.IsTrue(success);
@@ -114,7 +140,7 @@ namespace epay3.Web.Api.Tests
                 }
             };
 
-            bool success = _invoicesApi.InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
+            bool success = GetApi(true).InvoicesUpdate(updateInvoicesRequestModel, TestApiSettings.InvoicesImpersonationAccountKey);
 
             // Should post successfully.
             Assert.IsTrue(success);
