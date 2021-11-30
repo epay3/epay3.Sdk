@@ -109,7 +109,7 @@ namespace epay3.Web.Api.Tests
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Smith",
-                    CardNumber = "4242424242424242",
+                    CardNumber = "5454545454545454",
                     Cvc = "123",
                     Month = 12,
                     Year = System.DateTime.Now.Year + 2,
