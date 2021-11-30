@@ -191,8 +191,6 @@ namespace epay3.Web.Api.Tests
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
             var getTokenResponseModel = _tokensApi.TokensGet(tokenId);
 
-            Console.WriteLine(tokenId);
-
             Assert.IsNotNull(getTokenResponseModel);
             Assert.AreEqual(2, getTokenResponseModel.AttributeValues.Count);
             Assert.AreEqual("parameter value 1", getTokenResponseModel.AttributeValues.Single(x => x.ParameterName == "parameter1").Value);
@@ -213,10 +211,9 @@ namespace epay3.Web.Api.Tests
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-            //Console.WriteLine(response.Id);
             // Should return a valid Id.
-        //  Assert.IsTrue(response.Id > 0);
-          //  Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
+            Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
         }
 
         [TestMethod]
