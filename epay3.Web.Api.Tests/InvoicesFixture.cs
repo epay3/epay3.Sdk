@@ -105,7 +105,7 @@ namespace epay3.Web.Api.Tests
                     AccountHolder = "John Smith",
                     FirstName = "John",
                     LastName = "Smith",
-                    AccountNumber = "4242424242424242",
+                    AccountNumber = "4545454",
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
