@@ -4,6 +4,7 @@ using epay3.Web.Api.Sdk.Model;
 using epay3.Web.Api.Sdk.Client;
 using System.Net;
 using System.Linq;
+using System;
 
 namespace epay3.Web.Api.Tests
 {
@@ -178,7 +179,7 @@ namespace epay3.Web.Api.Tests
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
-                    CardNumber = "4242424242424242",
+                    CardNumber = "5454545454545454",
                     Cvc = "999",
                     Month = 12,
                     Year = System.DateTime.Now.Year,

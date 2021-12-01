@@ -40,7 +40,7 @@ namespace epay3.Web.Api.Tests
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Smith",
-                    CardNumber = "4242424242424242",
+                    CardNumber = "5454545454545454",
                     Cvc = "999",
                     Month = 12,
                     Year = System.DateTime.Now.Year + 2,
@@ -83,7 +83,7 @@ namespace epay3.Web.Api.Tests
                     AccountHolder = "John Smith",
                     FirstName = "John",
                     LastName = "Smith",
-                    AccountNumber = "4242424242424242",
+                    AccountNumber = "5454545454545454",
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
@@ -124,7 +124,7 @@ namespace epay3.Web.Api.Tests
                     AccountHolder = "John Smith",
                     FirstName = "John",
                     LastName = "Smith",
-                    AccountNumber = "4242424242424242",
+                    AccountNumber = "5454544",
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
@@ -169,7 +169,7 @@ namespace epay3.Web.Api.Tests
                     AccountHolder = "John Smith",
                     FirstName = "John",
                     LastName = "Smith",
-                    AccountNumber = "4242424242424242",
+                    AccountNumber = "5454545454545454",
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
@@ -207,7 +207,7 @@ namespace epay3.Web.Api.Tests
                     AccountHolder = "John Smith",
                     FirstName = "John",
                     LastName = "Smith",
-                    AccountNumber = "4242424242424242",
+                    AccountNumber = "5454545454545454",
                     RoutingNumber = "111000025",
                     AccountType = AccountType.Personalsavings
                 },
@@ -264,7 +264,7 @@ namespace epay3.Web.Api.Tests
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
-                    CardNumber = "4242424242424242",
+                    CardNumber = "5454545454545454",
                     Cvc = "999",
                     Month = 12,
                     Year = DateTime.Now.Year + 1,
@@ -345,7 +345,7 @@ namespace epay3.Web.Api.Tests
                 CreditCardInformation = new CreditCardInformationModel
                 {
                     AccountHolder = "John Doe",
-                    CardNumber = "4242424242424242",
+                    CardNumber = "5454545454545454",
                     Cvc = "999",
                     Month = 12,
                     Year = DateTime.Now.Year + 1,
