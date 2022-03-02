@@ -1,47 +1,51 @@
-﻿using epay3.Web.Api.Sdk.Api;
-using epay3.Web.Api.Sdk.Client;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
-using epay3.Web.Api.Tests.TestData;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
+using epay3.Web.Api.Sdk.Client;
 using System.Net;
+using System.Linq;
+using System;
 
-namespace epay3.Web.Api.Tests.Processor7
+namespace epay3.Web.Api.Tests
 {
     [TestClass]
     public class When_Posting_A_Transaction
     {
         private TokensApi _tokensApi;
         private TransactionsApi _transactionsApi;
-        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _testData = new TestData.Processor7();
+            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+            _tokensApi = new TokensApi(TestApiSettings.Uri);
 
-            _transactionsApi = new TransactionsApi(_testData.Uri);
-            _tokensApi = new TokensApi(_testData.Uri);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
-
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + Convert.ToBase64String(plainTextBytes));
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + Convert.ToBase64String(plainTextBytes));
+            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
 
         [TestMethod]
         public void Should_Successfully_Process_And_Void_Credit_Card()
         {
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
-                CreditCardInformation = _testData.Mastercard,
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    CardNumber = "5454545454545454",
+                    Cvc = "999",
+                    Month = 12,
+                    Year = System.DateTime.Now.Year + 2,
+                    PostalCode = "54321"
+                },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
                 PayerFee = amount * .10
@@ -58,7 +62,7 @@ namespace epay3.Web.Api.Tests.Processor7
             var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
             Assert.IsNotNull(getTransactionResponseModel);
-            Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
+            Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x=>x.ParameterName=="phoneNumber").Value);
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
             Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
@@ -73,8 +77,16 @@ namespace epay3.Web.Api.Tests.Processor7
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                Amount = Math.Round(new Random().NextDouble() * 100, 2),
-                BankAccountInformation = _testData.Ach2,
+                Amount = System.Math.Round(new System.Random().NextDouble() * 100, 2),
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "5454545454545454",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments"
             };
@@ -101,18 +113,26 @@ namespace epay3.Web.Api.Tests.Processor7
         [TestMethod]
         public void Should_Honor_Impersonation_For_Transactions()
         {
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
-                BankAccountInformation = _testData.Ach2,
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "5454544",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
                 Comments = "Sample comments",
                 InitiatingPartyFee = amount * .20
             };
 
-            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             // Should return a valid Id.
             Assert.IsTrue(response.Id > 0);
@@ -121,13 +141,13 @@ namespace epay3.Web.Api.Tests.Processor7
             // Should get the transaction even when impersonation is off.
             Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, null));
             // Should get the transaction when impersonation is on.
-            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey));
+            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, TestApiSettings.ImpersonationAccountKey));
 
             // Should not be able to void with the impersonation key.
             Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, null));
 
             // Should be able to void with the impersonation key.
-            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, _testData.ImpersonationAccountKey).ReversalResponseCode);
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, TestApiSettings.ImpersonationAccountKey).ReversalResponseCode);
         }
 
         /// <summary>
@@ -138,13 +158,21 @@ namespace epay3.Web.Api.Tests.Processor7
         [Ignore]
         public void Should_Successfully_Issue_Full_Refund()
         {
-            var amount = new Random().Next(10, 1000);
+            var amount = new System.Random().Next(10, 1000);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
-                BankAccountInformation = _testData.Ach2,
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "5454545454545454",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
                 Comments = "Sample comments"
             };
 
@@ -168,13 +196,21 @@ namespace epay3.Web.Api.Tests.Processor7
         [Ignore]
         public void Should_Successfully_Issue_Partial_Refunds()
         {
-            var amount = new Random().Next(100, 1000);
+            var amount = new System.Random().Next(100, 1000);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
-                BankAccountInformation = _testData.Ach2,
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AccountNumber = "5454545454545454",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Personalsavings
+                },
                 Comments = "Sample comments"
             };
 
@@ -204,7 +240,7 @@ namespace epay3.Web.Api.Tests.Processor7
         [TestMethod]
         public void Should_Fail_With_Invalid_Authorization_Id()
         {
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
@@ -225,10 +261,18 @@ namespace epay3.Web.Api.Tests.Processor7
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Mastercard
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "5454545454545454",
+                    Cvc = "999",
+                    Month = 12,
+                    Year = DateTime.Now.Year + 1,
+                    PostalCode = "54321"
+                }
             };
 
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
 
             var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
@@ -268,7 +312,7 @@ namespace epay3.Web.Api.Tests.Processor7
                 }
             };
 
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
 
             try
@@ -281,8 +325,9 @@ namespace epay3.Web.Api.Tests.Processor7
 
                 Assert.Fail();
             }
-            catch (ApiException)
+            catch(ApiException)
             {
+
             }
             catch
             {
@@ -297,19 +342,27 @@ namespace epay3.Web.Api.Tests.Processor7
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Mastercard
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "5454545454545454",
+                    Cvc = "999",
+                    Month = 12,
+                    Year = DateTime.Now.Year + 1,
+                    PostalCode = "54321"
+                }
             };
 
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
-            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, _testData.ImpersonationAccountKey);
+            var amount = System.Math.Round(new System.Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
             {
                 Amount = amount,
                 TokenId = tokenId
-            }, _testData.ImpersonationAccountKey);
+            }, TestApiSettings.ImpersonationAccountKey);
 
-            Assert.IsNotNull(authorizationId, _testData.ImpersonationAccountKey);
+            Assert.IsNotNull(authorizationId, TestApiSettings.ImpersonationAccountKey);
 
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
@@ -325,9 +378,59 @@ namespace epay3.Web.Api.Tests.Processor7
             Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, transactionResponse.PaymentResponseCode);
 
             // This attempt should succeed with the the correct impersonation key.
-            transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
+            transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
+        }
+    }
+
+    [TestClass]
+    public class When_Searching_Transactions
+    {
+        private TransactionsApi _transactionsApi;
+        private BatchesApi _batchesApi;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Find_Transactions()
+        {
+            // Search results can be iterated through, with each returned transaction coming back in the form of a GetTransactionResponseModel. 
+            var searchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("1/1/2017"), endDate: DateTime.UtcNow, transactionSearchTypeId: TransactionSearchType.Processed, minAmount: -200m, maxAmount: 1000m, pageSize: 5, page: 1, impersonationAccountKey: TestApiSettings.ImpersonationAccountKey);
+            Assert.IsNotNull(searchResults);
+
+            // Additionally, every parameter when searching for transactions is optional.
+            var searchAllResults = _transactionsApi.TransactionsSearch();
+            Assert.IsTrue(searchAllResults.TotalRecords > 0);
+            Assert.IsNotNull(searchAllResults);
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Finds_Transactions_For_Batch()
+        {
+            _batchesApi = new BatchesApi(TestApiSettings.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+
+            _batchesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+
+            var batchSearchResults = _batchesApi.BatchesGet(1);
+
+            Assert.IsTrue(batchSearchResults.Batches.Any());
+
+            var transactionSearchResults = _transactionsApi.TransactionsSearch(DateTime.MinValue, null, null, null, null, batchSearchResults.Batches.First().Id, null, null, null);
+
+            Assert.IsTrue(transactionSearchResults.Transactions.Any());
         }
     }
 }

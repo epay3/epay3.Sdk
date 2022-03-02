@@ -1,9 +1,9 @@
-﻿using epay3.Web.Api.Sdk.Api;
-using epay3.Web.Api.Sdk.Client;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
-using epay3.Web.Api.Tests.TestData;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using epay3.Web.Api.Sdk.Client;
 using System.Net;
+using System.Linq;
 
 namespace epay3.Web.Api.Tests
 {
@@ -12,19 +12,16 @@ namespace epay3.Web.Api.Tests
     {
         private PaymentSchedulesApi _paymentSchedulesApi;
         private TokensApi _tokensApi;
-        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _testData = new TestData.Processor7();
+            _paymentSchedulesApi = new PaymentSchedulesApi(TestApiSettings.Uri);
+            _tokensApi = new TokensApi(TestApiSettings.Uri);
 
-            _paymentSchedulesApi = new PaymentSchedulesApi(_testData.Uri);
-            _tokensApi = new TokensApi(_testData.Uri);
-
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
             _paymentSchedulesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
@@ -40,7 +37,7 @@ namespace epay3.Web.Api.Tests
                 Amount = 100,
                 TokenId = CreateToken(null),
                 Interval = IntervalType.Day,
-                IntervalCount = 1
+                IntervalCount = 1                 
             };
 
             var paymentScheduleId = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, null);
@@ -93,13 +90,14 @@ namespace epay3.Web.Api.Tests
             }
             catch
             {
+
             }
         }
 
         [TestMethod]
         public void Should_Create_And_Get_With_Impersonation()
         {
-            var tokenIdWithImpersonation = CreateToken(_testData.ImpersonationAccountKey);
+            var tokenIdWithImpersonation = CreateToken(TestApiSettings.ImpersonationAccountKey);
             var postPaymentScheduleRequestModel = new PostPaymentScheduleRequestModel
             {
                 Payer = "John Smith",
@@ -110,11 +108,11 @@ namespace epay3.Web.Api.Tests
                 IntervalCount = 1
             };
 
-            var paymentScheduleId = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, _testData.ImpersonationAccountKey);
+            var paymentScheduleId = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, TestApiSettings.ImpersonationAccountKey);
 
             Assert.IsNotNull(paymentScheduleId);
 
-            var paymentSchedule = _paymentSchedulesApi.PaymentSchedulesGet(paymentScheduleId, _testData.ImpersonationAccountKey);
+            var paymentSchedule = _paymentSchedulesApi.PaymentSchedulesGet(paymentScheduleId, TestApiSettings.ImpersonationAccountKey);
 
             Assert.IsNotNull(paymentSchedule);
             Assert.IsNotNull(paymentSchedule.StartDate);
@@ -126,7 +124,7 @@ namespace epay3.Web.Api.Tests
 
                 Assert.Fail();
             }
-            catch (ApiException exception)
+            catch(ApiException exception)
             {
                 Assert.AreEqual(404, exception.ErrorCode);
             }
@@ -143,14 +141,14 @@ namespace epay3.Web.Api.Tests
                 Assert.AreEqual(404, exception.ErrorCode);
             }
 
-            Assert.IsTrue(_paymentSchedulesApi.PaymentSchedulesCancel(paymentScheduleId, _testData.ImpersonationAccountKey));
+            Assert.IsTrue(_paymentSchedulesApi.PaymentSchedulesCancel(paymentScheduleId, TestApiSettings.ImpersonationAccountKey));
         }
 
         [TestMethod]
         public void Should_Fail_With_Invalid_Token()
         {
             var tokenId = CreateToken(null);
-            var tokenIdWithImpersonation = CreateToken(_testData.ImpersonationAccountKey);
+            var tokenIdWithImpersonation = CreateToken(TestApiSettings.ImpersonationAccountKey);
 
             // Software Platform attempting to use client token without impersonation
             var postPaymentScheduleRequestModel = new PostPaymentScheduleRequestModel
@@ -185,7 +183,7 @@ namespace epay3.Web.Api.Tests
                 IntervalCount = 1
             };
 
-            var result = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, _testData.ImpersonationAccountKey);
+            var result = _paymentSchedulesApi.PaymentSchedulesPost(postPaymentScheduleRequestModel, TestApiSettings.ImpersonationAccountKey);
             Assert.IsFalse(string.IsNullOrWhiteSpace(result));
         }
 
@@ -195,7 +193,15 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Visa
+                CreditCardInformation = new CreditCardInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    CardNumber = "4457119922390123",
+                    Cvc = "123",
+                    Month = 12,
+                    Year = 2024,
+                    PostalCode = "54321"
+                }
             };
 
             return _tokensApi.TokensPost(postTokenRequestModel, impersonationKey);
