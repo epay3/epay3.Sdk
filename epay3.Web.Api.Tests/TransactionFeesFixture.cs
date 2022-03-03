@@ -1,5 +1,6 @@
 ﻿using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
+using epay3.Web.Api.Tests.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Net;
@@ -11,16 +12,19 @@ namespace epay3.Web.Api.Tests
     {
         private TransactionFeesApi _transactionFeesApi;
         private TokensApi _tokensApi;
+        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _transactionFeesApi = new TransactionFeesApi(TestApiSettings.Uri);
-            _tokensApi = new TokensApi(TestApiSettings.Uri);
+            _testData = new TestData.Processor7();
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+            _transactionFeesApi = new TransactionFeesApi(_testData.Uri);
+            _tokensApi = new TokensApi(_testData.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
 
             _transactionFeesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
@@ -39,7 +43,7 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void ShouldReturnValuesWithImpersonationKey()
         {
-            var response = _transactionFeesApi.TransactionFeesGet(5.3m, null, TestApiSettings.ImpersonationAccountKey);
+            var response = _transactionFeesApi.TransactionFeesGet(5.3m, null, _testData.ImpersonationAccountKey);
 
             Assert.IsInstanceOfType(response, typeof(GetTransactionFeesResponseModel));
             Assert.IsNotNull(response.AchPayerFee);
