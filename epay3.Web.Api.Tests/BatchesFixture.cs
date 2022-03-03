@@ -1,8 +1,11 @@
 ﻿using epay3.Web.Api.Sdk.Api;
-using epay3.Web.Api.Tests.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace epay3.Web.Api.Tests
 {
@@ -10,18 +13,15 @@ namespace epay3.Web.Api.Tests
     public class BatchesFixture
     {
         private BatchesApi _batchesApi;
-        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _testData = new TestData.Processor7();
+            _batchesApi = new BatchesApi(TestApiSettings.Uri);
 
-            _batchesApi = new BatchesApi(_testData.Uri);
-
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
 
             _batchesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
@@ -34,18 +34,18 @@ namespace epay3.Web.Api.Tests
             // Should get successfully.
             Assert.IsTrue(result.Batches.Count > 0);
             Assert.IsTrue(result.TotalRecords > 0);
-            Assert.IsTrue(result.Batches.All(x => x.Id != _testData.ImpersonationOnlyBatchId));
+            Assert.IsTrue(result.Batches.All(x => x.Id != TestApiSettings.ImpersonationOnlyBatchId));
         }
 
         [TestMethod]
         public void Should_Get_Successfully_With_Impersonation_Key()
         {
-            var result = _batchesApi.BatchesGet(null, _testData.ImpersonationAccountKey);
+            var result = _batchesApi.BatchesGet(null, TestApiSettings.ImpersonationAccountKey);
 
             // Should get successfully.
             Assert.IsTrue(result.Batches.Count > 0);
             Assert.IsTrue(result.TotalRecords > 0);
-            Assert.IsTrue(result.Batches.Any(x => x.Id == _testData.ImpersonationOnlyBatchId));
+            Assert.IsTrue(result.Batches.Any(x => x.Id == TestApiSettings.ImpersonationOnlyBatchId));
         }
     }
 }
