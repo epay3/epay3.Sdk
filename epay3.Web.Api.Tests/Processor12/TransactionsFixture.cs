@@ -34,7 +34,8 @@ namespace epay3.Web.Api.Tests.Processor12
         [TestMethod]
         public void Should_Successfully_Process_And_Void_Credit_Card()
         {
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            // processor requires an amount 'around $35'
+            var amount = 34 + Math.Round(new Random().NextDouble() * 10, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
