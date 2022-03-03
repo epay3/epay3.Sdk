@@ -70,6 +70,7 @@
     <Compile Include="BatchesFixture.cs" />
     <Compile Include="InvoicesFixture.cs" />
     <Compile Include="IvrSessionsFixture.cs" />
+    <Compile Include="PaymentPageSessionsFixture.cs" />
     <Compile Include="PaymentSchedulesFixture.cs" />
     <Compile Include="Processor13\TransactionsFixture.cs" />
     <Compile Include="Processor12\TransactionsFixture.cs" />
