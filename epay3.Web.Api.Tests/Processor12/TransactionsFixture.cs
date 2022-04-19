@@ -3,6 +3,7 @@ using epay3.Web.Api.Sdk.Model;
 using epay3.Web.Api.Tests.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+
 using System.Linq;
 using System.Net;
 
@@ -35,16 +36,17 @@ namespace epay3.Web.Api.Tests.Processor12
         public void Should_Successfully_Process_And_Void_Credit_Card()
         {
             // processor requires an amount 'around $35'
-            var amount = 34 + Math.Round(new Random().NextDouble() * 10, 2);
+            var penniesToAdd = new Random().Next(1, 99);
+            var amount = 35.00 + ((double)penniesToAdd / 100);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
-                Payer = "John Smith",
+                Payer = $"John Smith",
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
                 CreditCardInformation = _testData.Amex,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = amount * .10
+                PayerFee = amount
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
