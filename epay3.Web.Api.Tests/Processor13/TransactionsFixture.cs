@@ -8,8 +8,6 @@ using System.Net;
 
 namespace epay3.Web.Api.Tests.Processor13
 {
-    // TODO: 20220302 RHH - Remove this [Ignore] once Processor 13 is live on the sandbox & account #334 is properly configured
-    [Ignore]
     [TestClass]
     public class When_Posting_A_Transaction
     {
@@ -65,38 +63,6 @@ namespace epay3.Web.Api.Tests.Processor13
 
             // Should not be able to void the transaction more than once.
             Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
-        }
-
-        [TestMethod]
-        public void Should_Honor_Impersonation_For_Transactions()
-        {
-            var amount = Math.Round(new Random().NextDouble() * 100, 2);
-            var postTransactionRequestModel = new PostTransactionRequestModel
-            {
-                Payer = "John Smith",
-                EmailAddress = "jsmith@example.com",
-                Amount = amount,
-                BankAccountInformation = _testData.Ach2,
-                Comments = "Sample comments",
-                InitiatingPartyFee = amount * .20
-            };
-
-            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
-
-            // Should return a valid Id.
-            Assert.IsTrue(response.Id > 0);
-            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
-
-            // Should get the transaction even when impersonation is off.
-            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, null));
-            // Should get the transaction when impersonation is on.
-            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey));
-
-            // Should not be able to void with the impersonation key.
-            Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, null));
-
-            // Should be able to void with the impersonation key.
-            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, _testData.ImpersonationAccountKey).ReversalResponseCode);
         }
 
         /// <summary>
