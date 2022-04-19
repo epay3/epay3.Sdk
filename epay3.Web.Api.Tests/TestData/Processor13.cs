@@ -8,6 +8,8 @@ namespace epay3.Web.Api.Tests.TestData
     /// </summary>
     public class Processor13 : TestApiSettings, ITestData
     {
+        public override string ImpersonationAccountKey => System.Configuration.ConfigurationManager.AppSettings["ImpersonationAccountKey_Processor13"];
+
         public override string Key => System.Configuration.ConfigurationManager.AppSettings["ApiKey_Processor13"];
 
         public override string Secret => System.Configuration.ConfigurationManager.AppSettings["ApiSecret_Processor13"];

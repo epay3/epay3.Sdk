@@ -52,7 +52,7 @@ namespace epay3.Web.Api.Tests
             }
         }
 
-        public string ImpersonationAccountKey
+        public virtual string ImpersonationAccountKey
         {
             get
             {
