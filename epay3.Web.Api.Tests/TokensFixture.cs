@@ -196,45 +196,6 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Successfully_Use_A_Token_In_Credit_Card_Transaction_Amex()
-        {
-            var postTokenRequestModel = new PostTokenRequestModel
-            {
-                Payer = "John Doe",
-                EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Amex,
-                AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "parameter1", "parameter value 1" }, { "parameter2", "parameter value 2" } }
-            };
-
-            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
-            var getTokenResponseModel = _tokensApi.TokensGet(tokenId);
-
-            Assert.IsNotNull(getTokenResponseModel);
-            Assert.AreEqual(2, getTokenResponseModel.AttributeValues.Count);
-            Assert.AreEqual("parameter value 1", getTokenResponseModel.AttributeValues.Single(x => x.ParameterName == "parameter1").Value);
-            Assert.AreEqual("parameter value 2", getTokenResponseModel.AttributeValues.Single(x => x.ParameterName == "parameter2").Value);
-
-            // Should return a valid Id.
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenId));
-
-            var postTransactionRequestModel = new PostTransactionRequestModel
-            {
-                Payer = "John Smith",
-                EmailAddress = "jsmith@example.com",
-                Amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2),
-                TokenId = tokenId,
-                Comments = "Sample comments",
-                SendReceipt = false
-            };
-
-            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
-
-            // Should return a valid Id.
-            Assert.IsTrue(response.Id > 0);
-            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
-        }
-
-        [TestMethod]
         public void Should_Use_A_Different_Public_Id_For_Duplicate_Tokens()
         {
             var postTokenRequestModel = new PostTokenRequestModel

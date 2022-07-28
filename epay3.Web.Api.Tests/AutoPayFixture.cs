@@ -99,12 +99,20 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Create_Get_And_Delete_With_Impersonation()
         {
+            // setup
+            //var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
+            //var autoPayApi = new AutoPayApi(_testData.Uri);
+            //var tokensApi = new TokensApi(_testData.Uri);
             var postTokenRequestModel = new PostTokenRequestModel
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
                 CreditCardInformation = _testData.Visa
             };
+
+            //autoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+            //tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
+
 
             //Create Token
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel, _testData.InvoicesImpersonationAccountKey);

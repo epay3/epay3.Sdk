@@ -17,7 +17,7 @@ namespace epay3.Web.Api.Tests
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _testData = new TestData.Processor12();
+            _testData = new TestData.Processor7();
 
             _ivrSessionsApi = new IvrSessionsApi(_testData.Uri);
 

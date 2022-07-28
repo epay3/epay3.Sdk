@@ -33,7 +33,7 @@ namespace epay3.Web.Api.Tests
         public void Should_Successfully_Find_Transactions()
         {
             // Search results can be iterated through, with each returned transaction coming back in the form of a GetTransactionResponseModel.
-            var searchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("1/1/2020"), endDate: DateTime.UtcNow,
+            var searchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("1/1/2022"), endDate: DateTime.UtcNow,
                 transactionSearchTypeId: TransactionSearchType.Processed, minAmount: -200m, maxAmount: 1000m, pageSize: 5, page: 1, impersonationAccountKey: _testData.ImpersonationAccountKey);
             Assert.IsNotNull(searchResults);
 
