@@ -53,6 +53,13 @@
     </Reference>
     <Reference Include="RestSharp, Version=106.12.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.12.0\lib\net452\RestSharp.dll</HintPath>
+	</Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\VS.QualityTools.UnitTestFramework.15.0.27323.2\lib\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -64,26 +71,31 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AutoPayFixture.cs" />
     <Compile Include="BatchesFixture.cs" />
     <Compile Include="InvoicesFixture.cs" />
     <Compile Include="IvrSessionsFixture.cs" />
-    <Compile Include="TransactionFeesFixture.cs" />
-    <Compile Include="PublicKeyFixture.cs" />
-    <Compile Include="TestApiSettings.cs" />
-    <Compile Include="TokenPageSessionsFixture.cs" />
     <Compile Include="PaymentPageSessionsFixture.cs" />
-    <Compile Include="TokensFixture.cs" />
     <Compile Include="PaymentSchedulesFixture.cs" />
-    <Compile Include="TransactionsFixture.cs" />
+    <Compile Include="Processor13\TransactionsFixture.cs" />
+    <Compile Include="Processor12\TransactionsFixture.cs" />
+    <Compile Include="Processor7\TransactionsFixture.cs" />
+    <Compile Include="PublicKeyFixture.cs" />
+    <Compile Include="TestData\IAccountConfig.cs" />
+    <Compile Include="TestData\IProcessorTestData.cs" />
+    <Compile Include="TestData\ITestData.cs" />
+    <Compile Include="TestData\Processor13.cs" />
+    <Compile Include="TestData\Processor12.cs" />
+    <Compile Include="TestData\Processor7.cs" />
+    <Compile Include="TokensFixture.cs" />
+    <Compile Include="TransactionFeesFixture.cs" />
+    <Compile Include="TestData\TestApiSettings.cs" />
+    <Compile Include="TokenPageSessionsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AutoPayFixture.cs" />
+    <Compile Include="TransactionSearchFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\epay3.Web.Api.Sdk\epay3.Web.Api.Sdk.csproj">

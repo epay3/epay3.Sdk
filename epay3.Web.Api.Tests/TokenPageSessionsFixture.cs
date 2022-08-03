@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using epay3.Web.Api.Sdk.Api;
+﻿using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Model;
-using epay3.Web.Api.Sdk.Client;
+using epay3.Web.Api.Tests.TestData;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using System.Linq;
 
 namespace epay3.Web.Api.Tests
 {
@@ -11,15 +10,18 @@ namespace epay3.Web.Api.Tests
     public class TokenPageSessionsFixture
     {
         private TokenPageSessionsApi _tokenPageSessionsApi;
+        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _tokenPageSessionsApi = new TokenPageSessionsApi(TestApiSettings.Uri);
+            _testData = new TestData.Processor7();
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+            _tokenPageSessionsApi = new TokenPageSessionsApi(_testData.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
 
             _tokenPageSessionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
@@ -57,7 +59,7 @@ namespace epay3.Web.Api.Tests
                 SuccessUrl = "https://www.example.com"
             };
 
-            var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+            var id = _tokenPageSessionsApi.TokenPageSessionsPost(postTokenPageSessionRequestModel, _testData.ImpersonationAccountKey);
 
             // Should return a valid Id.
             Assert.IsNotNull(id);
