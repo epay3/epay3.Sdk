@@ -107,7 +107,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Visa
+                CreditCardInformation = _testData.Mastercard
             };
 
             //autoPayApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
@@ -123,7 +123,7 @@ namespace epay3.Web.Api.Tests
                 EmailAddress = "test@test.com",
                 AttributeValues = new Dictionary<string, string>()
                 {
-                    ["accountCode"] = "123",
+                    ["accountCode"] = new Random().Next(1000, 9999).ToString(),
                     ["postalCode"] = "78701",
                     ["uniqueId"] = id.ToString()
                 },
@@ -157,7 +157,8 @@ namespace epay3.Web.Api.Tests
                 EmailAddress = "test@test.com",
                 AttributeValues = new Dictionary<string, string>()
                 {
-                    ["accountCode"] = "123",
+                    // randomizing accountCode to bypass duplicate prevention
+                    ["accountCode"] = new Random().Next(1000,9999).ToString(),
                     ["postalCode"] = "78702"
                 },
                 PublicTokenId = tokenId

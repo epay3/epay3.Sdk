@@ -273,7 +273,10 @@ namespace epay3.Web.Api.Sdk.Model
         ChargebackDisputeFailed,
 
         [EnumMember(Value = "ClientNotificationSent")]
-        ClientNotificationSent
+        ClientNotificationSent,
+
+        [EnumMember(Value = "Report")]
+        Report
     }
 
     /// <summary>
