@@ -104,7 +104,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Mastercard
+                CreditCardInformation = _testData.Visa
             };
 
             //Create Token
