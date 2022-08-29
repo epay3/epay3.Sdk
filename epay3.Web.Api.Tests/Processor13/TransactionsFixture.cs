@@ -123,7 +123,7 @@ namespace epay3.Web.Api.Tests.Processor13
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = _testData.Mastercard
+                CreditCardInformation = _testData.Visa
             };
 
             var amount = Math.Round(new Random().NextDouble() * 100, 2);
