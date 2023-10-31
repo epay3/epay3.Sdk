@@ -42,6 +42,20 @@ namespace epay3.Web.Api.Tests
         {
             var result = _batchesApi.BatchesGet(null, _testData.ImpersonationAccountKey);
 
+            // if we haven't found the impersation batch in the first query, keep getting the next page until we find it
+            if (!result.Batches.Any(x => x.Id == _testData.ImpersonationOnlyBatchId) && result.Batches.Count < result.TotalRecords)
+            {
+                var resultsCounter = result.Batches.Count;
+                var nextPage = 2;
+                while (resultsCounter < result.TotalRecords && !result.Batches.Any(x => x.Id == _testData.ImpersonationOnlyBatchId))
+                {
+                    var additionalResult = _batchesApi.BatchesGet(nextPage, _testData.ImpersonationAccountKey);
+                    result.Batches.AddRange(additionalResult.Batches);
+                    resultsCounter = resultsCounter + additionalResult.Batches.Count;
+                    nextPage++;
+                }
+            }
+
             // Should get successfully.
             Assert.IsTrue(result.Batches.Count > 0);
             Assert.IsTrue(result.TotalRecords > 0);
