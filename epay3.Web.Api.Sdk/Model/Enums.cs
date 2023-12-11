@@ -284,7 +284,10 @@ namespace epay3.Web.Api.Sdk.Model
         ClientNotificationSent,
 
         [EnumMember(Value = "Report")]
-        Report
+        Report,
+
+        [EnumMember(Value = "Batch")]
+        Batch
     }
 
     /// <summary>
