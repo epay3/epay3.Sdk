@@ -1,8 +1,10 @@
-﻿namespace epay3.Web.Api.Tests
+﻿using epay3.Web.Api.Tests.TestData;
+
+namespace epay3.Web.Api.Tests
 {
-    public static class TestApiSettings
+    public class TestApiSettings : IAccountConfig
     {
-        public static string Uri
+        public string Uri
         {
             get
             {
@@ -10,7 +12,7 @@
             }
         }
 
-        public static string Key
+        public virtual string Key
         {
             get
             {
@@ -18,7 +20,7 @@
             }
         }
 
-        public static string Secret
+        public virtual string Secret
         {
             get
             {
@@ -26,23 +28,7 @@
             }
         }
 
-        public static string InvoiceKey
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiKey"];
-            }
-        }
-
-        public static string InvoiceSecret
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiSecret"];
-            }
-        }
-
-        public static string PublicKey
+        public virtual string PublicKey
         {
             get
             {
@@ -50,7 +36,23 @@
             }
         }
 
-        public static string ImpersonationAccountKey
+        public string InvoiceKey
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiKey"];
+            }
+        }
+
+        public string InvoiceSecret
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["InvoiceApiSecret"];
+            }
+        }
+
+        public virtual string ImpersonationAccountKey
         {
             get
             {
@@ -58,7 +60,7 @@
             }
         }
 
-        public static string InvoicesImpersonationAccountKey
+        public string InvoicesImpersonationAccountKey
         {
             get
             {
@@ -66,6 +68,6 @@
             }
         }
 
-        public static long ImpersonationOnlyBatchId => long.Parse(System.Configuration.ConfigurationManager.AppSettings["ImpersonationOnlyBatchId"]);
+        public long ImpersonationOnlyBatchId => long.Parse(System.Configuration.ConfigurationManager.AppSettings["ImpersonationOnlyBatchId"]);
     }
 }

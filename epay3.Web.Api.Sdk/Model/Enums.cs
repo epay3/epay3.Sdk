@@ -109,63 +109,71 @@ namespace epay3.Web.Api.Sdk.Model
     {
         [EnumMember(Value = "GenericDecline")]
         // An error has occurred.
-        GenericDecline,
+        GenericDecline = 0,
 
         [EnumMember(Value = "Success")]
         // The transaction was successful.
-        Success,
+        Success = 1,
 
         [EnumMember(Value = "DoNotHonor")]
         // The issuing bank has put a temporary hold on the card.
-        DoNotHonor,
+        DoNotHonor = 2,
 
         [EnumMember(Value = "InvalidAccountNumber")]
         // The account number is not valid.
-        InvalidAccountNumber,
+        InvalidAccountNumber = 3,
 
         [EnumMember(Value = "InsufficientFunds")]
         // The account does not have enough funds to cover the transaction.
-        InsufficientFunds,
+        InsufficientFunds = 4,
 
         [EnumMember(Value = "DeclineCvvFail")]
         // The CVV2/CID is invalid.
-        DeclineCvvFail,
+        DeclineCvvFail = 5,
 
         [EnumMember(Value = "ExceedsApprovalAmountLimit")]
         // This transaction exceeds to the daily approval limit for the card.
-        ExceedsApprovalAmountLimit,
+        ExceedsApprovalAmountLimit = 6,
 
         [EnumMember(Value = "NoSuchIssuer")]
         // The card number references an issuer that does not exist. Do not process the transaction.
-        NoSuchIssuer,
+        NoSuchIssuer = 7,
 
         [EnumMember(Value = "InvalidPaymentType")]
         // This payment type is not accepted by the issuer.
-        InvalidPaymentType,
+        InvalidPaymentType = 8,
 
         [EnumMember(Value = "InvalidExpirationDate")]
         // The expiration date is invalid.
-        InvalidExpirationDate,
+        InvalidExpirationDate = 9,
 
         [EnumMember(Value = "LostOrStolenCard")]
         // The card has been designated as lost or stolen; contact the issuing bank.
-        LostOrStolenCard,
+        LostOrStolenCard = 10,
 
         [EnumMember(Value = "ExpiredCard")]
         // The card is expired.
-        ExpiredCard,
+        ExpiredCard = 11,
 
-        [EnumMember(Value = "DuplicateTransaction")]
-        // A duplicate transaction was recently submitted. To successfully submit this transaction, please try again after a few minutes.
-        DuplicateTransaction,
+        [EnumMember(Value = "HardDuplicateTransaction")]
+        // A duplicate transaction was submitted in the last few minutes.
+        HardDuplicateTransaction = 12,
 
         [EnumMember(Value = "InvalidToken")]
         // The payment token is invalid.
-        InvalidToken,
+        InvalidToken = 13,
 
         [EnumMember(Value = "InvalidAuthorization")]
         // The authorization is invalid.
-        InvalidAuthorization
+        InvalidAuthorization = 14,
+
+        [EnumMember(Value = "InvalidRoutingNumber")]
+        // The routing number is invalid.
+        InvalidRoutingNumber = 15,
+
+        [EnumMember(Value = "SoftDuplicateTransaction")]
+        // A duplicate transaction was submitted in the last 24 hours.
+        SoftDuplicateTransaction = 16,
     }
 
     /// <summary>
@@ -273,7 +281,13 @@ namespace epay3.Web.Api.Sdk.Model
         ChargebackDisputeFailed,
 
         [EnumMember(Value = "ClientNotificationSent")]
-        ClientNotificationSent
+        ClientNotificationSent,
+
+        [EnumMember(Value = "Report")]
+        Report,
+
+        [EnumMember(Value = "Batch")]
+        Batch
     }
 
     /// <summary>
