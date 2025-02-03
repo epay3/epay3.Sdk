@@ -47,7 +47,7 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Successfully_Find_Chargeback_Transactions()
         {
-            var chargebackSearchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("3/1/2020"), endDate: DateTime.Parse("3/31/2024"),
+            var chargebackSearchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("3/1/2020"), endDate: DateTime.Parse("3/31/2020"),
                transactionSearchTypeId: TransactionSearchType.Chargeback, minAmount: -200m, maxAmount: 1000m, pageSize: 5, page: 1, impersonationAccountKey: _testData.ImpersonationAccountKey);
 
             Assert.IsNotNull(chargebackSearchResults.Transactions);
@@ -67,14 +67,14 @@ namespace epay3.Web.Api.Tests
         }
 
         [TestMethod]
-        public void Should_Successfully_Find_Returned_Transactions()
+        public void Should_Successfully_Find_Rejected_Transactions()
         {
-            var chargebackSearchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("3/1/2020"), endDate: DateTime.Parse("3/31/2024"),
+            var rejectSearchResults = _transactionsApi.TransactionsSearch(beginDate: DateTime.Parse("03/1/2019"), endDate: DateTime.Parse("03/31/2024"),
                transactionSearchTypeId: TransactionSearchType.Rejected, minAmount: -200m, maxAmount: 1000m, pageSize: 5, page: 1, impersonationAccountKey: _testData.ImpersonationAccountKey);
 
-            Assert.IsNotNull(chargebackSearchResults.Transactions);
+            Assert.IsNotNull(rejectSearchResults.Transactions);
 
-            foreach (var transaction in chargebackSearchResults.Transactions)
+            foreach (var transaction in rejectSearchResults.Transactions)
             {
                 Assert.IsNotNull(transaction.Events);
 
