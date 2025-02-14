@@ -445,7 +445,7 @@ namespace epay3.Web.Api.Tests
                 Amount = amount,
                 BankAccountInformation = _testData.Ach1,
                 Comments = "Test - Fee_Greater_Than_Payer_Fee_With_Impersonation_No_Initiating_Party_Fee_ACH",
-                PayerFee = 2
+                PayerFee = .01
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
@@ -459,6 +459,7 @@ namespace epay3.Web.Api.Tests
             // Compare transactions via impersonation
             Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
             Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -472,7 +473,7 @@ namespace epay3.Web.Api.Tests
                 Amount = amount,
                 CreditCardInformation = _testData.Visa,
                 Comments = "Test - Fee_Greater_Than_Payer_Fee_With_Impersonation_No_Initiating_Party_Fee_CC",
-                PayerFee = 2
+                PayerFee = .01
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
@@ -486,6 +487,7 @@ namespace epay3.Web.Api.Tests
             // Compare transactions via impersonation
             Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
             Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
         }
 
         [TestMethod]
