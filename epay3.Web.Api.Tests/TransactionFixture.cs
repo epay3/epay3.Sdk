@@ -7,6 +7,8 @@ using System.Net;
 
 namespace epay3.Web.Api.Tests
 {
+    // Currently the Processor is using Processor12 setup in QA
+    // But you may also use account 10056 to login and 10100 as impersonated account or any other similarly configured accounts preferred
     [TestClass]
     public class When_Posting_A_Transaction
     {
