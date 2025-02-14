@@ -3,8 +3,15 @@ using System;
 
 namespace epay3.Web.Api.Tests.TestData
 {
+    // Make a note here about which account we use and why!
     public class Processor : TestApiSettings, ITestData
     {
+        public override string Key => System.Configuration.ConfigurationManager.AppSettings["ApiKey_Processor"];
+
+        public override string Secret => System.Configuration.ConfigurationManager.AppSettings["ApiSecret_Processor"];
+
+        public override string PublicKey => System.Configuration.ConfigurationManager.AppSettings["ApiPublicKey_Processor"];
+
         public BankAccountInformationModel Ach1 => new BankAccountInformationModel
         {
             FirstName = "John",
@@ -32,9 +39,9 @@ namespace epay3.Web.Api.Tests.TestData
         public CreditCardInformationModel Visa => new CreditCardInformationModel
         {
             AccountHolder = "John Doe",
-            CardNumber = "4111111145551142",
+            CardNumber = "4444333322221111",
             Cvc = "737",
-            Month = 3,
+            Month = 03,
             Year = 2030,
             PostalCode = "54321"
         };

@@ -104,20 +104,13 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -131,7 +124,8 @@ namespace epay3.Web.Api.Tests
                 Amount = amount,
                 CreditCardInformation = _testData.Visa,
                 Comments = "Test - Basic_Transaction_With_Impersonation_No_Initiating_Party_Fee_CC",
-                PayerFee = 0
+                PayerFee = 0,
+                InitiatingPartyFee = 0
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
@@ -139,20 +133,13 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -175,20 +162,14 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee >= postTransactionRequestModel.InitiatingPartyFee);
         }
 
         [TestMethod]
@@ -211,20 +192,14 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee >= postTransactionRequestModel.InitiatingPartyFee);
         }
 
         [TestMethod]
@@ -253,6 +228,7 @@ namespace epay3.Web.Api.Tests
             // Confirm Expected Values
             Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
             Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithOutImpersonationKey.PayerFee > transactionWithOutImpersonationKey.Fee);
         }
 
         [TestMethod]
@@ -281,6 +257,7 @@ namespace epay3.Web.Api.Tests
             // Confirm Expected Values
             Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
             Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithOutImpersonationKey.PayerFee > transactionWithOutImpersonationKey.Fee);
         }
 
         [TestMethod]
@@ -302,20 +279,13 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.PayerFee > transactionWithImpersonationKey.Fee);
         }
 
         [TestMethod]
@@ -337,20 +307,13 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.PayerFee > transactionWithImpersonationKey.Fee);
         }
 
         [TestMethod]
@@ -373,20 +336,14 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.PayerFee > transactionWithImpersonationKey.Fee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee >= postTransactionRequestModel.InitiatingPartyFee);
         }
 
         [TestMethod]
@@ -409,20 +366,14 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.PayerFee > transactionWithImpersonationKey.Fee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee >= postTransactionRequestModel.InitiatingPartyFee);
         }
 
         [TestMethod]
@@ -451,6 +402,7 @@ namespace epay3.Web.Api.Tests
             // Confirm Expected Values
             Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
             Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithOutImpersonationKey.Fee > transactionWithOutImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -464,7 +416,7 @@ namespace epay3.Web.Api.Tests
                 Amount = amount,
                 CreditCardInformation = _testData.Visa,
                 Comments = "Test - Fee_Greater_Than_Payer_Fee_No_Impersonation_CC",
-                PayerFee = 2
+                PayerFee = 1
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -479,6 +431,7 @@ namespace epay3.Web.Api.Tests
             // Confirm Expected Values
             Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
             Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithOutImpersonationKey.Fee > transactionWithOutImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -500,20 +453,12 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -535,20 +480,12 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
         }
 
         [TestMethod]
@@ -571,20 +508,14 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee >= postTransactionRequestModel.InitiatingPartyFee);
         }
 
         [TestMethod]
@@ -607,20 +538,14 @@ namespace epay3.Web.Api.Tests
             // Should return a valid Id.
             Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-            // Should get the transaction(s) with impersonation on / off
-            var transactionWithOutImpersonationKey = _transactionsApi.TransactionsGet(response.Id, null);
-            Assert.IsNotNull(transactionWithOutImpersonationKey);
-
             var transactionWithImpersonationKey = _transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey);
             Assert.IsNotNull(transactionWithImpersonationKey);
 
-            // Confirm Expected Values
-            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithOutImpersonationKey.Amount);
-            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithOutImpersonationKey.PayerFee);
-
             // Compare transactions via impersonation
-            Assert.AreEqual(transactionWithOutImpersonationKey.Amount, transactionWithImpersonationKey.Amount);
-            Assert.AreEqual(transactionWithOutImpersonationKey.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.AreEqual(postTransactionRequestModel.Amount, transactionWithImpersonationKey.Amount);
+            Assert.AreEqual(postTransactionRequestModel.PayerFee, transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee > transactionWithImpersonationKey.PayerFee);
+            Assert.IsTrue(transactionWithImpersonationKey.Fee >= postTransactionRequestModel.InitiatingPartyFee);
         }
     }
 }
