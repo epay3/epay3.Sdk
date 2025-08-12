@@ -4,6 +4,7 @@ using epay3.Web.Api.Sdk.Model;
 using epay3.Web.Api.Sdk.Client;
 using System.Net;
 using System.Linq;
+using epay3.Web.Api.Tests.TestData;
 
 namespace epay3.Web.Api.Tests
 {
@@ -11,15 +12,18 @@ namespace epay3.Web.Api.Tests
     public class PaymentPageSessionsFixture
     {
         private PaymentPageSessionsApi _paymentPageSessionsApi;
+        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _paymentPageSessionsApi = new PaymentPageSessionsApi(TestApiSettings.Uri);
+            _testData = new TestData.Processor7();
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+            _paymentPageSessionsApi = new PaymentPageSessionsApi(_testData.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
 
             _paymentPageSessionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
         }
@@ -56,7 +60,7 @@ namespace epay3.Web.Api.Tests
                 PayerFee = 5
             };
 
-            var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+            var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, _testData.ImpersonationAccountKey);
 
             // Should return a valid Id.
             Assert.IsNotNull(id);
@@ -96,7 +100,7 @@ namespace epay3.Web.Api.Tests
 
             try
             {
-                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, _testData.ImpersonationAccountKey);
 
                 Assert.Fail();
             }
@@ -118,7 +122,7 @@ namespace epay3.Web.Api.Tests
 
             try
             {
-                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, _testData.ImpersonationAccountKey);
 
                 Assert.Fail();
             }
@@ -141,7 +145,7 @@ namespace epay3.Web.Api.Tests
 
             try
             {
-                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, TestApiSettings.ImpersonationAccountKey);
+                var id = _paymentPageSessionsApi.PaymentPageSessionsPost(postPaymentPageSessionRequestModel, _testData.ImpersonationAccountKey);
 
                 Assert.Fail();
             }

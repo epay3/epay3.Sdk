@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using epay3.Web.Api.Sdk.Api;
-using epay3.Web.Api.Sdk.Model;
+﻿using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Client;
-using System.Net;
+using epay3.Web.Api.Sdk.Model;
+using epay3.Web.Api.Tests.TestData;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using System;
+using System.Net;
 
 namespace epay3.Web.Api.Tests
 {
@@ -13,16 +13,19 @@ namespace epay3.Web.Api.Tests
     {
         private TokensApi _tokensApi;
         private TransactionsApi _transactionsApi;
+        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _tokensApi = new TokensApi(TestApiSettings.Uri);
-            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+            _testData = new TestData.Processor7();
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(TestApiSettings.Key + ":" + TestApiSettings.Secret);
+            _tokensApi = new TokensApi(_testData.Uri);
+            _transactionsApi = new TransactionsApi(_testData.Uri);
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
 
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + System.Convert.ToBase64String(plainTextBytes));
@@ -79,7 +82,6 @@ namespace epay3.Web.Api.Tests
             }
             catch (ApiException)
             {
-
             }
         }
 
@@ -90,15 +92,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = new CreditCardInformationModel
-                {
-                    AccountHolder = "John Doe",
-                    CardNumber = "4457119922390123",
-                    Cvc = "123",
-                    Month = 12,
-                    Year = System.DateTime.Now.Year,
-                    PostalCode = "54321"
-                }
+                CreditCardInformation = _testData.Visa
             };
 
             var id = _tokensApi.TokensPost(postTokenRequestModel);
@@ -117,14 +111,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                BankAccountInformation = new BankAccountInformationModel
-                {
-                    FirstName = "John",
-                    LastName = "Smith",
-                    RoutingNumber = "111000025",
-                    AccountNumber = "1234567890",
-                    AccountType = AccountType.Corporatechecking
-                }
+                BankAccountInformation = _testData.Ach1
             };
 
             var id = _tokensApi.TokensPost(postTokenRequestModel);
@@ -145,7 +132,7 @@ namespace epay3.Web.Api.Tests
 
                 Assert.Fail();
             }
-            catch(ApiException exception)
+            catch (ApiException exception)
             {
                 Assert.AreEqual(404, exception.ErrorCode);
             }
@@ -176,15 +163,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = new CreditCardInformationModel
-                {
-                    AccountHolder = "John Doe",
-                    CardNumber = "5454545454545454",
-                    Cvc = "999",
-                    Month = 12,
-                    Year = System.DateTime.Now.Year,
-                    PostalCode = "54321"
-                },
+                CreditCardInformation = _testData.Mastercard,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "parameter1", "parameter value 1" }, { "parameter2", "parameter value 2" } }
             };
 
@@ -223,15 +202,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = new CreditCardInformationModel
-                {
-                    AccountHolder = "John Doe",
-                    CardNumber = "4457119922390123",
-                    Cvc = "123",
-                    Month = 12,
-                    Year = System.DateTime.Now.Year + 1,
-                    PostalCode = "54321"
-                }
+                CreditCardInformation = _testData.Visa
             };
 
             var firstTokenId = _tokensApi.TokensPost(postTokenRequestModel);
@@ -292,15 +263,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                BankAccountInformation = new BankAccountInformationModel
-                {
-                    RoutingNumber = "111000025",
-                    AccountNumber = "1234567890",
-                    FirstName = "John",
-                    LastName = "Smith",
-                    AccountHolder = "ACME Corp",
-                    AccountType = AccountType.Corporatesavings
-                }
+                BankAccountInformation = _testData.Ach1
             };
 
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
@@ -332,15 +295,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                BankAccountInformation = new BankAccountInformationModel
-                {
-                    RoutingNumber = "111000025",
-                    AccountNumber = "1234567890",
-                    FirstName = "John",
-                    LastName = "Smith",
-                    AccountHolder = "ACME Corp",
-                    AccountType = AccountType.Corporatechecking
-                }
+                BankAccountInformation = _testData.Ach1
             };
 
             var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
@@ -372,18 +327,10 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                BankAccountInformation = new BankAccountInformationModel
-                {
-                    RoutingNumber = "111000025",
-                    AccountNumber = "1234567890",
-                    FirstName = "John",
-                    LastName = "Smith",
-                    AccountHolder = "ACME Corp",
-                    AccountType = AccountType.Corporatechecking
-                }
+                BankAccountInformation = _testData.Ach1
             };
 
-            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, TestApiSettings.ImpersonationAccountKey);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, _testData.ImpersonationAccountKey);
 
             // Should return a valid Id.
             Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenId));
@@ -401,7 +348,7 @@ namespace epay3.Web.Api.Tests
             }
 
             // Should get the token when impersonation is on.
-            Assert.IsNotNull(_tokensApi.TokensGet(tokenId, TestApiSettings.ImpersonationAccountKey));
+            Assert.IsNotNull(_tokensApi.TokensGet(tokenId, _testData.ImpersonationAccountKey));
         }
     }
 }

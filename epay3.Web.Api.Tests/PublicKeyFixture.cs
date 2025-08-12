@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using epay3.Web.Api.Sdk.Api;
-using epay3.Web.Api.Sdk.Model;
+﻿using epay3.Web.Api.Sdk.Api;
 using epay3.Web.Api.Sdk.Client;
+using epay3.Web.Api.Sdk.Model;
+using epay3.Web.Api.Tests.TestData;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using System.Linq;
 
 namespace epay3.Web.Api.Tests
 {
@@ -12,17 +12,20 @@ namespace epay3.Web.Api.Tests
     {
         private TokensApi _tokensApi;
         private TransactionsApi _transactionsApi;
+        private ITestData _testData;
 
         [TestInitialize]
         public void Initialize()
         {
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-            _tokensApi = new TokensApi(TestApiSettings.Uri);
-            _transactionsApi = new TransactionsApi(TestApiSettings.Uri);
+            _testData = new TestData.Processor7();
 
-            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Api-Key " + TestApiSettings.PublicKey);
-            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Api-Key " + TestApiSettings.PublicKey);
+            _tokensApi = new TokensApi(_testData.Uri);
+            _transactionsApi = new TransactionsApi(_testData.Uri);
+
+            _tokensApi.Configuration.AddDefaultHeader("Authorization", "Api-Key " + _testData.PublicKey);
+            _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Api-Key " + _testData.PublicKey);
         }
 
         [TestMethod]
@@ -32,15 +35,7 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = new CreditCardInformationModel
-                {
-                    AccountHolder = "John Doe",
-                    CardNumber = "4457119922390123",
-                    Cvc = "123",
-                    Month = 12,
-                    Year = System.DateTime.Now.Year,
-                    PostalCode = "54321"
-                }
+                CreditCardInformation = _testData.Visa
             };
 
             var id = _tokensApi.TokensPost(postTokenRequestModel);
@@ -55,9 +50,35 @@ namespace epay3.Web.Api.Tests
                 // Should not be able to delete a token.
                 Assert.Fail();
             }
-            catch(ApiException)
+            catch (ApiException)
             {
+            }
+        }
 
+        [TestMethod]
+        public void Should_Successfully_Store_Credit_Card_Token_Amex()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = _testData.Amex
+            };
+
+            var id = _tokensApi.TokensPost(postTokenRequestModel);
+
+            // Should return a valid Id.
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(id));
+
+            try
+            {
+                _tokensApi.TokensDelete(id);
+
+                // Should not be able to delete a token.
+                Assert.Fail();
+            }
+            catch (ApiException)
+            {
             }
         }
 
@@ -68,32 +89,23 @@ namespace epay3.Web.Api.Tests
             {
                 Payer = "John Doe",
                 EmailAddress = "jdoe@example.com",
-                CreditCardInformation = new CreditCardInformationModel
-                {
-                    AccountHolder = "John Doe",
-                    CardNumber = "4457119922390123",
-                    Cvc = "123",
-                    Month = 12,
-                    Year = System.DateTime.Now.Year,
-                    PostalCode = "54321"
-                }
+                CreditCardInformation = _testData.Visa
             };
 
-            var id = _tokensApi.TokensPost(postTokenRequestModel, TestApiSettings.ImpersonationAccountKey);
+            var id = _tokensApi.TokensPost(postTokenRequestModel, _testData.ImpersonationAccountKey);
 
             // Should return a valid Id.
             Assert.IsTrue(!string.IsNullOrWhiteSpace(id));
 
             try
             {
-                _tokensApi.TokensDelete(id, TestApiSettings.ImpersonationAccountKey);
+                _tokensApi.TokensDelete(id, _testData.ImpersonationAccountKey);
 
                 // Should not be able to delete a token.
                 Assert.Fail();
             }
             catch (ApiException)
             {
-
             }
         }
 
@@ -129,7 +141,6 @@ namespace epay3.Web.Api.Tests
             }
             catch (ApiException)
             {
-
             }
         }
     }
