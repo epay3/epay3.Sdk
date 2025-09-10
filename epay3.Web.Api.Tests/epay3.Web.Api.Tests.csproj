@@ -140,8 +140,9 @@
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
+
   <Target Name="AfterBuild">
     <TransformXml Source="@(AppConfigWithTargetPath)" Transform="$(ProjectConfigTransformFileName)" Destination="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" />
   </Target>
+  -->
 </Project>

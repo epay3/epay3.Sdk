@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "epay3.Web.Api.Sdk", "epay3.Web.Api.Sdk\epay3.Web.Api.Sdk.csproj", "{34B12ECB-7856-41F6-A9F5-5EF54E6065F9}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "epay3.Web.Api.Tests", "epay
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "epay3.Web.Sample", "epay3.Web.Sample\", "{646DC400-9561-4942-AC88-9AF8654FB7E8}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.7.2"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_64603"
 		Debug.AspNetCompiler.PhysicalPath = "epay3.Web.Sample\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64603\"

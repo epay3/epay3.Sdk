@@ -1,0 +1,47 @@
+name: Publish to NuGet
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build_and_publish:
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore epay3.Sdk.sln
+
+    - name: Get version from .csproj
+      id: get_version
+      shell: pwsh
+      run: |
+        $match = Get-Content -Path 'epay3.Web.Api.Sdk\epay3.Web.Api.Sdk.csproj' | Select-String -Pattern '<Version>(.*)</Version>'
+        if ($match -and $match.Matches.Count -gt 0) {
+          $version = $match.Matches[0].Groups[1].Value
+          echo "base_version=$version" >> $env:GITHUB_OUTPUT
+        } else {
+          Write-Error "Version tag not found in .csproj"
+          exit 1
+        }
+    - name: Build solution
+      run: msbuild epay3.Sdk.sln /p:Configuration=Release /p:TransformConfigFile=false
+
+    - name: Pack NuGet package
+      run: |
+        nuget pack epay3.Web.Api.Sdk\epay3.Web.Api.Sdk.csproj `
+          -Properties Configuration=Release `
+          -Version ${{ steps.get_version.outputs.base_version }}.${{ github.run_number }}
+    - name: Push to NuGet
+      run: |
+        nuget push *.nupkg `
+          -Source https://api.nuget.org/v3/index.json `
+          -ApiKey ${{ secrets.NUGET_API_KEY }} `
+          -SkipDuplicate
