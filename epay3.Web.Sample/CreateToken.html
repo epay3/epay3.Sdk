@@ -6,9 +6,8 @@
     <title>epay3 Sample Application</title>
     <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- TODO: Replace this with the live JS reference for production -->
     <script src="https://api-sandbox.epaypolicy.com/scripts/client-side.js"></script>
     <meta name="viewport" content="width=device-width" />
@@ -18,6 +17,8 @@
 
             var creditCardPayment = true;
             var bankAccountType = "PersonalChecking";
+
+            $("#copyright").html("&copy; " + new Date().getFullYear() + " - epay3, Inc");
 
             $(".paymentType").change(function () {
                 creditCardPayment = $(this).val() == "creditCard";
@@ -125,19 +126,19 @@
                         <!--Credit Card Payment Information-->
                         <li class="creditCardPaymentInfo">
                             <label for="cardNumber">Card Number</label>
-                            <input type="text" id="cardNumber" name="cardNumber" value="4242424242424242" />
+                            <input type="text" id="cardNumber" name="cardNumber" value="5555341244441115" />
                         </li>
                         <li class="creditCardPaymentInfo">
                             <label for="month">Month</label>
-                            <input type="text" id="month" name="month" value="12" />
+                            <input type="text" id="month" name="month" value="03" />
                         </li>
                         <li class="creditCardPaymentInfo">
                             <label for="year">Year</label>
-                            <input type="text" id="year" name="year" value="2022" />
+                            <input type="text" id="year" name="year" value="2030" />
                         </li>
                         <li class="creditCardPaymentInfo">
                             <label for="cvc">CVC</label>
-                            <input type="text" id="cvc" name="cvc" value="123" />
+                            <input type="text" id="cvc" name="cvc" value="737" />
                         </li>
                         <li class="creditCardPaymentInfo">
                             <label for="postalCode">Postal Code</label>
@@ -171,7 +172,7 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
-                <p>&copy; 2019 - epay3, Inc</p>
+                <p id="copyright">&copy; 2019 - epay3, Inc</p>
             </div>
         </div>
     </footer>
