@@ -43,7 +43,8 @@ namespace epay3.Web.Api.Tests.Processor13
                 CreditCardInformation = _testData.Mastercard,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = Math.Round(amount * .10, 2)
+                PayerFee = Math.Round(amount * .10, 2),
+                AdditionalEpayPolicyRetainedFee = Math.Round(amount * .05, 2)
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
