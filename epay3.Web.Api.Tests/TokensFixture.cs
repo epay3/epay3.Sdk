@@ -148,8 +148,7 @@ namespace epay3.Web.Api.Tests
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
                 TokenId = "INVALID_TOKEN",
-                Comments = "Sample comments",
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                Comments = "Sample comments"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -187,8 +186,7 @@ namespace epay3.Web.Api.Tests
                 Amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2),
                 TokenId = tokenId,
                 Comments = "Sample comments",
-                SendReceipt = false,
-                AdditionalEpayPolicyRetainedFee = 1.50
+                SendReceipt = false
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -281,8 +279,7 @@ namespace epay3.Web.Api.Tests
                 Amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2),
                 TokenId = tokenId,
                 Comments = "Sample comments",
-                SendReceipt = false,
-                AdditionalEpayPolicyRetainedFee = 1.50
+                SendReceipt = false
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -314,8 +311,7 @@ namespace epay3.Web.Api.Tests
                 Amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2),
                 TokenId = tokenId,
                 Comments = "Sample comments",
-                SendReceipt = false,
-                AdditionalEpayPolicyRetainedFee = 1.50
+                SendReceipt = false
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);

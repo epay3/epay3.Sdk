@@ -102,8 +102,7 @@ namespace epay3.Web.Api.Tests
                 EmailAddress = "jsmith@example.com",
                 Amount = amount,
                 BankAccountInformation = _testData.Ach2,
-                Comments = "Sample comments",
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                Comments = "Sample comments"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.InvoicesImpersonationAccountKey);

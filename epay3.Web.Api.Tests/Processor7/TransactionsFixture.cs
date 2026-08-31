@@ -44,8 +44,7 @@ namespace epay3.Web.Api.Tests.Processor7
                 CreditCardInformation = _testData.Mastercard,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = amount * .10,
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                PayerFee = amount * .10
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -78,8 +77,7 @@ namespace epay3.Web.Api.Tests.Processor7
                 Amount = amount,
                 BankAccountInformation = _testData.Ach2,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
-                Comments = "Sample comments",
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                Comments = "Sample comments"
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -112,8 +110,7 @@ namespace epay3.Web.Api.Tests.Processor7
                 Amount = amount,
                 BankAccountInformation = _testData.Ach2,
                 Comments = "Sample comments",
-                InitiatingPartyFee = amount * .20,
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                InitiatingPartyFee = amount * .20
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);

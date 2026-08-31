@@ -13,6 +13,7 @@ namespace epay3.Web.Api.Tests.Processor13
     {
         private TokensApi _tokensApi;
         private TransactionsApi _transactionsApi;
+        private TransactionFeesApi _transactionFeesApi;
         private ITestData _testData;
 
         [TestInitialize]
@@ -24,11 +25,13 @@ namespace epay3.Web.Api.Tests.Processor13
 
             _transactionsApi = new TransactionsApi(_testData.Uri);
             _tokensApi = new TokensApi(_testData.Uri);
+            _transactionFeesApi = new TransactionFeesApi(_testData.Uri);
 
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(_testData.Key + ":" + _testData.Secret);
 
             _tokensApi.Configuration.AddDefaultHeader("Authorization", "Basic " + Convert.ToBase64String(plainTextBytes));
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + Convert.ToBase64String(plainTextBytes));
+            _transactionFeesApi.Configuration.AddDefaultHeader("Authorization", "Basic " + Convert.ToBase64String(plainTextBytes));
         }
 
         [TestMethod]
@@ -43,8 +46,7 @@ namespace epay3.Web.Api.Tests.Processor13
                 CreditCardInformation = _testData.Mastercard,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = Math.Round(amount * .10, 2),
-                AdditionalEpayPolicyRetainedFee = Math.Round(amount * .05, 2)
+                PayerFee = Math.Round(amount * .10, 2)
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -64,6 +66,38 @@ namespace epay3.Web.Api.Tests.Processor13
 
             // Should not be able to void the transaction more than once.
             Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
+        }
+
+        [TestMethod]
+        public void Should_Successfully_Calculate_Fee_And_Process_Credit_Card()
+        {
+            double amount = 100;
+            double retainedFee = 5;
+            var payerFee = (double)_transactionFeesApi.TransactionFeesGet((decimal)amount, null, null).CreditCardPayerFee;
+
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = $"John Smith {DateTime.UtcNow.ToString("G")}",
+                EmailAddress = "jsmith@example.com",
+                Amount = amount + payerFee,
+                CreditCardInformation = _testData.Mastercard,
+                AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
+                Comments = "Sample comments",
+                PayerFee = payerFee,
+                AdditionalEpayPolicyRetainedFee = retainedFee
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
+
+            Assert.IsNotNull(getTransactionResponseModel);
+            Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
+            Assert.AreEqual(getTransactionResponseModel.Fee, payerFee + retainedFee);
         }
 
         [TestMethod]

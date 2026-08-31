@@ -129,8 +129,7 @@ namespace epay3.Web.Api.Tests
                 },
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = amount * .10,
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                PayerFee = amount * .10
             };
 
             try

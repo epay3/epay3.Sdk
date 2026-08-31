@@ -46,8 +46,7 @@ namespace epay3.Web.Api.Tests.Processor12
                 CreditCardInformation = _testData.Amex,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                PayerFee = amount,
-                AdditionalEpayPolicyRetainedFee = amount * .05
+                PayerFee = amount
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
