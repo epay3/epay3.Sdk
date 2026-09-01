@@ -141,11 +141,12 @@ namespace epay3.Web.Api.Tests
         [TestMethod]
         public void Should_Fail_To_Use_An_Invalid_Token_In_Credit_Card_Transaction()
         {
+            var amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                Amount = System.Math.Round(new System.Random().NextDouble() * 1000, 2),
+                Amount = amount,
                 TokenId = "INVALID_TOKEN",
                 Comments = "Sample comments"
             };

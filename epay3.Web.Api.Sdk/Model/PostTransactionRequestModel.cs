@@ -105,6 +105,13 @@ namespace epay3.Web.Api.Sdk.Model
         public double? InitiatingPartyFee { get; set; }
 
         /// <summary>
+        /// Increases the portion of this transaction paid to ePayPolicy as a fee, beyond the standard rate. Does not affect the amount of a transaction eligible for revenue share or marketing incentive agreements.
+        /// </summary>
+        /// <value>Increases the portion of this transaction paid to ePayPolicy as a fee, beyond the standard rate. Does not affect the amount of a transaction eligible for revenue share or marketing incentive agreements.</value>
+        [DataMember(Name = "additionalEpayPolicyRetainedFee", EmitDefaultValue = false)]
+        public double? AdditionalEpayPolicyRetainedFee { get; set; }
+
+        /// <summary>
         /// The currency of the transaction
         /// </summary>
         [DataMember(Name = "currency", EmitDefaultValue = false)]
@@ -131,6 +138,7 @@ namespace epay3.Web.Api.Sdk.Model
             sb.Append("  AuthorizationId: ").Append(AuthorizationId).Append("\n");
             sb.Append("  SendReceipt: ").Append(SendReceipt).Append("\n");
             sb.Append("  InitiatingPartyFee: ").Append(InitiatingPartyFee).Append("\n");
+            sb.Append("  AdditionalEpayPolicyRetainedFee: ").Append(AdditionalEpayPolicyRetainedFee).Append("\n");
             sb.Append("  Currency: ").Append(Currency).Append("\n");
 
             sb.Append("}\n");
@@ -235,6 +243,11 @@ namespace epay3.Web.Api.Sdk.Model
                     this.InitiatingPartyFee.Equals(other.InitiatingPartyFee)
                 ) &&
                 (
+                    this.AdditionalEpayPolicyRetainedFee == other.AdditionalEpayPolicyRetainedFee ||
+                    this.AdditionalEpayPolicyRetainedFee != null &&
+                    this.AdditionalEpayPolicyRetainedFee.Equals(other.AdditionalEpayPolicyRetainedFee)
+                ) &&
+                (
                     this.Currency == other.Currency ||
                     this.Currency.Equals(other.Currency)
                 );
@@ -290,6 +303,9 @@ namespace epay3.Web.Api.Sdk.Model
 
                 if (this.InitiatingPartyFee != null)
                     hash = hash * 59 + this.InitiatingPartyFee.GetHashCode();
+
+                if (this.AdditionalEpayPolicyRetainedFee != null)
+                    hash = hash * 59 + this.AdditionalEpayPolicyRetainedFee.GetHashCode();
 
                 hash = hash * 59 + this.Currency.GetHashCode();
 

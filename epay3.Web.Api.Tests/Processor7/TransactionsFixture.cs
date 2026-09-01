@@ -69,11 +69,12 @@ namespace epay3.Web.Api.Tests.Processor7
         [TestMethod]
         public void Should_Successfully_Process_And_Void_Ach()
         {
+            var amount = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                Amount = Math.Round(new Random().NextDouble() * 100, 2),
+                Amount = amount,
                 BankAccountInformation = _testData.Ach2,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments"
