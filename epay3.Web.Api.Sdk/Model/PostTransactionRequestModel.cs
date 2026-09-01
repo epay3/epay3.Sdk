@@ -105,9 +105,9 @@ namespace epay3.Web.Api.Sdk.Model
         public double? InitiatingPartyFee { get; set; }
 
         /// <summary>
-        /// The additional ePay policy retained fee for this transaction.
+        /// Increases the portion of this transaction paid to ePayPolicy as a fee, beyond the standard rate. Does not affect the amount of a transaction eligible for revenue share or marketing incentive agreements.
         /// </summary>
-        /// <value>The additional ePay policy retained fee for this transaction.</value>
+        /// <value>Increases the portion of this transaction paid to ePayPolicy as a fee, beyond the standard rate. Does not affect the amount of a transaction eligible for revenue share or marketing incentive agreements.</value>
         [DataMember(Name = "additionalEpayPolicyRetainedFee", EmitDefaultValue = false)]
         public double? AdditionalEpayPolicyRetainedFee { get; set; }
 
